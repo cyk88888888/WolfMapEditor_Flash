@@ -1,0 +1,26 @@
+﻿// Decompiled by AS3 Sorcerer 6.78
+// www.buraks.com/as3sorcerer
+
+//starling.events.TouchPhase
+
+package starling.events
+{
+    import starling.errors.AbstractClassError;
+
+    public final class TouchPhase 
+    {
+
+        public static const HOVER:String = "hover";
+        public static const BEGAN:String = "began";
+        public static const MOVED:String = "moved";
+        public static const STATIONARY:String = "stationary";
+        public static const ENDED:String = "ended";
+
+        public function TouchPhase()
+        {
+            throw (new AbstractClassError());
+        }
+
+    }
+}//package starling.events
+
