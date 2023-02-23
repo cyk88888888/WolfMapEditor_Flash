@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="138,69" pivot="0.5,0.5" extention="Button" adaptationTest="FitSize">
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver" selected="0"/>
+  <displayList>
+    <graph id="n13_sj78" name="bg" xy="0,0" size="138,69" type="rect" lineColor="#ffffffff" fillColor="#ff666666"/>
+    <graph id="n12_1075g" name="img_select" xy="0,0" size="138,69" type="rect" lineColor="#ffffffff" fillColor="#ff00ffff"/>
+    <text id="n10_1075g" name="txt_name" xy="35,15" size="65,39" fontSize="30" text="南蛮">
+      <relation target="n12_1075g" sidePair="center-center,middle-middle"/>
+    </text>
+  </displayList>
+  <Button/>
+</component>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="400,400">
+  <displayList>
+    <image id="n0_dv9c" name="n0" src="dv9cs" fileName="Imgs/t_dbottom.png" xy="0,0" size="400,400"/>
+    <text id="n2_dv9c" name="txtTitle" xy="121,17" size="157,51" fontSize="23" color="#ffffff" align="center" vAlign="middle" autoSize="none" text="提示&#xA;"/>
+    <component id="n3_dv9c" name="btnClose" src="dv9cv" fileName="Cpts/BtnClose.xml" xy="336,14"/>
+    <component id="n4_dv9c" name="btnSure" src="dv9cx" fileName="Cpts/BtnSure.xml" xy="150,307"/>
+    <text id="n5_dv9c" name="txtInput" xy="24,175" size="350,51" input="true" prompt="请输入文件名称" fontSize="36" color="#ffffff" align="center" vAlign="middle" autoSize="none" text=""/>
+  </displayList>
+</component>

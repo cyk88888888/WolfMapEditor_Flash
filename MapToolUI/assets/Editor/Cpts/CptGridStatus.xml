@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="90,60">
+  <displayList>
+    <image id="n0_8qqq" name="n0" src="qe4i1" fileName="Imgs/t_lvanniubutton.png" xy="0,0" size="90,60"/>
+    <text id="n1_8qqq" name="n1" xy="3,18" pivot="0.5,0.5" size="82,23" font="Microsoft YaHei" fontSize="13" color="#ffffff" align="center" vAlign="middle" autoSize="none" strokeColor="#000000" text="格子线条显隐"/>
+  </displayList>
+</component>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="80,60">
+  <displayList>
+    <image id="n2_ko20" name="n2" src="qe4i2" fileName="Imgs/t_anniubutton.png" xy="0,0" size="80,60"/>
+    <text id="n1_8qqq" name="title" xy="-1,13" pivot="0.5,0.5" size="82,27" font="Microsoft YaHei" fontSize="17" color="#ffffff" align="center" vAlign="middle" autoSize="none" strokeColor="#000000" shadowColor="#000000" shadowOffset="1,1" text="批量导出&#xA;"/>
+  </displayList>
+</component>
