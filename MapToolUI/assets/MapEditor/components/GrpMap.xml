@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="640,600">
+  <displayList>
+    <component id="n0_ggar" name="grp_floor" src="h98zb" fileName="components/EmptyComp.xml" pkg="g2zhtj9b" xy="0,0" size="640,600" touchable="false"/>
+    <component id="n1_ggar" name="grp_container" src="9szr1l" fileName="components/MapCompContainer.xml" xy="0,0">
+      <relation target="" sidePair="width-width,height-height"/>
+    </component>
+  </displayList>
+</component>

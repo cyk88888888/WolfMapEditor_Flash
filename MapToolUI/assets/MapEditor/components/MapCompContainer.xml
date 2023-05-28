@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="640,600" scroll="both">
+  <displayList>
+    <graph id="n8_f731" name="center" xy="270,250" size="100,100" visible="false" type="rect" fillColor="#ff0000ff"/>
+    <component id="n4_nx96" name="lineContainer" src="h98zb" fileName="components/EmptyComp.xml" pkg="g2zhtj9b" xy="0,0" size="640,600" touchable="false"/>
+    <component id="n11_qig8" name="remindContainer" src="h98zb" fileName="components/EmptyComp.xml" pkg="g2zhtj9b" xy="0,0" size="100,100" touchable="false"/>
+    <component id="n6_g4oc" name="gridContainer" src="h98zb" fileName="components/EmptyComp.xml" pkg="g2zhtj9b" xy="0,0" size="640,600" touchable="false"/>
+    <component id="n10_vtkz" name="mapThingContainer" src="h98zb" fileName="components/EmptyComp.xml" pkg="g2zhtj9b" xy="0,0" size="640,600"/>
+    <loader id="n7_j0gg" name="pet" xy="42,67" pivot="0.5,0.9" anchor="true" size="84,74" visible="false" url="ui://1c4i9cbqj0gg1u" autoSize="true"/>
+  </displayList>
+</component>
