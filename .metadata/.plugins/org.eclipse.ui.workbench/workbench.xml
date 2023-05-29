@@ -4,7 +4,7 @@
 <window height="768" maximized="true" width="1024" x="130" y="130">
 <fastViewData fastViewLocation="1024"/>
 <perspectiveBar>
-<itemSize x="160"/>
+<itemSize x="183"/>
 </perspectiveBar>
 <coolbarLayout>
 <coolItem id="group.file" itemType="typeGroupMarker"/>
@@ -29,16 +29,38 @@
 <folder appearance="1" expanded="2">
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
 <part id="0"/>
+<part id="1"/>
+<part id="2"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
-<editor activePart="true" focus="true" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapTool.as" partName="MapTool.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/MapTool.as" title="MapTool.as" tooltip="MapToolSrc/src/MapTool.as" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/MapTool.as"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapEditorLayer.as" partName="MapEditorLayer.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/MapEditorLayer.as" title="MapEditorLayer.as" tooltip="MapToolSrc/src/modules/mapEditor/MapEditorLayer.as" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/mapEditor/MapEditorLayer.as"/>
+<editorState selectionHorizontalPixel="0" selectionLength="18" selectionOffset="2625" selectionTopPixel="1168"/>
+</editor>
+<editor activePart="true" focus="true" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapComp.as" partName="MapComp.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/MapComp.as" title="MapComp.as" tooltip="MapToolSrc/src/modules/mapEditor/MapComp.as" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/mapEditor/MapComp.as"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="21823" selectionTopPixel="12757"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapMgr.as" partName="MapMgr.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as" title="MapMgr.as" tooltip="MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="5342" selectionTopPixel="3160"/>
 </editor>
 </editors>
 <views>
+<view id="org.eclipse.debug.ui.ExpressionView" partName="表达式">
+<viewState/>
+</view>
+<view id="org.eclipse.search.ui.views.SearchView" partName="搜索">
+<viewState isPinned="false">
+<view IMemento.internal.id="org.eclipse.search.text.FileSearchResultPage" org.eclipse.search.lastActivation="1" org.eclipse.search.resultpage.layout="2" org.eclipse.search.resultpage.limit="1000" org.eclipse.search.resultpage.sorting="2"/>
+<view IMemento.internal.id="" org.eclipse.search.lastActivation="0"/>
+</viewState>
+</view>
+<view id="org.eclipse.debug.ui.DebugView" partName="调试">
+<viewState/>
+</view>
 <view id="org.eclipse.ui.views.ProblemView" partName="问题">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="问题">
 <expanded>
@@ -56,14 +78,16 @@
 <viewState/>
 </view>
 <view id="com.adobe.flexbuilder.packageexplorer" partName="包资源管理器">
-<viewState LINK_NAVIGATOR_TO_EDITOR="0" fpeIsFlat="0" fpeSortBy="1" sorter="1">
+<viewState LINK_NAVIGATOR_TO_EDITOR="1" fpeIsFlat="0" fpeSortBy="1" sorter="1">
 <fpeExpanded>
 <fpeElement fpePath="/MapToolSrc"/>
 <fpeElement fpePath="/MapToolSrc/src"/>
-<fpeElement fpePath="/MapToolSrc/src/%typeDefaultPackage"/>
+<fpeElement fpePath="/MapToolSrc/src/modules"/>
+<fpeElement fpePath="/MapToolSrc/src/modules/mapEditor"/>
+<fpeElement fpePath="/MapToolSrc/src/modules/mapEditor/conctoller"/>
 </fpeExpanded>
 <fpeSelection>
-<fpeElement fpePath="/MapToolSrc/src/MapTool.as"/>
+<fpeElement fpePath="/MapToolSrc/src/modules/mapEditor/MapComp.as"/>
 </fpeSelection>
 <filters>
 <filter element=".flexProperties" isEnabled="true"/>
@@ -89,9 +113,13 @@
 <element path="/MapToolSrc"/>
 </expanded>
 <selection>
-<element path="/MapToolSrc/src/MapTool.as"/>
+<element path="/MapToolSrc/src/modules/mapEditor/MapComp.as"/>
 </selection>
 </viewState>
+</view>
+<view id="org.eclipse.debug.ui.BreakpointView" partName="断点"/>
+<view id="org.eclipse.debug.ui.VariableView" partName="变量">
+<viewState/>
 </view>
 <view id="com.adobe.flexbuilder.monitors.network.view.NetworkMonitorView" partName="网络监视器">
 <viewState/>
@@ -106,7 +134,7 @@
 <viewState/>
 </view>
 </views>
-<perspectives activePart="org.eclipse.ui.console.ConsoleView" activePerspective="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development">
+<perspectives activePart="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" activePerspective="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="com.adobe.flexbuilder.mxml.editor.ui.perspectives.DevelopmentPerspectiveFactory" id="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development" label="Flash"/>
 <alwaysOnActionSet id="com.adobe.flexbuilder.flashbridge.flashproject.actionSet"/>
@@ -167,11 +195,12 @@
 <hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
 <view id="com.adobe.flexbuilder.packageexplorer"/>
 <view id="org.eclipse.ui.views.ContentOutline"/>
+<view id="org.eclipse.search.ui.views.SearchView"/>
 <view id="org.eclipse.ui.views.ProblemView"/>
 <view id="com.adobe.flexbuilder.dcrad.views.DataServicesView"/>
-<view id="org.eclipse.ui.console.ConsoleView"/>
 <view id="com.adobe.flexbuilder.monitors.network.view.NetworkMonitorView"/>
 <view id="com.adobe.flexbuilder.as.editor.asdocviewer"/>
+<view id="org.eclipse.ui.console.ConsoleView"/>
 <fastViewBars/>
 <layout>
 <mainWindow>
@@ -179,9 +208,11 @@
 <folder activePageID="com.adobe.flexbuilder.packageexplorer" appearance="2" expanded="2">
 <page content="com.adobe.flexbuilder.packageexplorer" label="包资源管理器"/>
 <page content="org.eclipse.ui.views.ContentOutline" label="大纲"/>
+<page content="org.eclipse.search.ui.views.SearchView" label="搜索"/>
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
 <part id="0"/>
 <part id="1"/>
+<part id="2"/>
 </presentation>
 </folder>
 </info>
@@ -192,8 +223,8 @@
 <page content="org.eclipse.ui.cheatsheets.views.CheatSheetView" label="LabelNotFound"/>
 </folder>
 </info>
-<info part="org.eclipse.ui.editorss" ratio="0.2" ratioLeft="200" ratioRight="800" relationship="2" relative="org.eclipse.ui.internal.ViewStack@5054c2b8"/>
-<info folder="true" part="bottomLayout" ratio="0.74922603" ratioLeft="484" ratioRight="162" relationship="4" relative="org.eclipse.ui.editorss">
+<info part="org.eclipse.ui.editorss" ratio="0.15400733" ratioLeft="294" ratioRight="1615" relationship="2" relative="org.eclipse.ui.internal.ViewStack@5054c2b8"/>
+<info folder="true" part="bottomLayout" ratio="0.79392624" ratioLeft="732" ratioRight="190" relationship="4" relative="org.eclipse.ui.editorss">
 <folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ProblemView" label="问题"/>
 <page content="com.adobe.flexbuilder.dcrad.views.DataServicesView" label="数据/服务"/>
@@ -212,16 +243,288 @@
 </mainWindow>
 </layout>
 </perspective>
+<perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
+<descriptor class="com.adobe.flexbuilder.debug.ui.perspectives.FlexDebugPerspectiveFactory" id="com.adobe.flexbuilder.debug.ui.perspectives.debug" label="Flash 调试"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.flashbridge.flashproject.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.egit.ui.navigation"/>
+<alwaysOnActionSet id="org.eclipse.mylyn.context.ui.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.mylyn.doc.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.mylyn.tasks.ui.navigation"/>
+<alwaysOnActionSet id="org.eclipse.wb.core.ui.actionset"/>
+<alwaysOnActionSet id="org.eclipse.ui.cheatsheets.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.search.searchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.annotationNavigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.navigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.convertLineDelimitersTo"/>
+<alwaysOnActionSet id="org.eclipse.ui.externaltools.ExternalToolsSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.keyBindings"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.openFiles"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.launchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.profileActionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.NavigateActionSet"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.breakpointActionSet"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.debug.ui.flexDebuggingActionSet"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.dcrad.actionSet"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.zzz.editors.common.ui.project.publish"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.exportimport.actionSet1"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.debugActionSet"/>
+<show_view_action id="org.eclipse.debug.ui.VariableView"/>
+<show_view_action id="org.eclipse.debug.ui.BreakpointView"/>
+<show_view_action id="org.eclipse.debug.ui.ExpressionView"/>
+<show_view_action id="org.eclipse.ui.console.ConsoleView"/>
+<show_view_action id="org.eclipse.debug.ui.DebugView"/>
+<show_view_action id="org.eclipse.ui.views.ProblemView"/>
+<show_view_action id="com.adobe.flexbuilder.packageexplorer"/>
+<show_view_action id="org.eclipse.ui.views.ContentOutline"/>
+<new_wizard_action id="com.adobe.flexbuilder.editorcore.ui.project.wizards.newproject"/>
+<new_wizard_action id="com.adobe.flexbuilder.project.ui.wizards.FlexLibraryProjectWizard"/>
+<new_wizard_action id="com.adobe.flashbuilder.project.multiplatform.ui.MultiPlatformProjectWizard"/>
+<new_wizard_action id="com.adobe.flexbuilder.project.ui.wizards.NewActionScriptProjectWizard"/>
+<new_wizard_action id="com.adobe.flexbuilder.project.ui.wizards.ActionScriptLibraryProjectWizard"/>
+<new_wizard_action id="com.adobe.flashbuilder.project.multiplatform.ui.MultiPlatformActionScriptProjectWizard"/>
+<new_wizard_action id="com.adobe.flexbuilder.flashbridge.NewFlashProProjectWizard"/>
+<new_wizard_action id="com.adobe.flexbuilder.mxml.editor.ui.wizards.NewMXMLApplication"/>
+<new_wizard_action id="com.adobe.flexbuilder.mxml.editor.ui.wizards.NewMXMLComponent"/>
+<new_wizard_action id="com.adobe.flexbuilder.mxml.editor.ui.wizards.NewMXMLItemRenderer"/>
+<new_wizard_action id="com.adobe.flexbuilder.mxml.editor.ui.wizards.NewMXMLModule"/>
+<new_wizard_action id="com.adobe.flexbuilder.mxml.editor.ui.wizards.NewMXMLSkin"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.wizards.NewActionScriptFile.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.classWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.interfaceWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.skinnableComponentWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.workerWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.css.editor.wizards.NewCSSFile"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.flexUnitClassWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.flexUnitTestSuiteClassWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.packageWizard.flex"/>
+<new_wizard_action id="org.eclipse.ui.wizards.new.folder"/>
+<new_wizard_action id="org.eclipse.ui.wizards.new.file"/>
+<perspective_action id="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development"/>
+<perspective_action id="com.adobe.flexbuilder.debug.ui.perspectives.debug"/>
+<perspective_action id="com.adobe.flash.profiler.ui.ProfilingPerspective"/>
+<hide_toolbar_item_id id="org.eclipse.jdt.ui.actions.OpenProjectWizard"/>
+<hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
+<view id="org.eclipse.ui.console.ConsoleView"/>
+<view id="com.adobe.flexbuilder.dcrad.views.DataServicesView"/>
+<view id="com.adobe.flexbuilder.monitors.network.view.NetworkMonitorView"/>
+<view id="org.eclipse.debug.ui.DebugView"/>
+<view id="org.eclipse.debug.ui.VariableView"/>
+<view id="org.eclipse.debug.ui.BreakpointView"/>
+<view id="org.eclipse.debug.ui.ExpressionView"/>
+<view id="com.adobe.flexbuilder.packageexplorer"/>
+<fastViewBars/>
+<layout>
+<mainWindow>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@2ca09046">
+<folder activePageID="com.adobe.flexbuilder.packageexplorer" appearance="2" expanded="2">
+<page content="com.adobe.flexbuilder.packageexplorer" label="包资源管理器"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="org.eclipse.debug.internal.ui.NavigatorFolderView" ratio="0.14876899" ratioLeft="284" ratioRight="1625" relationship="2" relative="org.eclipse.ui.internal.ViewStack@2ca09046">
+<folder activePageID="org.eclipse.debug.ui.DebugView" appearance="2" expanded="2">
+<page content="org.eclipse.debug.ui.DebugView" label="调试"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="stickyFolderRight" ratio="0.75" ratioLeft="1434" ratioRight="478" relationship="2" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
+<page content="org.eclipse.ui.cheatsheets.views.CheatSheetView" label="LabelNotFound"/>
+</folder>
+</info>
+<info folder="true" part="org.eclipse.debug.internal.ui.ConsoleFolderView" ratio="0.7491892" ratioLeft="693" ratioRight="232" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">
+<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
+<page content="org.eclipse.ui.console.ConsoleView" label="控制台"/>
+<page content="com.adobe.flexbuilder.dcrad.views.DataServicesView" label="数据/服务"/>
+<page content="com.adobe.flexbuilder.monitors.network.view.NetworkMonitorView" label="网络监视器"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+<part id="1"/>
+<part id="2"/>
+</presentation>
+</folder>
+</info>
+<info part="org.eclipse.ui.editorss" ratio="0.32900432" ratioLeft="228" ratioRight="465" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView"/>
+<info folder="true" part="org.eclipse.debug.internal.ui.ToolsFolderView" ratio="0.5" ratioLeft="956" ratioRight="956" relationship="2" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">
+<folder activePageID="org.eclipse.debug.ui.ExpressionView" appearance="2" expanded="2">
+<page content="org.eclipse.debug.ui.VariableView" label="变量"/>
+<page content="org.eclipse.debug.ui.BreakpointView" label="断点"/>
+<page content="org.eclipse.debug.ui.ExpressionView" label="表达式"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+<part id="1"/>
+<part id="2"/>
+</presentation>
+</folder>
+</info>
+</mainWindow>
+</layout>
+</perspective>
 </perspectives>
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="com.adobe.flexbuilder.editors.derived.ui.startpage.StartPageEditorInput" iconpath="platform:/plugin/com.adobe.flexbuilder.ui/icons/fb_app_16.png" id="com.adobe.flexbuilder.ui.StartPage" style="20" tooltip="Flash Builder 欢迎屏幕" url="file:/D:/Flash/Adobe Flash Builder 4.7 (64 Bit)/eclipse/plugins/com.adobe.flexbuilder.ui.nl1_4.7.0.349722/nl/zh/welcome/index.html?firstLaunch=false&amp;edition=stnd&amp;version=470"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/MapTool.as"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/modules/mapEditor/MapComp.as"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/fairygui/GObject.as"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/fairygui/GLoader.as"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/modules/mapEditor/MapEditorLayer.as"/>
 </editors>
-<item historyLabel="欢迎" index="0"/>
-<item active="true" historyLabel="MapTool.as" index="1">
+<item historyLabel="MapComp.as" index="0">
+<position/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="37856" y="0"/>
+</item>
+<item historyLabel="GObject.as" index="1">
+<position info="not_deleted" x="7102" y="5"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="37856" y="0"/>
+</item>
+<item historyLabel="GLoader.as" index="2">
+<position info="not_deleted" x="10269" y="0"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="37897" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
 <position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position info="not_deleted" x="3649" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position info="not_deleted" x="4666" y="0"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="37045" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position info="not_deleted" x="10253" y="5"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="37045" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="4">
+<position info="not_deleted" x="9143" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position info="not_deleted" x="6764" y="5"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="4">
+<position info="not_deleted" x="9143" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="4">
+<position info="not_deleted" x="9142" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="4">
+<position info="not_deleted" x="7869" y="5"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="22491" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position info="not_deleted" x="6764" y="5"/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position info="not_deleted" x="3654" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position info="not_deleted" x="4241" y="16"/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position info="not_deleted" x="4727" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position info="not_deleted" x="4698" y="0"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="18157" y="5"/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position info="not_deleted" x="5153" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position info="not_deleted" x="3651" y="0"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="18157" y="5"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="18352" y="0"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="18740" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position info="not_deleted" x="3651" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position info="not_deleted" x="3668" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="3">
+<position info="not_deleted" x="5342" y="0"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="19058" y="0"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="18845" y="0"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="18724" y="0"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="21356" y="0"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="21130" y="0"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="21241" y="0"/>
+</item>
+<item historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="21246" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="4">
+<position info="not_deleted" x="2625" y="18"/>
+</item>
+<item active="true" historyLabel="MapComp.as" index="0">
+<position info="not_deleted" x="21246" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -241,14 +544,50 @@
 </trimLayout>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapTool.as" tooltip="MapToolSrc/src/MapTool.as">
-<persistable path="/MapToolSrc/src/MapTool.as"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapMgr.as" tooltip="MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as">
+<persistable path="/MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.systemExternalEditor" name="Common.zip" tooltip="MapToolSrc/src/assets/Common.zip">
-<persistable path="/MapToolSrc/src/assets/Common.zip"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="GLoader.as" tooltip="MapToolSrc/src/fairygui/GLoader.as">
+<persistable path="/MapToolSrc/src/fairygui/GLoader.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="GObject.as" tooltip="MapToolSrc/src/fairygui/GObject.as">
+<persistable path="/MapToolSrc/src/fairygui/GObject.as"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.ui.systemExternalEditor" name="map.json" tooltip="D:\Flash\WolfMapEditor_Flash\Resource\map_1\map.json">
+<persistable uri="file:/D:/Flash/WolfMapEditor_Flash/Resource/map_1/map.json"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="Enum.as" tooltip="MapToolSrc/src/modules/base/Enum.as">
+<persistable path="/MapToolSrc/src/modules/base/Enum.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="GameEvent.as" tooltip="MapToolSrc/src/modules/base/GameEvent.as">
+<persistable path="/MapToolSrc/src/modules/base/GameEvent.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="FileUT.as" tooltip="MapToolSrc/src/framework/base/FileUT.as">
+<persistable path="/MapToolSrc/src/framework/base/FileUT.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapComp.as" tooltip="MapToolSrc/src/modules/mapEditor/MapComp.as">
+<persistable path="/MapToolSrc/src/modules/mapEditor/MapComp.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapJsonInfo.as" tooltip="MapToolSrc/src/modules/mapEditor/conctoller/MapJsonInfo.as">
+<persistable path="/MapToolSrc/src/modules/mapEditor/conctoller/MapJsonInfo.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="GameTime.as" tooltip="MapToolSrc/src/common/frame/GameTime.as">
+<persistable path="/MapToolSrc/src/common/frame/GameTime.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapThingInfo.as" tooltip="MapToolSrc/src/modules/mapEditor/conctoller/MapThingInfo.as">
+<persistable path="/MapToolSrc/src/modules/mapEditor/conctoller/MapThingInfo.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="GTreeNode.as" tooltip="MapToolSrc/src/fairygui/GTreeNode.as">
+<persistable path="/MapToolSrc/src/fairygui/GTreeNode.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapEditorLayer.as" tooltip="MapToolSrc/src/modules/mapEditor/MapEditorLayer.as">
+<persistable path="/MapToolSrc/src/modules/mapEditor/MapEditorLayer.as"/>
 </file>
 <file factoryID="com.adobe.flexbuilder.editors.derived.ui.startpage.StartPageEditorInput" id="com.adobe.flexbuilder.ui.StartPage" name="Web 浏览器" tooltip="Flash Builder 欢迎屏幕">
 <persistable iconpath="platform:/plugin/com.adobe.flexbuilder.ui/icons/fb_app_16.png" style="20" tooltip="Flash Builder 欢迎屏幕" url="file:/D:/Flash/Adobe Flash Builder 4.7 (64 Bit)/eclipse/plugins/com.adobe.flexbuilder.ui.nl1_4.7.0.349722/nl/zh/welcome/index.html?firstLaunch=false&amp;edition=stnd&amp;version=470"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapTool.as" tooltip="MapToolSrc/src/MapTool.as">
+<persistable path="/MapToolSrc/src/MapTool.as"/>
 </file>
 </mruList>
 </workbench>

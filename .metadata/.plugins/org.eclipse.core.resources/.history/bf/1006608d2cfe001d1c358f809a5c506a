@@ -44,7 +44,7 @@
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
     <buildTarget buildTargetName="default" platformId="default">
-      <airSettings airCertificatePath="D:/Flash/WolfMapEditor_Flash/sign.p12" airTimestamp="false" anePathSet="true" version="1">
+      <airSettings airCertificatePath="D:/mo/ss/ss_client/mapTool/sign.p12" airTimestamp="false" anePathSet="true" version="1">
         <airExcludes/>
         <anePaths/>
         <newLaunchParams/>
