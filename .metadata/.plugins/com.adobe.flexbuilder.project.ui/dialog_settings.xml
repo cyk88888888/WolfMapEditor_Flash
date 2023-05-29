@@ -9,6 +9,7 @@
 	</section>
 	<section name="ExportSigningOptions">
 		<list key="certificates">
+			<item value="D:\Flash\WolfMapEditor_Flash\sign.p12"/>
 			<item value="D:\mo\ss\ss_client\mapTool\sign.p12"/>
 		</list>
 	</section>

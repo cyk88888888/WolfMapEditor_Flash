@@ -41,7 +41,7 @@
 </editor>
 <editor activePart="true" focus="true" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapComp.as" partName="MapComp.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/MapComp.as" title="MapComp.as" tooltip="MapToolSrc/src/modules/mapEditor/MapComp.as" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/mapEditor/MapComp.as"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="21823" selectionTopPixel="12757"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="21541" selectionTopPixel="12757"/>
 </editor>
 <editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapMgr.as" partName="MapMgr.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as" title="MapMgr.as" tooltip="MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as"/>
@@ -63,9 +63,6 @@
 </view>
 <view id="org.eclipse.ui.views.ProblemView" partName="问题">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="问题">
-<expanded>
-<category IMemento.internal.id="警告（91 项）"/>
-</expanded>
 <columnWidths org.eclipse.ui.ide.locationField="90" org.eclipse.ui.ide.markerType="90" org.eclipse.ui.ide.pathField="120" org.eclipse.ui.ide.resourceField="90" org.eclipse.ui.ide.severityAndDescriptionField="300"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.resourceField"/>
@@ -313,51 +310,35 @@
 <view id="org.eclipse.debug.ui.ExpressionView"/>
 <view id="com.adobe.flexbuilder.packageexplorer"/>
 <fastViewBars/>
-<layout>
-<mainWindow>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@2ca09046">
-<folder activePageID="com.adobe.flexbuilder.packageexplorer" appearance="2" expanded="2">
-<page content="com.adobe.flexbuilder.packageexplorer" label="包资源管理器"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<layout>&#x0A;<mainWindow>&#x0A;<info folder="true" part="org.eclipse.ui.internal.ViewStack@2ca09046">&#x0A;<folder activePageID="com.adobe.flexbuilder.packageexplorer" appearance="2" expanded="2">&#x0A;<page content="com.adobe.flexbuilder.packageexplorer" label="包资源管理器"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.debug.internal.ui.NavigatorFolderView" ratio="0.14876899" ratioLeft="284" ratioRight="1625" relationship="2" relative="org.eclipse.ui.internal.ViewStack@2ca09046">
-<folder activePageID="org.eclipse.debug.ui.DebugView" appearance="2" expanded="2">
-<page content="org.eclipse.debug.ui.DebugView" label="调试"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<info folder="true" part="org.eclipse.debug.internal.ui.NavigatorFolderView" ratio="0.14876899" ratioLeft="284" ratioRight="1625" relationship="2" relative="org.eclipse.ui.internal.ViewStack@2ca09046">&#x0A;<folder activePageID="org.eclipse.debug.ui.DebugView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.debug.ui.DebugView" label="调试"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 </presentation>
 </folder>
 </info>
-<info folder="true" part="stickyFolderRight" ratio="0.75" ratioLeft="1434" ratioRight="478" relationship="2" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">
-<folder appearance="2" expanded="2">
-<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<info folder="true" part="stickyFolderRight" ratio="0.75" ratioLeft="1434" ratioRight="478" relationship="2" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">&#x0A;<folder appearance="2" expanded="2">&#x0A;<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
 <page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
 <page content="org.eclipse.ui.cheatsheets.views.CheatSheetView" label="LabelNotFound"/>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.debug.internal.ui.ConsoleFolderView" ratio="0.7491892" ratioLeft="693" ratioRight="232" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">
-<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
-<page content="org.eclipse.ui.console.ConsoleView" label="控制台"/>
+<info folder="true" part="org.eclipse.debug.internal.ui.ConsoleFolderView" ratio="0.7491892" ratioLeft="693" ratioRight="232" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">&#x0A;<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.ui.console.ConsoleView" label="控制台"/>
 <page content="com.adobe.flexbuilder.dcrad.views.DataServicesView" label="数据/服务"/>
 <page content="com.adobe.flexbuilder.monitors.network.view.NetworkMonitorView" label="网络监视器"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 <part id="1"/>
 <part id="2"/>
 </presentation>
 </folder>
 </info>
 <info part="org.eclipse.ui.editorss" ratio="0.32900432" ratioLeft="228" ratioRight="465" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView"/>
-<info folder="true" part="org.eclipse.debug.internal.ui.ToolsFolderView" ratio="0.5" ratioLeft="956" ratioRight="956" relationship="2" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">
-<folder activePageID="org.eclipse.debug.ui.ExpressionView" appearance="2" expanded="2">
-<page content="org.eclipse.debug.ui.VariableView" label="变量"/>
+<info folder="true" part="org.eclipse.debug.internal.ui.ToolsFolderView" ratio="0.5" ratioLeft="956" ratioRight="956" relationship="2" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">&#x0A;<folder activePageID="org.eclipse.debug.ui.ExpressionView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.debug.ui.VariableView" label="变量"/>
 <page content="org.eclipse.debug.ui.BreakpointView" label="断点"/>
 <page content="org.eclipse.debug.ui.ExpressionView" label="表达式"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 <part id="1"/>
 <part id="2"/>
 </presentation>
@@ -544,6 +525,9 @@
 </trimLayout>
 </window>
 <mruList>
+<file factoryID="com.adobe.flexbuilder.editors.derived.ui.startpage.StartPageEditorInput" id="com.adobe.flexbuilder.ui.StartPage" name="Web 浏览器" tooltip="Flash Builder 欢迎屏幕">
+<persistable iconpath="platform:/plugin/com.adobe.flexbuilder.ui/icons/fb_app_16.png" style="20" tooltip="Flash Builder 欢迎屏幕" url="file:/D:/Flash/Adobe Flash Builder 4.7 (64 Bit)/eclipse/plugins/com.adobe.flexbuilder.ui.nl1_4.7.0.349722/nl/zh/welcome/index.html?firstLaunch=false&amp;edition=stnd&amp;version=470"/>
+</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapMgr.as" tooltip="MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as">
 <persistable path="/MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as"/>
 </file>
@@ -582,9 +566,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapEditorLayer.as" tooltip="MapToolSrc/src/modules/mapEditor/MapEditorLayer.as">
 <persistable path="/MapToolSrc/src/modules/mapEditor/MapEditorLayer.as"/>
-</file>
-<file factoryID="com.adobe.flexbuilder.editors.derived.ui.startpage.StartPageEditorInput" id="com.adobe.flexbuilder.ui.StartPage" name="Web 浏览器" tooltip="Flash Builder 欢迎屏幕">
-<persistable iconpath="platform:/plugin/com.adobe.flexbuilder.ui/icons/fb_app_16.png" style="20" tooltip="Flash Builder 欢迎屏幕" url="file:/D:/Flash/Adobe Flash Builder 4.7 (64 Bit)/eclipse/plugins/com.adobe.flexbuilder.ui.nl1_4.7.0.349722/nl/zh/welcome/index.html?firstLaunch=false&amp;edition=stnd&amp;version=470"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapTool.as" tooltip="MapToolSrc/src/MapTool.as">
 <persistable path="/MapToolSrc/src/MapTool.as"/>
