@@ -151,7 +151,7 @@ package com.common.inltrace
             var _local_7:String = ((_local_6 + ":  ") + _arg_2);
             _local_4.push(_local_7);
             all.push(_local_7);
-            if (((!(_showIdx == null)) && (_showIdx == _arg_1)))
+            if (((!(_showIdx == null)) && (_showIdx == String(_arg_1))))
             {
                 _tempShow.push(_local_7);
                 if (_tempShow.length > 400)

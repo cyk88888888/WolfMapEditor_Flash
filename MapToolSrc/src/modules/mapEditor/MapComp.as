@@ -176,10 +176,9 @@
 			MapMgr.inst.mapThingDic = new Dictionary();
 		}
 		
-		private function onResizeGrid(_arg_1:Object):void
+		private function onResizeGrid(data:Object):void
 		{
-			var data = _arg_1;
-			var onOk = function ():void
+			function onOk():void
 			{
 				_cellSize = cellSize;
 				MapMgr.inst.cellSize = cellSize;
@@ -230,9 +229,8 @@
 			_isRightDown = true;
 		}
 		
-		protected function onRightUp(_arg_1:MouseEvent):void
+		protected function onRightUp(event:MouseEvent):void
 		{
-			var event = _arg_1;
 			_isRightDown = false;
 			TweenMax.delayedCall(0.1, function ():void
 			{
@@ -436,15 +434,14 @@
 			};
 		}
 		
-		private function onImportMapJson(_arg_1:Object):void
+		private function onImportMapJson(data:Object):void
 		{
-			var data = _arg_1;
 			var juahua:JuHuaDlg = (ModuleMgr.inst.showLayer(JuHuaDlg) as JuHuaDlg);
 			var mapInfo:Object = data.body[0];
 			_cellSize = mapInfo.cellSize;
 			importFloorBg(function ():void
 			{
-				var addGridDataByType = function (_arg_1:String, _arg_2:Array):void
+				function addGridDataByType(_arg_1:String, _arg_2:Array):void
 				{
 					var _local_4:int;
 					var _local_3:int;
@@ -723,11 +720,10 @@
 			};
 		}
 		
-		private function onResizeMap(_arg_1:Object):void
+		private function onResizeMap(data:Object):void
 		{
 			var isLimit:Boolean;
-			var data = _arg_1;
-			var checkIsLimit = function (_arg_1:String, _arg_2:Array):void
+			function checkIsLimit(_arg_1:String, _arg_2:Array):void
 			{
 				var _local_4:* = null;
 				var _local_13:* = null;
@@ -923,10 +919,9 @@
 			};
 		}
 		
-		private function onDragMapThingDown(_arg_1:Object):void
+		private function onDragMapThingDown(data:Object):void
 		{
-			var data = _arg_1;
-			var imgLoaded = function ():void
+			function imgLoaded():void
 			{
 				mapThingInfo.width = mapThingComp.width;
 				mapThingInfo.height = mapThingComp.height;
@@ -1033,9 +1028,8 @@
 				_lastSelectMapThingComp = mapThingComp;
 				MapMgr.inst.curMapThingInfo = mapThingInfo;
 			};
-			mapThingComp.addClickListener(function (_arg_1:GTouchEvent):void
+			mapThingComp.addClickListener(function (evt:GTouchEvent):void
 			{
-				var evt = _arg_1;
 				if (_gridType != "GridType_MapThing")
 				{
 					return;

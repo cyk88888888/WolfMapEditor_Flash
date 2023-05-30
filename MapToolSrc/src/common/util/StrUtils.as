@@ -182,18 +182,16 @@ package common.util
             return (_arg_1.split(_arg_2).join(_arg_3));
         }
 
-        public static function toUpperFirstChar(_arg_1:String):String
+        public static function toUpperFirstChar(str:String):String
         {
-            var str = _arg_1;
             return (str.replace(/(\w)/, function (_arg_1:*):*
             {
                 return (_arg_1.toUpperCase());
             }));
         }
 
-        public static function toLowerFirstChar(_arg_1:String):String
+        public static function toLowerFirstChar(str:String):String
         {
-            var str = _arg_1;
             return (str.replace(/(\w)/, function (_arg_1:*):*
             {
                 return (_arg_1.toLocaleLowerCase());

@@ -399,3 +399,94 @@ org.eclipse.debug.core.DebugException: 断点没有相关联的标记。
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
 !SUBENTRY 1 org.eclipse.debug.core 4 5012 2023-05-29 00:24:18.651
 !MESSAGE 断点没有相关联的标记。
+!SESSION 2023-05-30 22:11:53.040 -----------------------------------------------
+eclipse.buildId=M20110909-1335
+java.version=1.6.0_31
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=zh_CN
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface 2 0 2023-05-30 22:14:12.028
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2023-05-30 22:14:12.028
+!MESSAGE A conflict occurred for CTRL+G:
+Binding(CTRL+G,
+	ParameterizedCommand(Command(com.adobe.flexbuilder.as.editor.find.all.declarations.in.workspace,在工作空间中查找所有声明,
+		,
+		Category(com.adobe.flexbuilder.editorcore.navigation.category,导航,null,true),
+		LegacyHandlerWrapper(ActionHandler(action=com.adobe.flexbuilder.as.editor.ui.actions.FindAllDeclarationsAction@3e7303e3)),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	com.adobe.flexide.editorcore.flexEditorScope,,,system)
+Binding(CTRL+G,
+	ParameterizedCommand(Command(com.adobe.flexbuilder.as.editor.find.all.declarations.in.workspace,在工作空间中查找所有声明,
+		,
+		Category(com.adobe.flexbuilder.editorcore.navigation.category,导航,null,true),
+		LegacyHandlerWrapper(ActionHandler(action=com.adobe.flexbuilder.as.editor.ui.actions.FindAllDeclarationsAction@3e7303e3)),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	com.adobe.flexbuilder.as.editor.context.packageexplorer,,,system)
+Binding(CTRL+G,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.edit.text.java.search.declarations.in.workspace,工作空间中的声明,
+		在工作空间中搜索对所选元素的声明,
+		Category(org.eclipse.search.ui.category.search,搜索,搜索命令类别,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2023-05-30 22:14:12.028
+!MESSAGE A conflict occurred for CTRL+SHIFT+G:
+Binding(CTRL+SHIFT+G,
+	ParameterizedCommand(Command(com.adobe.flexbuilder.as.editor.find.all.references.in.workspace,在工作空间中查找所有引用,
+		,
+		Category(com.adobe.flexbuilder.editorcore.navigation.category,导航,null,true),
+		LegacyHandlerWrapper(ActionHandler(action=com.adobe.flexbuilder.as.editor.ui.actions.FindAllReferencesAction@71044c1c)),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	com.adobe.flexide.editorcore.flexEditorScope,,,system)
+Binding(CTRL+SHIFT+G,
+	ParameterizedCommand(Command(com.adobe.flexbuilder.as.editor.find.all.references.in.workspace,在工作空间中查找所有引用,
+		,
+		Category(com.adobe.flexbuilder.editorcore.navigation.category,导航,null,true),
+		LegacyHandlerWrapper(ActionHandler(action=com.adobe.flexbuilder.as.editor.ui.actions.FindAllReferencesAction@71044c1c)),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	com.adobe.flexbuilder.as.editor.context.packageexplorer,,,system)
+Binding(CTRL+SHIFT+G,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.edit.text.java.search.references.in.workspace,工作空间中的引用,
+		在工作空间中搜索对所选元素的引用,
+		Category(org.eclipse.search.ui.category.search,搜索,搜索命令类别,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.core.jobs 4 2 2023-05-30 22:18:11.752
+!MESSAGE 在“FunctionOverrideProcessor”期间发生了内部错误。
+!STACK 0
+java.lang.NullPointerException
+	at com.adobe.flexide.as.core.document.internal.BaseASModel.getBaseFileNode(BaseASModel.java:866)
+	at com.adobe.flexide.as.core.decorators.FunctionOverrideProcessor.run(FunctionOverrideProcessor.java:83)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.jobs 4 2 2023-05-30 22:20:07.057
+!MESSAGE 在“FunctionOverrideProcessor”期间发生了内部错误。
+!STACK 0
+java.lang.NullPointerException
+	at com.adobe.flash.compiler.internal.scopes.ASProjectScope.getPropertyForScopeChainInvisibleCompilationUnit(ASProjectScope.java:1537)
+	at com.adobe.flash.compiler.internal.scopes.ASProjectScope.getPropertyForScopeChain(ASProjectScope.java:1560)
+	at com.adobe.flash.compiler.internal.scopes.ASScope.findProperty(ASScope.java:1073)
+	at com.adobe.flash.compiler.internal.scopes.ASScope.findProperty(ASScope.java:981)
+	at com.adobe.flash.compiler.internal.scopes.ASScope.findProperty(ASScope.java:1161)
+	at com.adobe.flash.compiler.internal.scopes.ASScope.findProperty(ASScope.java:919)
+	at com.adobe.flash.compiler.internal.scopes.ASScopeCache.findProperty(ASScopeCache.java:152)
+	at com.adobe.flash.compiler.internal.scopes.ASScope.findProperty(ASScope.java:1312)
+	at com.adobe.flash.compiler.internal.definitions.references.LexicalReference.resolve(LexicalReference.java:72)
+	at com.adobe.flash.compiler.internal.definitions.DefinitionBase.resolveType(DefinitionBase.java:1049)
+	at com.adobe.flash.compiler.internal.definitions.DefinitionBase.resolveType(DefinitionBase.java:1089)
+	at com.adobe.flash.compiler.internal.definitions.ClassDefinition.resolveBaseClass(ClassDefinition.java:373)
+	at com.adobe.flash.compiler.internal.definitions.FunctionDefinition.resolveOverriddenFunction(FunctionDefinition.java:299)
+	at com.adobe.flash.compiler.internal.definitions.GetterDefinition.resolveOverriddenFunction(GetterDefinition.java:98)
+	at com.adobe.flash.compiler.internal.definitions.FunctionDefinition.overridesAncestor(FunctionDefinition.java:285)
+	at com.adobe.flexide.as.core.decorators.FunctionOverrideProcessor.run(FunctionOverrideProcessor.java:99)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)

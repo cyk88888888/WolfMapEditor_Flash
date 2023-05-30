@@ -1,8 +1,4 @@
-﻿// Decompiled by AS3 Sorcerer 6.78
-// www.buraks.com/as3sorcerer
-
-//framework.mgr.SceneMgr
-
+﻿
 package framework.mgr
 {
     import __AS3__.vec.Vector;
@@ -51,11 +47,8 @@ package framework.mgr
             showScene(_arg_1, _arg_2, true);
         }
 
-        private function showScene(_arg_1:String, _arg_2:*=null, _arg_3:Boolean=false):void
+        private function showScene(sceneName:String, data:*=null, toPush:Boolean=false):void
         {
-            var sceneName = _arg_1;
-            var data = _arg_2;
-            var toPush = _arg_3;
             var self:SceneMgr = this;
             if (((!(curScene == null)) && (curScene.className == sceneName)))
             {

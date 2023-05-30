@@ -85,14 +85,8 @@ package starling.textures
             return (_local_3);
         }
 
-        public static function fromEmbeddedAsset(_arg_1:Class, _arg_2:Boolean=true, _arg_3:Boolean=false, _arg_4:Number=1, _arg_5:String="bgra", _arg_6:Boolean=false):starling.textures.Texture
+        public static function fromEmbeddedAsset(assetClass:Class, mipMapping:Boolean=true, optimizeForRenderToTexture:Boolean=false, scale:Number=1, format:String="bgra", repeat:Boolean=false):starling.textures.Texture
         {
-            var assetClass = _arg_1;
-            var mipMapping = _arg_2;
-            var optimizeForRenderToTexture = _arg_3;
-            var scale = _arg_4;
-            var format = _arg_5;
-            var repeat = _arg_6;
             var asset:Object = new assetClass();
             if ((asset is Bitmap))
             {
@@ -167,11 +161,8 @@ package starling.textures
             return (_local_6);
         }
 
-        public static function fromNetStream(_arg_1:NetStream, _arg_2:Number=1, _arg_3:Function=null):starling.textures.Texture
+        public static function fromNetStream(stream:NetStream, scale:Number=1, onComplete:Function=null):starling.textures.Texture
         {
-            var stream = _arg_1;
-            var scale = _arg_2;
-            var onComplete = _arg_3;
             if (((stream.client == stream) && (!("onMetaData" in stream))))
             {
                 stream.client = {"onMetaData":function (_arg_1:Object):void
@@ -186,13 +177,9 @@ package starling.textures
             return (fromVideoAttachment("Camera", _arg_1, _arg_2, _arg_3));
         }
 
-        private static function fromVideoAttachment(_arg_1:String, _arg_2:Object, _arg_3:Number, _arg_4:Function):starling.textures.Texture
+        private static function fromVideoAttachment(type:String, attachment:Object, scale:Number, onComplete:Function):starling.textures.Texture
         {
             const TEXTURE_READY:String = "textureReady";
-            var type = _arg_1;
-            var attachment = _arg_2;
-            var scale = _arg_3;
-            var onComplete = _arg_4;
             if (!SystemUtil.supportsVideoTexture)
             {
                 throw (new NotSupportedError("Video Textures are not supported on this platform"));
@@ -217,14 +204,8 @@ package starling.textures
             return (texture);
         }
 
-        public static function fromColor(_arg_1:Number, _arg_2:Number, _arg_3:uint=0xFFFFFFFF, _arg_4:Boolean=false, _arg_5:Number=-1, _arg_6:String="bgra"):starling.textures.Texture
+        public static function fromColor(width:Number, height:Number, color:uint=0xFFFFFFFF, optimizeForRenderToTexture:Boolean=false, scale:Number=-1, format:String="bgra"):starling.textures.Texture
         {
-            var width = _arg_1;
-            var height = _arg_2;
-            var color = _arg_3;
-            var optimizeForRenderToTexture = _arg_4;
-            var scale = _arg_5;
-            var format = _arg_6;
             var texture:starling.textures.Texture = starling.textures.Texture.empty(internal::width, internal::height, true, false, optimizeForRenderToTexture, internal::scale, internal::format);
             texture.root.clear(color, (Color.getAlpha(color) / 0xFF));
             texture.root.onRestore = function ():void

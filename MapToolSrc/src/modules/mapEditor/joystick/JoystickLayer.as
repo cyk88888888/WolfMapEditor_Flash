@@ -74,9 +74,8 @@ package modules.mapEditor.joystick
             _thumb.rotation = (_local_2 + 90);
         }
 
-        protected function onTapEnd(_arg_1:MouseEvent):void
+        protected function onTapEnd(event:MouseEvent):void
         {
-            var event = _arg_1;
             vector = new Point(0, 0);
             _isMouseDown = false;
             _thumb.rotation = (_thumb.rotation + 180);

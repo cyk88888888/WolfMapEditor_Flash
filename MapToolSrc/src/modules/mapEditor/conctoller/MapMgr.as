@@ -124,13 +124,10 @@
 			return (_local_3);
 		}
 		
-		public function changeMap(_arg_1:Boolean=false):void
+		public function changeMap(isForceSelect:Boolean=false):void
 		{
-			var isForceSelect = _arg_1;
-			FileUT.inst.openDirectoryBrower(function (_arg_1:String, _arg_2:File):void
+			FileUT.inst.openDirectoryBrower(function (path:String, file:File):void
 			{
-				var path = _arg_1;
-				var file = _arg_2;
 				if (((!(path)) && (isForceSelect)))
 				{
 					changeMap(isForceSelect);
@@ -197,10 +194,9 @@
 			return (_local_3);
 		}
 		
-		private function getMapThingDirectoryStrut(_arg_1:File):Vector.<MapFileTreeNode>
+		private function getMapThingDirectoryStrut(file:File):Vector.<MapFileTreeNode>
 		{
-			var file = _arg_1;
-			var createNodeRecursive = function (_arg_1:File, _arg_2:Vector.<MapFileTreeNode>):void
+			function createNodeRecursive(_arg_1:File, _arg_2:Vector.<MapFileTreeNode>):void
 			{
 				var _local_6:* = null;
 				var _local_4:* = null;
@@ -238,12 +234,8 @@
 			return (resultArr);
 		}
 		
-		public function getMapThingComp(_arg_1:String, _arg_2:Number=0.5, _arg_3:Number=0.5, _arg_4:Function=null):GButton
+		public function getMapThingComp(icon:String, anchorX:Number=0.5, anchorY:Number=0.5, completeCb:Function=null):GButton
 		{
-			var icon = _arg_1;
-			var anchorX = _arg_2;
-			var anchorY = _arg_3;
-			var completeCb = _arg_4;
 			var comp:GButton = UIPackage.createObject("MapEditor", "MapThingComp").asButton;
 			var loader:GLoader = comp.getChild("icon").asLoader;
 			comp.icon = icon;
@@ -331,7 +323,7 @@
 			};
 			TweenMax.delayedCall(0.1, function ():void
 			{
-				var addGridDataByType = function (_arg_1:String):void
+				function addGridDataByType(_arg_1:String):void
 				{
 					var _local_4:* = null;
 					var _local_3:* = null;

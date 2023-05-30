@@ -141,11 +141,8 @@ package com.common.util
             return (_arg_2);
         }
 
-        public static function filterWrapper(_arg_1:String, _arg_2:*, _arg_3:Boolean=true):Function
+        public static function filterWrapper(prop:String, value:*, eq:Boolean=true):Function
         {
-            var prop = _arg_1;
-            var value = _arg_2;
-            var eq = _arg_3;
             var rslt:Function = function (_arg_1:Object, _arg_2:int, _arg_3:Array):Boolean
             {
                 var _local_4:* = (_arg_1[prop] == value);

@@ -140,10 +140,9 @@
 			view.addEventListener("mouseMove", mouseMove);
 		}
 		
-		private function updateListTree(_arg_1:Object):void
+		private function updateListTree(data:Object):void
 		{
-			var data = _arg_1;
-			var createNodeRecursive = function (_arg_1:Vector.<MapFileTreeNode>, _arg_2:GTreeNode):void
+			function createNodeRecursive(_arg_1:Vector.<MapFileTreeNode>, _arg_2:GTreeNode):void
 			{
 				var _local_3:* = null;
 				for each (var _local_4:MapFileTreeNode in _arg_1)

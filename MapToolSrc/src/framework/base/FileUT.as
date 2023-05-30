@@ -29,10 +29,9 @@ package framework.base
         }
 
 
-        public function openDirectoryBrower(_arg_1:Function=null):void
+        public function openDirectoryBrower(cb :Function=null):void
         {
-            var cb = _arg_1;
-            var onFileSelected = function (_arg_1:Event):void
+            function onFileSelected(_arg_1:Event):void
             {
                 var _local_2:* = null;
                 if (_arg_1.type == "select")
@@ -50,11 +49,9 @@ package framework.base
             openfile.browseForDirectory("请选择地图文件夹工作目录：");
         }
 
-        public function openFileBrower(_arg_1:String=null, _arg_2:Function=null):void
+        public function openFileBrower(filterStr:String=null, cb:Function=null):void
         {
-            var filterStr = _arg_1;
-            var cb = _arg_2;
-            var onFileSelected = function (_arg_1:Event):void
+			function onFileSelected(_arg_1:Event):void
             {
                 if (cb)
                 {
@@ -66,16 +63,14 @@ package framework.base
             openfile.browseForOpen("请选择要导入的json文件：", ((filterStr) ? [new FileFilter(filterStr, filterStr)] : null));
         }
 
-        public function openFileBrowerAndReturn(_arg_1:String, _arg_2:Function=null):void
+        public function openFileBrowerAndReturn(filterStr:String, cb:Function=null):void
         {
-            var filterStr = _arg_1;
-            var cb = _arg_2;
-            var onFileSelected = function (_arg_1:Event):void
+			function onFileSelected(_arg_1:Event):void
             {
                 fileRef.addEventListener("complete", onFileLoaded);
                 fileRef.load();
             };
-            var onFileLoaded = function (_arg_1:Event):void
+			function onFileLoaded(_arg_1:Event):void
             {
                 if (cb)
                 {
@@ -87,10 +82,9 @@ package framework.base
             fileRef.addEventListener("select", onFileSelected);
         }
 
-        public function saveFileBrower(_arg_1:Function=null):void
+        public function saveFileBrower(cb:Function=null):void
         {
-            var cb = _arg_1;
-            var onFileSelected = function (_arg_1:Event):void
+			function onFileSelected(_arg_1:Event):void
             {
                 if (cb)
                 {
@@ -102,17 +96,14 @@ package framework.base
             openfile.browseForSave("导出当前地图json数据：");
         }
 
-        public function readAllText(_arg_1:String, _arg_2:Function, _arg_3:Function=null):void
+        public function readAllText(path:String, cb:Function, onError:Function=null):void
         {
-            var path = _arg_1;
-            var cb = _arg_2;
-            var onError = _arg_3;
-            var onLoadComplete = function (_arg_1:String):void
+			function onLoadComplete(_arg_1:String):void
             {
                 var _local_2:ResContent = LoaderMgr.getInstance().getResource(_arg_1);
                 cb.call(null, _local_2.content);
             };
-            var onErrorComplete = function (_arg_1:String):void
+			function onErrorComplete(_arg_1:String):void
             {
                 if (onError)
                 {

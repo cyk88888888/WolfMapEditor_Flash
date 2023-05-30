@@ -18,12 +18,8 @@ package modules.common.mgr
     {
 
 
-        public static function ShowMsg(_arg_1:String, _arg_2:String="Msg_Normal", _arg_3:Function=null, _arg_4:Function=null):void
+        public static function ShowMsg(msg:String, msgType:String="Msg_Normal", onOk:Function=null, onCancel:Function=null):void
         {
-            var msg = _arg_1;
-            var msgType = _arg_2;
-            var onOk = _arg_3;
-            var onCancel = _arg_4;
             if (msgType == "Msg_Normal")
             {
                 var msgTip:GComponent = UIPackage.createObject("Common", "MsgTip").asCom;

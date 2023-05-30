@@ -268,13 +268,10 @@ package starling.core
             };
         }
 
-        private function requestContext3D(_arg_1:Stage3D, _arg_2:String, _arg_3:Object):void
+        private function requestContext3D(stage3D:Stage3D, renderMode:String, profile:Object):void
         {
             var currentProfile:String;
-            var stage3D = _arg_1;
-            var renderMode = _arg_2;
-            var profile = _arg_3;
-            var requestNextProfile = function ():void
+			function requestNextProfile():void
             {
                 currentProfile = profiles.shift();
                 try
@@ -297,7 +294,7 @@ package starling.core
                     };
                 };
             };
-            var onCreated = function (_arg_1:Event):void
+			function onCreated(_arg_1:Event):void
             {
                 var _local_2:Context3D = internal::stage3D.context3D;
                 if ((((renderMode == "auto") && (!(profiles.length == 0))) && (!(_local_2.driverInfo.indexOf("Software") == -1))))
@@ -310,7 +307,7 @@ package starling.core
                     (onFinished());
                 };
             };
-            var onError = function (_arg_1:Event):void
+			function onError(_arg_1:Event):void
             {
                 if (profiles.length != 0)
                 {
@@ -326,7 +323,7 @@ package starling.core
                     };
                 };
             };
-            var onFinished = function ():void
+			function onFinished():void
             {
                 mStage3D.removeEventListener("context3DCreate", onCreated);
                 mStage3D.removeEventListener("error", onError);
@@ -639,10 +636,9 @@ package starling.core
             };
         }
 
-        private function onResize(_arg_1:Event):void
+        private function onResize(event:Event):void
         {
-            var event = _arg_1;
-            var dispatchResizeEvent = function ():void
+			function dispatchResizeEvent():void
             {
                 makeCurrent();
                 removeEventListener("context3DCreate", dispatchResizeEvent);
@@ -916,12 +912,9 @@ package starling.core
             };
         }
 
-        public function showStatsAt(_arg_1:String="left", _arg_2:String="top", _arg_3:Number=1):void
+        public function showStatsAt(hAlign:String="left", vAlign:String="top", scale:Number=1):void
         {
-            var hAlign = _arg_1;
-            var vAlign = _arg_2;
-            var scale = _arg_3;
-            var onRootCreated = function ():void
+			function onRootCreated():void
             {
                 showStatsAt(hAlign, vAlign, scale);
                 removeEventListener("rootCreated", onRootCreated);
