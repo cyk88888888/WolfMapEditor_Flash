@@ -576,9 +576,8 @@
 			});
 		}
 		
-		private function importFloorBg(_arg_1:Function):void
+		private function importFloorBg(cb:Function):void
 		{
-			var cb:Function = _arg_1;
 			function showFloorItor():void
 			{
 				if (mapFloorArr.length > 0)
@@ -628,6 +627,7 @@
 			var totWidth:int = 0;
 			var totHeight:int = 0;
 			var hasFinishOneLine:Boolean;
+			grp_floor.removeChildren();
 			showFloorItor(); //not popped
 		}
 		

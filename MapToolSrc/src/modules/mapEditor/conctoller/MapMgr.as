@@ -33,7 +33,7 @@
 		public const thingJsonName:String = "thingPram.json";
 		public const fileIcon:String = "ui://Common/file";
 		public const bavelResStr:String = "black.png";
-		public const mapslice:int = 13;
+		public var mapslice:int;
 		
 		public var mapWidth:int = 4000;
 		public var mapHeight:int = 4000;
@@ -128,7 +128,7 @@
 		{
 			FileUT.inst.openDirectoryBrower(function (path:String, file:File):void
 			{
-				if (((!(path)) && (isForceSelect)))
+				if (!path && isForceSelect)
 				{
 					changeMap(isForceSelect);
 					return;
@@ -162,6 +162,8 @@
 			var _local_2:* = null;
 			var _local_5:* = null;
 			var _local_3:Array = [];
+			var firstRow: int = 0;
+			mapslice = 0;
 			for each (var _local_7:File in file.getDirectoryListing())
 			{
 				_local_6 = _local_7.nativePath;
@@ -172,19 +174,23 @@
 					for each (var _local_4:File in _local_7.getDirectoryListing())
 					{
 						var splitNameArr:Array = _local_4.name.split(".")[0].split("_");
-						var col: int = int(splitNameArr[0]);//列
-						var row: int = int(splitNameArr[1]);//行
+						var col: int = int(splitNameArr[1]);//列
+						var row: int = int(splitNameArr[0]);//行
+						if (!firstRow) firstRow = row;
+						if (firstRow == row) {
+							mapslice++;
+						}
 						_local_3.push({col: col, row:row, nativePath: _local_4.nativePath});
 					};
 				};
 			};
 			_local_3.sort(function(a: Object, b: Object):int{
-				if(a.col > b.col){
+				if(a.row < b.row){
 					return -1;
-				}else if(a.col < b.col){
+				}else if(a.row > b.row){
 					return 1;
 				}else{
-					if(a.row > b.row){
+					if(a.col > b.col){
 						return 1;
 					}else {
 						return -1;

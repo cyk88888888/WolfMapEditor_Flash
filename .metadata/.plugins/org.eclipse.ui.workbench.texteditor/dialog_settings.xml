@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="mouseGridTextField" key="selection"/>
+		<item value="GridType_start" key="selection"/>
 		<list key="findhistory">
-			<item value="mouseGridTextField"/>
-			<item value="txt_mouseGridXY"/>
-			<item value="setSize"/>
-			<item value="grp_map"/>
-			<item value="floor"/>
-			<item value="width"/>
-			<item value="mapslice"/>
+			<item value="GridType_start"/>
+			<item value="GridType_walk"/>
+			<item value="hasFinishOneLine"/>
 			<item value="ImportMapJson"/>
+			<item value="isDir"/>
+			<item value="readAllText"/>
+			<item value="changeMap"/>
+			<item value="mouseGridTextField"/>
 		</list>
 		<list key="replacehistory">
 		</list>
