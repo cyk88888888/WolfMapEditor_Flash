@@ -830,7 +830,7 @@ package fairygui
 			if (_scrollPane != null && scrollItemToViewOnClick)
 				_scrollPane.scrollToView(item, true);
 			
-			var ie:ItemEvent = new ItemEvent(ItemEvent.CLICK, item);
+			var ie:ItemEvent = new ItemEvent(ItemEvent.RIGHT_CLICK, item);
 			ie.stageX = evt.stageX;
 			ie.stageY = evt.stageY;
 			ie.rightButton = true;

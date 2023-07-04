@@ -1,4 +1,4 @@
-﻿package modules.mapEditor
+package modules.mapEditor
 {
 	import com.greensock.TweenMax;
 	
@@ -14,56 +14,59 @@
 	import fairygui.GComponent;
 	import fairygui.GGraph;
 	import fairygui.GLoader;
-	import fairygui.ScrollPane;
 	import fairygui.event.GTouchEvent;
 	
 	import framework.base.BaseUT;
 	import framework.base.Global;
-	import framework.base.ObjectPool;
 	import framework.mgr.ModuleMgr;
 	import framework.ui.UIComp;
 	
+	import modules.base.Enum;
 	import modules.base.GameEvent;
 	import modules.common.JuHuaDlg;
 	import modules.common.mgr.MsgMgr;
 	import modules.mapEditor.comp.MapGridSp;
-	import modules.mapEditor.comp.MapRemindSp;
 	import modules.mapEditor.comp.MapThingSelectSp;
 	import modules.mapEditor.conctoller.MapMgr;
 	import modules.mapEditor.conctoller.MapThingInfo;
 	import modules.mapEditor.joystick.JoystickLayer;
-	
-	public class MapComp extends UIComp 
+
+	/**
+	 * 地图编辑组件 
+	 * @author cyk
+	 * 
+	 */	
+	public class MapComp extends UIComp
 	{
-		
-		private const offY:int = 0;
+		private const offY:int = 100;//预留刘海屏偏移像素
 		
 		private var grp_map:GComponent;
 		private var grp_container:GComponent;
 		private var lineContainer:GComponent;
 		private var gridContainer:GComponent;
-		private var mapThingContainer:GComponent;
+		private var mapThingContainer: GComponent;
 		private var remindContainer:GComponent;
 		private var grp_floor:GComponent;
 		private var pet:GLoader;
-		private var grp_bg:GGraph;
 		private var center:GGraph;
+		
 		private var _cellSize:int;
-		private var _gridType:String = "GridType_None";
-		private var _gridCompPool:ObjectPool;
-		private var lineShape:Shape;
-		private var gridSprite:Sprite;
-		private var _isCtrlDown:Boolean;
-		private var speed:int = 5;
-		private var mapThingSelectSp:MapThingSelectSp;
-		private var _isRightDown:Boolean;
+		private var _gridType:String = Enum.None;//格子类型
+		private var lineShape:Shape;//线条shape
+		private var gridSprite: Sprite;//格子容器
+		private var _isCtrlDown:Boolean;//ctrl键是否处于按下状态
+		private var speed:int = 5;//角色移动速度
+		private var mapThingSelectSp: MapThingSelectSp;//场景物件选中框
+		private var _isLeftDown:Boolean;
 		private var curScale:Number = 1;
-		private var scaleDelta:Number = 0.03;
-		private var _isRightDownDrawing:Boolean;
-		private var _lastSelectMapThingComp:GButton;
-		
-		
-		override protected function onFirstEnter():void
+		private var _lastSelectMapThingComp:GButton;//上一次选中的场景物件
+		private var mapMgr: MapMgr;
+		private var _isPressSpace: Boolean;
+		private var _preMousePos: Point;
+		private var _colorTypeDic: Dictionary;
+		private var _graphicsDic:Dictionary;
+		private var _redrawDic:Dictionary;
+		protected override function onFirstEnter():void
 		{
 			grp_map = view.getChild("grp_map").asCom;
 			grp_container = grp_map.getChild("grp_container").asCom;
@@ -71,25 +74,19 @@
 			mapThingContainer = grp_container.getChild("mapThingContainer").asCom;
 			lineContainer = grp_container.getChild("lineContainer").asCom;
 			gridContainer = grp_container.getChild("gridContainer").asCom;
-			grp_bg = view.getChild("grp_bg").asGraph;
 			grp_floor = grp_map.getChild("grp_floor").asCom;
 			pet = grp_container.getChild("pet").asLoader;
 			center = grp_container.getChild("center").asGraph;
-			_gridCompPool = new ObjectPool(function ():MapGridSp
-			{
-				return (new MapGridSp());
-			}, function (_arg_1:MapGridSp):void
-			{
-				_arg_1.parent.removeChild(_arg_1);
-			});
 			mapThingSelectSp = new MapThingSelectSp();
-			view.addEventListener("click", onClick);
-			view.addEventListener("rightMouseDown", onRightDown);
-			view.addEventListener("rightMouseUp", onRightUp);
-			view.addEventListener("mouseMove", mouseMove);
-			view.addEventListener("mouseWheel", onMouseWheel);
-			view.addEventListener("middleClick", onMouseMiddleClick);
-			_cellSize = MapMgr.inst.cellSize;
+			view.addEventListener(MouseEvent.CLICK, onClick);
+			view.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+			view.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
+			view.addEventListener(MouseEvent.MOUSE_WHEEL,onMouseWheel);
+			view.addEventListener(MouseEvent.MIDDLE_CLICK,onMouseMiddleClick);
+			
+			Global.stage.addEventListener(KeyboardEvent.KEY_DOWN,onKeyDown);
+			Global.stage.addEventListener(KeyboardEvent.KEY_UP,onKeyUp);
+			_cellSize = mapMgr.cellSize;
 			lineShape = new Shape();
 			lineContainer.displayListContainer.addChild(lineShape);
 			gridSprite = new Sprite();
@@ -97,1104 +94,750 @@
 			init();
 		}
 		
-		override protected function onEnter():void
-		{
+		protected override function onEnter():void{
+			onEmitter(GameEvent.ImportMapJson, onImportMapJson);
 			onEmitter(GameEvent.CheckShowGrid, onCheckShowGrid);
 			onEmitter(GameEvent.CheckShowPath, onCheckShowPath);
 			onEmitter(GameEvent.ChangeGridType, onChangeGridType);
-			onEmitter(GameEvent.ClearGridType, onClearGridType);
-			onEmitter(GameEvent.ImportMapJson, onImportMapJson);
 			onEmitter(GameEvent.ResizeGrid, onResizeGrid);
-			onEmitter(GameEvent.ResizeMap, onResizeMap);
 			onEmitter(GameEvent.RunDemo, onRunDemo);
 			onEmitter(GameEvent.CloseDemo, onCloseDemo);
 			onEmitter(GameEvent.ToCenter, onToCenter);
 			onEmitter(GameEvent.ToOriginalScale, onToOriginalScale);
 			onEmitter(GameEvent.ClearAllData, onClearAllData);
-			onEmitter(GameEvent.DragMapThingDown, onDragMapThingDown);
-			onEmitter(GameEvent.ChangeMapThingXY, onChangeMapThingXY);
-			Global.stage.addEventListener("keyDown", onKeyDown);
-			Global.stage.addEventListener("keyUp", onKeyUp);
+			onEmitter(GameEvent.DragMapThingDown,onDragMapThingDown);
+			onEmitter(GameEvent.ChangeMapThingXY,onChangeMapThingXY);
+			onEmitter(GameEvent.DarwGraphic,onDarwGraphic);
+			mapMgr = MapMgr.inst;
 		}
 		
-		private function init(_arg_1:Boolean=false):void
-		{
-			var _local_7:int;
-			var _local_4:int;
-			var _local_2:int = MapMgr.inst.mapWidth;
-			var _local_3:int = MapMgr.inst.mapHeight;
-			var _local_6:int = int(Math.ceil((_local_2 / _cellSize)));
-			var _local_5:int = int(Math.ceil((_local_3 / _cellSize)));
-			(trace(((("行：" + _local_5) + ", 列：") + _local_6)));
-			if (!_arg_1)
-			{
-				onToOriginalScale(null);
-				removeAllGrid();
-				removeAllMapThing();
-			}
-			else
-			{
-				updateContainerSize();
-			};
-			center.setXY(((_local_2 - center.width) / 2), ((_local_3 - center.height) / 2));
+		private function init():void{
+			var mapWidth:int = mapMgr.mapWidth;
+			var mapHeight:int = mapMgr.mapHeight;
+			var numCols:int = mapMgr.numCols = Math.ceil(mapWidth / _cellSize);
+			var numRows:int = mapMgr.numRows = Math.ceil(mapHeight / _cellSize);
+			var totGrid:Number = numCols * numRows; 
+			mapMgr.areaGraphicsSize = totGrid < 65536 ? 16 : totGrid < 300000 ? 32 : 64;
+			trace("行：" + numRows + ", 列：" + numCols);
+			onToOriginalScale();
+			removeAllGrid();
+			removeAllMapThing();
+			center.setXY((mapWidth - center.width) / 2, (mapHeight - center.height) / 2);
+			
 			lineShape.graphics.clear();
-			lineShape.graphics.lineStyle(1, 0);
-			_local_7 = 0;
-			while (_local_7 < _local_5)
-			{
-				lineShape.graphics.moveTo(0, (_local_7 * _cellSize));
-				lineShape.graphics.lineTo(_local_2, (_local_7 * _cellSize));
-				_local_7++;
-			};
-			_local_4 = 0;
-			while (_local_4 < _local_6)
-			{
-				lineShape.graphics.moveTo((_local_4 * _cellSize), 0);
-				lineShape.graphics.lineTo((_local_4 * _cellSize), _local_3);
-				_local_4++;
-			};
+			lineShape.graphics.lineStyle(1,0x000000);
+			
+			//画横线
+			for(var i:int = 0; i < numRows; i++){
+				lineShape.graphics.moveTo(0, i * _cellSize);
+				lineShape.graphics.lineTo(mapWidth, i * _cellSize);
+			}
+			
+			//画列线
+			for(var j:int = 0; j < numCols; j++){
+				lineShape.graphics.moveTo(j * _cellSize, 0);
+				lineShape.graphics.lineTo(j * _cellSize, mapHeight);
+			}
 		}
 		
+		/** 清除所有格子**/
 		private function removeAllGrid():void
 		{
-			var _local_1:int;
-			_local_1 = (gridSprite.numChildren - 1);
-			while (_local_1 >= 0)
-			{
-				_gridCompPool.releaseObject(gridSprite.getChildAt(_local_1), false);
-				_local_1--;
-			};
 			gridSprite.removeChildren();
-			MapMgr.inst.gridTypeDic = new Dictionary();
+			mapMgr.gridTypeDic = new Dictionary();
+			mapMgr.gridDataDic = new Dictionary();
+			_graphicsDic = new Dictionary();
+			_colorTypeDic = new Dictionary();
 		}
 		
-		private function removeAllMapThing():void
-		{
+		/** 清除所有场景物件**/
+		private function removeAllMapThing():void{
 			mapThingContainer.removeChildren();
 			mapThingSelectSp.rmSelf();
-			MapMgr.inst.curMapThingInfo = null;
-			MapMgr.inst.mapThingDic = new Dictionary();
+			mapMgr.curMapThingInfo = null;
+			mapMgr.mapThingDic = new Dictionary();
 		}
 		
-		private function onResizeGrid(data:Object):void
+		/** 格子大小变化**/
+		private function onResizeGrid(data:Object): void
 		{
-			function onOk():void
-			{
-				_cellSize = cellSize;
-				MapMgr.inst.cellSize = cellSize;
-				init();
-			};
 			var cellSize:int = data.body[0];
-			if (cellSize == MapMgr.inst.cellSize)
+			if (cellSize == mapMgr.cellSize)
 			{
 				MsgMgr.ShowMsg("格子大小没有变化！！！");
 				return;
-			};
-			if (MapMgr.inst.hasExitGridData())
-			{
-				MsgMgr.ShowMsg("当前存在格子数据，重置格子大小会清除全部数据，是否确定重置？", "Msg_MsgBox", function ():void
-				{
-					onOk(); //not popped
-				}, function ():void
-				{
-				});
 			}
-			else
-			{
-				(onOk());
-			};
+			if(mapMgr.hasExitGridData()){
+				MsgMgr.ShowMsg("当前存在格子数据，重置格子大小会清除全部数据，是否确定重置？",Enum.Msg_MsgBox,function():void{
+					onOk();
+				},function():void{})
+			}else{
+				onOk();
+			}
+			
+			function onOk():void{
+				_cellSize = cellSize;
+				mapMgr.cellSize = cellSize;
+				init();
+			}
 		}
 		
-		private function onChangeGridType(_arg_1:Object):void
+		private function onChangeGridType(data:Object): void
 		{
-			var _local_2:String = _arg_1.body[0];
-			_gridType = _local_2;
-			if (_gridType != "GridType_MapThing")
-			{
+			var gridType:String = data.body[0];
+			_gridType = gridType;
+			if(_gridType!=Enum.MapThing){
 				mapThingSelectSp.rmSelf();
-			};
+			}
 		}
 		
-		private function onRightDown(_arg_1:MouseEvent):void
+		protected function mouseDown(evt:MouseEvent):void
 		{
-			if (((_gridType == "GridType_MapThing") && (!(mapThingSelectSp.isShow))))
-			{
-				return;
-			};
-			if (_gridType == "GridType_None")
-			{
+			_isLeftDown = true;
+			_preMousePos = new Point(Global.stage.mouseX, Global.stage.mouseY);
+			view.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+		}
+		
+		protected function mouseUp(evt:MouseEvent):void
+		{
+			_isLeftDown = false;
+			view.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+		}
+		
+		protected function mouseMove(evt:MouseEvent):void
+		{
+			if(_isPressSpace){ 
+				var mousePos:Point = new Point(Global.stage.mouseX, Global.stage.mouseY);
+				var deltaX:Number = mousePos.x - _preMousePos.x;
+				var deltaY:Number = mousePos.y - _preMousePos.y;
+				var toX: Number = grp_map.x + deltaX;
+				var toY: Number = grp_map.y + deltaY;
+				grp_map.setXY(toX, toY);
+				_preMousePos = mousePos;
+				checkLimitPos();
+			}else if(_isLeftDown){
+				if (_gridType == Enum.None) return;
+				addOrRmRangeGrid(Global.stage.mouseX, Global.stage.mouseY, !_isCtrlDown);//Ctrl键按下状态，只减不加
+			}
+		}
+		
+		private function onClick(evt:MouseEvent):void
+		{
+			if (_isPressSpace) return;
+			if (_gridType == Enum.MapThing && !mapThingSelectSp.isShow) return;
+			if (_gridType == Enum.None) {
 				MsgMgr.ShowMsg("请先选择操作类型!!!");
 				return;
-			};
-			_isRightDown = true;
-		}
-		
-		protected function onRightUp(event:MouseEvent):void
-		{
-			_isRightDown = false;
-			TweenMax.delayedCall(0.1, function ():void
-			{
-				_isRightDownDrawing = false;
-			});
-		}
-		
-		protected function mouseMove(_arg_1:MouseEvent):void
-		{
-			var _local_3:* = null;
-			var _local_5:int;
-			var _local_4:int;
-			var _local_7:* = null;
-			var _local_8:int;
-			var _local_9:int;
-			var _local_6:* = null;
-			var _local_2:* = null;
-			if (_isRightDown)
-			{
-				if (_gridType == "GridType_None")
-				{
-					return;
-				};
-				_isRightDownDrawing = true;
-				_local_3 = getGridInfoByMousePos();
-				_local_5 = _local_3[0];
-				_local_4 = _local_3[1];
-				_local_7 = _local_3[4];
-				_local_8 = _local_3[2];
-				_local_9 = _local_3[3];
-				_local_6 = MapMgr.inst.gridTypeDic[_gridType];
-				if (_isCtrlDown)
-				{
-					addOrRmRangeGrid(Global.stage.mouseX, Global.stage.mouseY, false);
-					return;
-				};
-				addOrRmRangeGrid(Global.stage.mouseX, Global.stage.mouseY);
-			};
-		}
-		
-		private function onClick(_arg_1:MouseEvent):void
-		{
-			if (((_gridType == "GridType_MapThing") && (!(mapThingSelectSp.isShow))))
-			{
-				return;
-			};
-			if (_gridType == "GridType_None")
-			{
-				MsgMgr.ShowMsg("请先选择操作类型!!!");
-				return;
-			};
-			var _local_2:Array = getGridInfoByMousePos();
-			var _local_4:int = _local_2[0];
-			var _local_3:int = _local_2[1];
-			var _local_5:String = _local_2[4];
-			var _local_6:int = _local_2[2];
-			var _local_8:int = _local_2[3];
-			var _local_7:int;
-			if (_isCtrlDown)
-			{
+			}
+			if (_isCtrlDown) {//Ctrl键按下状态，只减不加
 				addOrRmRangeGrid(Global.stage.mouseX, Global.stage.mouseY, false);
 				return;
-			};
+			}
 			addOrRmRangeGrid(Global.stage.mouseX, Global.stage.mouseY);
 		}
-		
-		private function getGridInfoByMousePos():Array
-		{
-			var _local_2:int = int(Math.floor(((Global.stage.mouseX + view.scrollPane.posX) / (_cellSize * curScale))));
-			var _local_1:int = int(Math.floor((((Global.stage.mouseY + view.scrollPane.posY) - (offY * curScale)) / (_cellSize * curScale))));
-			var _local_3:String = ((_local_2 + "_") + _local_1);
-			var _local_4:int = (_local_2 * _cellSize);
-			var _local_5:int = (_local_1 * _cellSize);
-			return ([_local_2, _local_1, _local_4, _local_5, _local_3]);
+
+		/**获取当前鼠标下的格子信息 [格子所在的列, 格子所在的行, 绘制颜色格子的坐标X, 绘制颜色格子的坐标Y, gridKey]**/
+		private function getGridInfoByMousePos(): Array {
+			var localPos: Point = grp_map.globalToLocal(Global.stage.mouseX, Global.stage.mouseY);
+			var gridXY: Point = mapMgr.pos2GridXY(localPos.x, localPos.y - offY);
+			var gridPosX: int = gridXY.x;//格子所在的列
+			var gridPosY: int = gridXY.y;//格子所在的行
+			var gridKey: String = gridPosX + "_" + gridPosY;
+			var gridX: int = gridPosX * _cellSize;//绘制颜色格子的坐标X
+			var gridY: int = gridPosY * _cellSize;//绘制颜色格子的坐标Y
+			return [gridPosX, gridPosY, gridX, gridY, gridKey];
 		}
 		
-		private function addOrRmRangeGrid(_arg_1:Number, _arg_2:Number, _arg_3:Boolean=true):void
-		{
-			var _local_8:int;
-			var _local_7:int;
-			var _local_5:int;
-			var _local_4:int;
-			var _local_15:int;
-			var _local_16:int;
-			var _local_11:Array = [];
-			var _local_13:Array = getGridInfoByMousePos();
-			var _local_6:int = MapMgr.inst.gridRange;
-			var _local_9:int = (_local_13[0] - _local_6);
-			var _local_10:int = (_local_13[1] - _local_6);
-			var _local_12:int = ((2 * _local_6) + 1);
-			_local_8 = 0;
-			while (_local_8 < _local_12)
-			{
-				_local_7 = 0;
-				while (_local_7 < _local_12)
-				{
-					_local_11.push([(_local_9 + _local_8), (_local_10 + _local_7)]);
-					_local_7++;
-				};
-				_local_8++;
-			};
-			var _local_14:Dictionary = MapMgr.inst.gridTypeDic[_gridType];
-			_local_8 = 0;
-			while (_local_8 < _local_11.length)
-			{
-				_local_5 = _local_11[_local_8][0];
-				_local_4 = _local_11[_local_8][1];
-				_local_15 = (_local_5 * _cellSize);
-				_local_16 = (_local_4 * _cellSize);
-				if (!((((_local_15 < 0) || (_local_16 < 0)) || (_local_15 >= MapMgr.inst.mapWidth)) || (_local_16 >= MapMgr.inst.mapHeight)))
-				{
-					if (_arg_3)
-					{
-						addGrid(_gridType, _local_5, _local_4, _local_15, _local_16);
+		/**添加or删除以鼠标为中心点的范围格子**/
+		private function addOrRmRangeGrid(mouseX:Number, mouseY:Number,isAdd:Boolean = true):void{
+			var curCenterGridInfo:Array = getGridInfoByMousePos();
+			var gridPosX: int = curCenterGridInfo[0];//格子所在的列
+			var gridPosY: int = curCenterGridInfo[1];//格子所在的行
+			var gridRange: int = mapMgr.gridRange;
+			_redrawDic = new Dictionary();
+			if (gridRange == 0) {
+				if (isAdd) addGrid(_gridType, gridPosX, gridPosY);
+				else rmGrid(_gridType, gridPosX, gridPosY);
+			} else {
+				var startCol: int = Math.max(0, gridPosX - gridRange);
+				var endCol: int = Math.min(mapMgr.numCols - 1, gridPosX + gridRange);
+				var startRow: int = Math.max(0, gridPosY - gridRange);
+				var endRow: int = Math.min(mapMgr.numRows - 1, gridPosY + gridRange);
+				for (var i: int = startCol; i <= endCol; i++) {
+					for (var j: int = startRow; j <= endRow; j++) {
+						if (isAdd) addGrid(_gridType, i, j);
+						else rmGrid(_gridType, i, j);
 					}
-					else
-					{
-						rmGrid(_gridType, _local_5, _local_4);
-					};
-				};
-				_local_8++;
-			};
-		}
-		
-		private function addGrid(_arg_1:String, _arg_2:int, _arg_3:int, _arg_4:int, _arg_5:int):void
-		{
-			var _local_8:* = null;
-			var _local_9:* = null;
-			if (((((_arg_4 < 0) || (_arg_5 < 0)) || (_arg_4 >= MapMgr.inst.mapWidth)) || (_arg_5 >= MapMgr.inst.mapHeight)))
-			{
-				return;
-			};
-			var _local_7:* = _arg_1;
-			var _local_11:* = ((_arg_1.indexOf("GridType_MapThing") > -1) ? ((_arg_1 == "GridType_MapThing") ? (_arg_1 + MapMgr.inst.curMapThingTriggerType) : _arg_1) : _arg_1);
-			if (_arg_1.indexOf("GridType_MapThing") > -1)
-			{
-				_local_8 = MapMgr.inst.curMapThingInfo;
-				if (_local_8.type == 999)
-				{
-					return;
-				};
-				_local_9 = ((_local_8.x + "_") + _local_8.y);
-				_local_7 = ((_arg_1 == "GridType_MapThing") ? (((_arg_1 + MapMgr.inst.curMapThingTriggerType) + "_") + _local_9) : ((_arg_1 + "_") + _local_9));
-			};
-			if (!MapMgr.inst.gridTypeDic[_local_7])
-			{
-				MapMgr.inst.gridTypeDic[_local_7] = new Dictionary();
-			};
-			var _local_12:Dictionary = MapMgr.inst.gridTypeDic[_local_7];
-			var _local_13:String = ((_arg_2 + "_") + _arg_3);
-			if (_local_12[_local_13])
-			{
-				return;
-			};
-			var _local_10:Number = MapMgr.inst.getColorByType(_local_11);
-			var _local_6:MapGridSp = (_gridCompPool.getObject() as MapGridSp);
-			if (_arg_1 == "GridType_blockVerts")
-			{
-				_local_6.drawCircle((_arg_4 + (_cellSize / 2)), (_arg_5 + (_cellSize / 2)), (_cellSize / 2), _local_10);
-			}
-			else
-			{
-				_local_6.drawRect((_arg_4 + 0.5), (_arg_5 + 0.5), _cellSize, _cellSize, _local_10);
-			};
-			gridSprite.addChild(_local_6);
-			_local_12[_local_13] = _local_6;
-		}
-		
-		private function rmGrid(_arg_1:String, _arg_2:int, _arg_3:int):void
-		{
-			var _local_4:* = null;
-			var _local_8:* = null;
-			var _local_5:* = _arg_1;
-			if (_arg_1.indexOf("GridType_MapThing") > -1)
-			{
-				_local_4 = MapMgr.inst.curMapThingInfo;
-				_local_8 = ((_local_4.x + "_") + _local_4.y);
-				_local_5 = (((_arg_1 + MapMgr.inst.curMapThingTriggerType) + "_") + _local_8);
-			};
-			var _local_6:Dictionary = MapMgr.inst.gridTypeDic[_local_5];
-			var _local_7:String = ((_arg_2 + "_") + _arg_3);
-			if (((_local_6) && (_local_6[_local_7])))
-			{
-				_gridCompPool.releaseObject(_local_6[_local_7]);
-				delete _local_6[_local_7];
-			};
-		}
-		
-		private function onClearGridType(_arg_1:Object):void
-		{
-			var _local_4:String = _arg_1.body[0];
-			if (!MapMgr.inst.gridTypeDic[_local_4])
-			{
-				return;
-			};
-			var _local_2:Dictionary = MapMgr.inst.gridTypeDic[_local_4];
-			for (var _local_3:String in _local_2)
-			{
-				_gridCompPool.releaseObject(_local_2[_local_3]);
-				delete MapMgr.inst.gridTypeDic[_local_4];
-			};
-		}
-		
-		private function onImportMapJson(data:Object):void
-		{
-			var juahua:JuHuaDlg = (ModuleMgr.inst.showLayer(JuHuaDlg) as JuHuaDlg);
-			var mapInfo:Object = data.body[0];
-			_cellSize = mapInfo.cellSize;
-			importFloorBg(function ():void
-			{
-				function addGridDataByType(_arg_1:String, _arg_2:Array):void
-				{
-					var _local_4:int;
-					var _local_3:int;
-					var _local_8:* = null;
-					var _local_6:int;
-					var _local_7:int;
-					for each (var _local_5:Object in _arg_2)
-					{
-						if ((_local_5 is Array))
-						{
-							_local_4 = _local_5[0];
-							_local_3 = _local_5[1];
-						}
-						else
-						{
-							_local_8 = MapMgr.inst.getGridXYByIdx(int(_local_5));
-							_local_4 = _local_8[0];
-							_local_3 = _local_8[1];
-						};
-						_local_6 = (_local_4 * _cellSize);
-						_local_7 = (_local_3 * _cellSize);
-						addGrid(_arg_1, _local_4, _local_3, _local_6, _local_7);
-					};
-				};
-				init();
-				var i:int;
-				if(mapInfo.walkList){
-					while (i < mapInfo.walkList.length)
-					{
-						var lineList:Array = mapInfo.walkList[i];
-						var j:int = 0;
-						while (j < lineList.length)
-						{
-							if (lineList[j] != 0)
-							{
-								var gridPosX:int = j;
-								var gridPosY:int = i;
-								var gridX:int = (gridPosX * _cellSize);
-								var gridY:int = (gridPosY * _cellSize);
-								if (lineList[j] == 1)
-								{
-									var gridType:String = "GridType_walk";
-								}
-								else
-								{
-									if (lineList[j] == 2)
-									{
-										gridType = "GridType_block";
-									}
-									else
-									{
-										gridType = "GridType_visible";
-									};
-								};
-								addGrid(gridType, gridPosX, gridPosY, gridX, gridY);
-							};
-							j++;
-						};
-						i++;
-					};
 				}
-				
-				if(mapInfo.blockList) addGridDataByType("GridType_block", mapInfo.blockList);
-				if(mapInfo.blockVertList) addGridDataByType("GridType_blockVerts", mapInfo.blockVertList);
-				if(mapInfo.waterList) addGridDataByType("GridType_water", mapInfo.waterList);
-				if(mapInfo.waterVertList) addGridDataByType("GridType_WaterVerts", mapInfo.waterVertList);
-				if(mapInfo.startList) addGridDataByType("GridType_start", mapInfo.startList);
-				if (mapInfo.mapThingList)
-				{
-					for each (var mapThingData:Object in mapInfo.mapThingList)
-					{
-						var tempMapThingInfo:MapThingInfo = new MapThingInfo();
+			}
+			if(!isAdd) drawGraphics();
+		}
+		/**
+		 * 添加一个指定类型的格子 
+		 * @param gridType 格子类型
+		 * @param gridPosX 格子所在的列
+		 * @param gridPosY 格子所在的行
+		 * @param gridX 绘制颜色格子的坐标X
+		 * @param gridY 绘制颜色格子的坐标Y
+		 */		
+		private function addGrid(gridType:String, gridPosX:int,gridPosY:int):void
+		{	
+			var gridSubType:String = gridType;
+			var colorType:String = gridType;
+			if(gridType.indexOf(Enum.MapThing) > -1){//场景物件格子有归属关系，这里特殊处理，方便物件删除时，把格子一起删除
+				var mapThingInfo:MapThingInfo = mapMgr.curMapThingInfo;
+				if(mapThingInfo.type == Enum.MapThingType_bevel) return;//顶点格子不需要绘制颜色格子
+				var mapThingKey:String = int(mapThingInfo.x)+"_" + int(mapThingInfo.y);
+				gridSubType = gridType == Enum.MapThing ? gridType + mapMgr.curMapThingTriggerType +"_"+ mapThingKey : gridType +"_"+ mapThingKey;
+				colorType = gridType == Enum.MapThing ? gridType + mapMgr.curMapThingTriggerType : gridType;
+			}
+			if(!mapMgr.gridTypeDic[gridSubType]) mapMgr.gridTypeDic[gridSubType] = new Dictionary();
+			var curGridTypeDic:Dictionary = mapMgr.gridTypeDic[gridSubType];
+			var gridKey:String = gridPosX + "_" + gridPosY;
+			if(curGridTypeDic[gridKey]) return;//该格子已有对应类型颜色格子
+			curGridTypeDic[gridKey] = gridKey;
+			var areaSize: int = mapMgr.areaGraphicsSize;
+			var areaKey:String = Math.floor(gridPosX / areaSize) + "_" + Math.floor(gridPosY / areaSize);
+			var gridDataDic: Dictionary = mapMgr.gridDataDic;
+			if(!gridDataDic[gridSubType]) gridDataDic[gridSubType] = new Dictionary();
+			if(!gridDataDic[gridSubType][areaKey]) gridDataDic[gridSubType][areaKey] = new Dictionary();
+			if(gridDataDic[gridSubType][areaKey][gridKey]) return;
+			gridDataDic[gridSubType][areaKey][gridKey] = gridKey;
+			var color:Number = _colorTypeDic[gridSubType] = mapMgr.getColorByType(colorType);
+			var graphickey:String = gridSubType + "_" + areaKey;
+			var graphic: MapGridSp = getGraphics(graphickey);
+			var gridX: int = gridPosX * _cellSize;//绘制颜色格子的坐标X
+			var gridY: int = gridPosY * _cellSize;//绘制颜色格子的坐标Y
+			if(gridType == Enum.BlockVerts){
+				graphic.drawCircle(gridX + _cellSize/2, gridY +_cellSize/2, _cellSize/2, color);
+			}else{
+				graphic.drawRect(gridX + 0.5, gridY + 0.5, _cellSize, _cellSize, color);
+			}
+		}
+		
+		/**
+		 * 移除一个指定类型的格子 
+		 * @param gridType 格子类型
+		 * @param gridPosX 格子所在的列
+		 * @param gridPosY 格子所在的行
+		 */
+		private function rmGrid(gridType: String, gridPosX: int, gridPosY: int): void {
+			var gridSubType: String = gridType;
+			if (gridType.indexOf(Enum.MapThing) > -1) {//场景物件格子有归属关系，这里特殊处理，方便物件删除时，把格子一起删除
+				var mapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+				var mapThingKey: String = int(mapThingInfo.x) + "_" + int(mapThingInfo.y);
+				gridSubType = gridType + mapMgr.curMapThingTriggerType + "_" + mapThingKey;
+			}
+			var curGridTypeDic: Dictionary = mapMgr.gridTypeDic[gridSubType];
+			var gridKey: String = gridPosX + "_" + gridPosY;
+			if (!curGridTypeDic || !curGridTypeDic[gridKey]) return;
+			delete curGridTypeDic[gridKey];
+			var areaSize: int = mapMgr.areaGraphicsSize;
+			var areaKey:String = Math.floor(gridPosX / areaSize) + "_" + Math.floor(gridPosY / areaSize);
+			var gridDataDic: Dictionary = mapMgr.gridDataDic;
+			if(gridDataDic[gridSubType] && gridDataDic[gridSubType][areaKey] && gridDataDic[gridSubType][areaKey][gridKey]){
+				delete gridDataDic[gridSubType][areaKey][gridKey];
+				_redrawDic[gridSubType + "|" + areaKey] = gridSubType + "_" + areaKey;
+			}
+		}
+
+		/**
+		 * 移除格子删除数据后，重新绘制感兴趣区域的所有格子
+		 */
+		private function drawGraphics(): void {
+			var gridDataDic: Dictionary = mapMgr.gridDataDic;
+			for(var key:String in _redrawDic){
+				var splitKey:Array = key.split("|");
+				var gridType: String = splitKey[0];
+				var areaKey:String = splitKey[1];
+				var graphickey:String = _redrawDic[key];
+				var graphic: MapGridSp = getGraphics(graphickey);
+				graphic.clear();
+				var color:Number = _colorTypeDic[gridType];
+				var areaGridDataMap: Dictionary = gridDataDic[gridType][areaKey];
+				if (areaGridDataMap) {
+					for (var gridKey: String in areaGridDataMap) {
+						var splitGridPosKey: Array = gridKey.split("_");
+						var gridX: Number = Number(splitGridPosKey[0]) * _cellSize;
+						var gridY: Number = Number(splitGridPosKey[1]) * _cellSize;
+						if (gridType == Enum.BlockVerts) {
+							graphic.drawCircle(gridX + _cellSize / 2, gridY + _cellSize / 2, _cellSize / 2, color);
+						} else {
+							graphic.drawRect(gridX + 0.5, gridY + 0.5, _cellSize, _cellSize, color);
+						}
+					}
+				}
+			}
+		}
+
+		private function getGraphics(key: String): MapGridSp {
+			if (!_graphicsDic[key]) {
+				var gridSp: MapGridSp = new MapGridSp();
+				gridSprite.addChild(gridSp);
+				_graphicsDic[key] = gridSp;
+			}
+			return _graphicsDic[key];
+		}
+
+		private function onDarwGraphic(data: Object): void {
+			var body: Object = data.body;
+			var redrawDic:Dictionary = body[0];
+			_redrawDic = redrawDic;
+			drawGraphics();
+		}
+
+		/**导入地图json数据**/
+		private function onImportMapJson(data: Object): void {
+			var juahua: JuHuaDlg = ModuleMgr.inst.showLayer(JuHuaDlg) as JuHuaDlg;
+			var mapInfo: Object = data.body[0];
+			_cellSize = mapInfo.cellSize;
+			importFloorBg(function (): void {
+				init();
+				/** 设置可行走节点**/
+				for (var i: int = 0; i < mapInfo.walkList.length; i++) {
+					var lineList: Array = mapInfo.walkList[i];
+					for (var j: int = 0; j < lineList.length; j++) {
+						if (lineList[j] != 0) {
+							var gridPosX: int = j;//所在格子位置x
+							var gridPosY: int = i;//所在格子位置y
+							var gridType: String;
+							if (lineList[j] == Enum.WalkType)//可行走
+							{
+								gridType = Enum.Walk;
+							} else if (lineList[j] == Enum.BlockType) {//墙壁
+								gridType = Enum.Block;
+							} else {
+								gridType = Enum.Visible;
+							}
+							addGrid(gridType, gridPosX, gridPosY);
+						}
+
+					}
+				}
+
+				/** 设置障碍物节点**/
+				addGridDataByType(Enum.Block, mapInfo.blockList);
+				addGridDataByType(Enum.BlockVerts, mapInfo.blockVertList);
+				addGridDataByType(Enum.Water, mapInfo.waterList);
+				addGridDataByType(Enum.WaterVerts, mapInfo.waterVertList);
+				/** 设置起始点**/
+				addGridDataByType(Enum.Start, mapInfo.startList);
+				/** 设置场景物件触发区域和场景物件**/
+				if (mapInfo.mapThingList) {
+					for each(var mapThingData: Object in mapInfo.mapThingList) {//mapThingData -> MapThingInfo
+						var tempMapThingInfo: MapThingInfo = new MapThingInfo();
 						tempMapThingInfo.x = mapThingData.x;
 						tempMapThingInfo.y = mapThingData.y;
-						MapMgr.inst.curMapThingInfo = tempMapThingInfo;
-						if (mapThingData.area)
-						{
-							(addGridDataByType(("GridType_MapThing" + 1), mapThingData.area));
-						};
-						if (mapThingData.unWalkArea)
-						{
-							(addGridDataByType(("GridType_MapThing" + 2), mapThingData.unWalkArea));
-						};
-						if (mapThingData.keyManStandArea)
-						{
-							(addGridDataByType(("GridType_MapThing" + 3), mapThingData.keyManStandArea));
-						};
-						if (mapThingData.grassArea)
-						{
-							(addGridDataByType(("GridType_MapThing" + 4), mapThingData.grassArea));
-						};
-						onDragMapThingDown({"body":{
-							"isImportJson":true,
-							"url":((BaseUT.checkIsPngOrJpg(mapThingData.thingName)) ? ((MapMgr.inst.mapThingRootUrl + "\\") + mapThingData.thingName) : "ui://Common/file"),
-							"x":mapThingData.x,
-							"y":mapThingData.y,
-							"anchorX":mapThingData.anchorX,
-							"anchorY":mapThingData.anchorY,
-							"taskId":mapThingData.taskId,
-							"groupId":mapThingData.groupId,
-							"type":mapThingData.type,
-							"isByDrag":false
-						}});
-					};
-				};
-				if (mapInfo.borderList)
-				{
-					for each (var mapThingData2:Object in mapInfo.borderList)
-					{
-						var groupIdList:Array = ((mapThingData2.groupIdList) || ([]));
-						var groupIdStr:String = "";
-						var ii:int = 0;
-						while (ii < groupIdList.length)
-						{
-							groupIdStr = (groupIdStr + (groupIdList[ii] + ((ii == (groupIdList.length - 1)) ? "" : ",")));
-							ii++;
-						};
-						onDragMapThingDown({"body":{
-							"isImportJson":true,
-							"url":((BaseUT.checkIsPngOrJpg("black.png")) ? ((MapMgr.inst.mapThingRootUrl + "\\") + "black.png") : "ui://Common/file"),
-							"x":mapThingData2.x,
-							"y":mapThingData2.y,
-							"anchorX":mapThingData2.anchorX,
-							"anchorY":mapThingData2.anchorY,
-							"groupIdStr":groupIdStr,
-							"isByDrag":true
-						}});
-					};
-				};
+						mapMgr.curMapThingInfo = tempMapThingInfo;//这里创建的临时mapthingInfo是为了导入地图数据时往gridTypeDic里塞格子数据用
+						if (mapThingData.area) addGridDataByType(Enum.MapThing1, mapThingData.area);
+						if (mapThingData.unWalkArea) addGridDataByType(Enum.MapThing2, mapThingData.unWalkArea);
+						if (mapThingData.keyManStandArea) addGridDataByType(Enum.MapThing3, mapThingData.keyManStandArea);
+						if (mapThingData.grassArea) addGridDataByType(Enum.MapThing4, mapThingData.grassArea);
+
+						onDragMapThingDown({
+							body: {
+								isImportJson: true,
+								url: BaseUT.checkIsPngOrJpg(mapThingData.thingName) ? mapMgr.mapThingRootUrl + "\\" + mapThingData.thingName : mapMgr.fileIcon,
+								x: mapThingData.x,
+								y: mapThingData.y,
+								anchorX: mapThingData.anchorX,
+								anchorY: mapThingData.anchorY,
+								taskId: mapThingData.taskId,
+								groupId: mapThingData.groupId,
+								type: mapThingData.type,
+								isByDrag: false
+							}
+						});
+					}
+				}
+
+				if (mapInfo.borderList) {
+					for each(var mapThingData2: Object in mapInfo.borderList) {//mapThingData2 -> MapThingInfo
+						var groupIdList: Array = mapThingData2.groupIdList || [];
+						var groupIdStr: String = "";
+						for (var ii: int = 0; ii < groupIdList.length; ii++) {
+							groupIdStr += groupIdList[ii] + (ii == groupIdList.length - 1 ? "" : ",");
+						}
+						onDragMapThingDown({
+							body: {
+								isImportJson: true,
+								url: BaseUT.checkIsPngOrJpg(mapMgr.bavelResStr) ? mapMgr.mapThingRootUrl + "\\" + mapMgr.bavelResStr : mapMgr.fileIcon,
+								x: mapThingData2.x,
+								y: mapThingData2.y,
+								anchorX: mapThingData2.anchorX,
+								anchorY: mapThingData2.anchorY,
+								groupIdStr: groupIdStr,
+								isByDrag: true
+							}
+						});
+					}
+				}
+
+				function addGridDataByType(gridType: String, gridList: Array): void {
+					for each (var item: Object in gridList) {
+						var gridPosX: int//所在格子位置x
+						var gridPosY: int//所在格子位置y
+						if (item is Array) {
+							gridPosX = item[0];
+							gridPosY = item[1];
+						} else {
+							var xy: Array = mapMgr.getGridXYByIdx(int(item));
+							gridPosX = xy[0];
+							gridPosY = xy[1];
+						}
+
+						addGrid(gridType, gridPosX, gridPosY);
+					}
+				}
 				MsgMgr.ShowMsg("导入成功!!!");
 				juahua.close();
 			});
 		}
 		
-		private function importFloorBg(cb:Function):void
-		{
-			function showFloorItor():void
-			{
-				if (mapFloorArr.length > 0)
-				{
-					var floorInfo:Object = mapFloorArr.shift();
-					var url:String = floorInfo.nativePath;
+		private function importFloorBg(cb:Function):void{
+			var mapslice:int = mapMgr.mapslice;
+			//导入背景图
+			var mapFloorArr:Array = mapMgr.mapFloorArr;
+			var tempX:int = 0;
+			var tempY:int = 0;
+			var index:int = 0;
+			var hasFinishOnLine:Boolean;//是否已经完成一行
+			var totWidth: int = 0;//总宽
+			var totHeight:int = 0;//总高
+			showFloorItor();
+			function showFloorItor():void{
+				if(mapFloorArr.length > 0){
+					var url:String = mapFloorArr.shift();
 					var loader:GLoader = new GLoader();
 					loader.autoSize = true;
 					loader.icon = url;
 					loader.x = tempX;
 					loader.y = tempY;
-					loader.externalLoadCompleted = function ():void
-					{
+					loader.externalLoadCompleted = function():void{
 						index++;
 						trace(url);
-						tempX = (tempX + loader.texture.width);
-						if(!hasFinishOneLine) totWidth += loader.texture.width;
-						if (index == mapslice)
-						{
+						tempX += loader.texture.width;
+						if(!hasFinishOnLine) totWidth += loader.texture.width;
+						if(index == mapslice){
 							index = 0;
 							tempX = 0;
-							tempY = (tempY + loader.texture.height);
+							tempY += loader.texture.height;
 							totHeight += loader.texture.height;
-							hasFinishOneLine = true;
-						};
-						showFloorItor(); 
-					};
-					grp_floor.addChild(loader);
-				}
-				else
-				{
-					MapMgr.inst.mapWidth = totWidth;
-					MapMgr.inst.mapHeight = totHeight;
-					Global.emmiter.emit(GameEvent.UpdateMapInfo);
-					(trace(((("宽高:" + MapMgr.inst.mapWidth) + ",") + MapMgr.inst.mapHeight)));
-					if (cb)
-					{
-						cb.call();
-					};
-				};
-			};
-			var mapslice:int = MapMgr.inst.mapslice;
-			var mapFloorArr:Array = MapMgr.inst.mapFloorArr;
-			var tempX:int;
-			var tempY:int;
-			var index:int;
-			var totWidth:int = 0;
-			var totHeight:int = 0;
-			var hasFinishOneLine:Boolean;
-			grp_floor.removeChildren();
-			showFloorItor(); //not popped
-		}
-		
-		private function onCheckShowGrid(_arg_1:Object):void
-		{
-			lineContainer.visible = (!(lineContainer.visible));
-		}
-		
-		private function onCheckShowPath(_arg_1:Object):void
-		{
-			gridContainer.visible = (!(gridContainer.visible));
-		}
-		
-		private function onToCenter(_arg_1:Object):void
-		{
-			var _local_2:ScrollPane = view.scrollPane;
-			_local_2.setPosX((((center.x * curScale) - (_local_2.viewWidth / 2)) + ((center.width / 2) * curScale)), true);
-			_local_2.setPosY(((((center.y * curScale) - (_local_2.viewHeight / 2)) + ((center.height / 2) * curScale)) + (offY * curScale)), true);
-		}
-		
-		private function onMouseWheel(_arg_1:MouseEvent):void
-		{
-			var _local_3:ScrollPane = view.scrollPane;
-			if (_arg_1.delta < 0)
-			{
-				if (((Math.floor(grp_bg.width) <= view.viewWidth) && (Math.floor(grp_bg.height) <= view.viewHeight)))
-				{
-					return;
-				};
-				curScale = (curScale - scaleDelta);
-			}
-			else
-			{
-				if (((Math.floor(grp_bg.width) >= MapMgr.inst.mapWidth) && (Math.floor(grp_bg.height) >= MapMgr.inst.mapHeight)))
-				{
-					return;
-				};
-				curScale = (curScale + scaleDelta);
-			};
-			MapMgr.inst.mapScale = curScale;
-			var _local_4:Number = _local_3.scrollingPosX;
-			var _local_2:Number = _local_3.scrollingPosY;
-			(trace("oldScrollingPos：", _local_4, _local_2, "pos：", _local_3.posX, _local_3.posY));
-			updateContainerSize();
-		}
-		
-		private function updateContainerSize():void
-		{
-			grp_map.setScale(curScale, curScale);
-			grp_bg.setSize((curScale * MapMgr.inst.mapWidth), ((curScale * MapMgr.inst.mapHeight) + (offY * curScale)));
-		}
-		
-		private function onToOriginalScale(_arg_1:Object):void
-		{
-			MapMgr.inst.mapScale = (curScale = 1);
-			updateContainerSize();
-		}
-		
-		private function onMouseMiddleClick(_arg_1:Event):void
-		{
-			var _local_2:Array = getGridInfoByMousePos();
-			var _local_3:int = _local_2[2];
-			var _local_4:int = _local_2[3];
-			if (((((_local_3 < 0) || (_local_4 < 0)) || (_local_3 >= MapMgr.inst.mapWidth)) || (_local_4 >= MapMgr.inst.mapHeight)))
-			{
-				return;
-			};
-			if (MapMgr.inst.mouseGridTextField)
-			{
-				MapMgr.inst.mouseGridTextField.text = ((_local_2[1] + ", ") + _local_2[0]);
-			};
-		}
-		
-		private function onClearAllData(_arg_1:Object):void
-		{
-			var _local_3:Boolean;
-			for (var _local_4:String in MapMgr.inst.gridTypeDic)
-			{
-				for (var _local_2:String in MapMgr.inst.gridTypeDic[_local_4])
-				{
-					_local_3 = true;
-					break;
-				};
-				if (_local_3) break;
-			};
-			MsgMgr.ShowMsg("数据已全部清除！！！");
-			if (_local_3)
-			{
-				init();
-			};
-		}
-		
-		private function onResizeMap(data:Object):void
-		{
-			var isLimit:Boolean;
-			function checkIsLimit(_arg_1:String, _arg_2:Array):void
-			{
-				var _local_4:* = null;
-				var _local_13:* = null;
-				var _local_6:* = null;
-				var _local_7:int;
-				var _local_8:int;
-				var _local_9:int = ((_arg_2[0]) ? (_cellSize * _arg_2[0]) : MapMgr.inst.mapWidth);
-				var _local_3:int = ((_arg_2[1]) ? (_cellSize * _arg_2[1]) : MapMgr.inst.mapHeight);
-				var _local_5:Array = [0, 0, _local_9, _local_3];
-				var _local_10:Array = [((_arg_2[0]) ? (mapWidth - _local_9) : 0), ((_arg_2[1]) ? (mapHeight - _local_3) : 0), _local_9, _local_3];
-				for each (var _local_12:Array in mapThingDic)
-				{
-					_local_4 = _local_12[1];
-					if ((((_arg_1 == "top") || (_arg_1 == "left")) && ((_local_4.x < (_arg_2[0] * _cellSize)) || (_local_4.y < (_arg_2[1] * _cellSize)))))
-					{
-						isLimit = true;
-						if (tempDrawRemindArr.indexOf(_local_5) == -1)
-						{
-							tempDrawRemindArr.push(_local_5);
-						};
-						break;
-					};
-					if ((((_arg_1 == "right") || (_arg_1 == "bottom")) && (((_local_4.x + _local_4.width) >= (mapWidth - (_arg_2[0] * _cellSize))) || ((_local_4.y + _local_4.height) >= (mapHeight - (_arg_2[1] * _cellSize))))))
-					{
-						isLimit = true;
-						if (tempDrawRemindArr.indexOf(_local_10) == -1)
-						{
-							tempDrawRemindArr.push(_local_10);
-						};
-						break;
-					};
-				};
-				if ((((_arg_1 == "top") || (_arg_1 == "left")) && (tempDrawRemindArr.indexOf(_local_5) > -1)))
-				{
-					return;
-				};
-				if ((((_arg_1 == "right") || (_arg_1 == "bottom")) && (tempDrawRemindArr.indexOf(_local_10) > -1)))
-				{
-					return;
-				};
-				for (var _local_14:String in gridTypeDic)
-				{
-					_local_13 = gridTypeDic[_local_14];
-					for (var _local_11:String in _local_13)
-					{
-						_local_6 = _local_11.split("_");
-						_local_7 = _local_6[0];
-						_local_8 = _local_6[1];
-						if ((((_arg_1 == "top") || (_arg_1 == "left")) && ((_local_7 < _arg_2[0]) || (_local_8 < _arg_2[1]))))
-						{
-							isLimit = true;
-							if (tempDrawRemindArr.indexOf(_local_5) == -1)
-							{
-								tempDrawRemindArr.push(_local_5);
-							};
-							break;
-						};
-						if ((((_arg_1 == "right") || (_arg_1 == "bottom")) && ((_local_7 >= (numCols - _arg_2[0])) || (_local_8 >= (numRows - _arg_2[1])))))
-						{
-							isLimit = true;
-							if (tempDrawRemindArr.indexOf(_local_10) == -1)
-							{
-								tempDrawRemindArr.push(_local_10);
-							};
-							break;
-						};
-					};
-					if (isLimit) break;
-				};
-			};
-			var top:int = data.body[0];
-			var bottom:int = data.body[1];
-			var left:int = data.body[2];
-			var right:int = data.body[3];
-			if (((((top == 0) && (bottom == 0)) && (left == 0)) && (right == 0)))
-			{
-				MsgMgr.ShowMsg("地图大小未发生变化！！！");
-				return;
-			};
-			var gridTypeDic:Dictionary = MapMgr.inst.gridTypeDic;
-			var mapThingDic:Dictionary = MapMgr.inst.mapThingDic;
-			var mapWidth:int = MapMgr.inst.mapWidth;
-			var mapHeight:int = MapMgr.inst.mapHeight;
-			var numCols:int = int(Math.ceil((mapWidth / _cellSize)));
-			var numRows:int = int(Math.ceil((mapHeight / _cellSize)));
-			var tempDrawRemindArr:Array = [];
-			if (top < 0)
-			{
-				(checkIsLimit("top", [0, Math.abs(top)]));
-			};
-			if (left < 0)
-			{
-				(checkIsLimit("left", [Math.abs(left), 0]));
-			};
-			if (right < 0)
-			{
-				(checkIsLimit("right", [Math.abs(right), 0]));
-			};
-			if (bottom < 0)
-			{
-				(checkIsLimit("bottom", [0, Math.abs(bottom)]));
-			};
-			if (tempDrawRemindArr.length > 0)
-			{
-				var i:int = (remindContainer.displayListContainer.numChildren - 1);
-				while (i >= 0)
-				{
-					(remindContainer.displayListContainer.getChildAt(i) as MapRemindSp).rmSelf();
-					i--;
-				};
-				for each (var item:Array in tempDrawRemindArr)
-				{
-					var shape:MapRemindSp = new MapRemindSp();
-					shape.drawRect(item[0], item[1], item[2], item[3]);
-					remindContainer.displayListContainer.addChild(shape);
-				};
-				MsgMgr.ShowMsg("当前裁剪区域存在数据，请检查！！！");
-				return;
-			};
-			var tempGridTypeDic:Dictionary = new Dictionary();
-			for (var gridType:String in gridTypeDic)
-			{
-				if (!tempGridTypeDic[gridType])
-				{
-					tempGridTypeDic[gridType] = new Dictionary();
-				};
-				var curGridTypeDic:Dictionary = gridTypeDic[gridType];
-				for (var subKey:String in curGridTypeDic)
-				{
-					tempGridTypeDic[gridType][subKey] = curGridTypeDic[subKey];
-				};
-			};
-			MapMgr.inst.gridTypeDic = new Dictionary();
-			for (var gridType1:String in tempGridTypeDic)
-			{
-				if (!MapMgr.inst.gridTypeDic[gridType1])
-				{
-					MapMgr.inst.gridTypeDic[gridType1] = new Dictionary();
-				};
-				var curGridTypeDic1:Dictionary = tempGridTypeDic[gridType1];
-				var color:Number = MapMgr.inst.getColorByType(gridType1);
-				for (var subKey1:String in curGridTypeDic1)
-				{
-					var splitArr:Array = subKey1.split("_");
-					var gridX:int = (splitArr[0] + left);
-					var gridY:int = (splitArr[1] + top);
-					var gridComp:MapGridSp = curGridTypeDic1[subKey1];
-					if (gridType1 == "GridType_blockVerts")
-					{
-						gridComp.drawCircle(((gridX * _cellSize) + (_cellSize / 2)), ((gridY * _cellSize) + (_cellSize / 2)), (_cellSize / 2), color);
+							hasFinishOnLine = true;
+						}
+						showFloorItor();
 					}
-					else
-					{
-						gridComp.drawRect(((gridX * _cellSize) + 0.5), ((gridY * _cellSize) + 0.5), _cellSize, _cellSize, color);
-					};
-					MapMgr.inst.gridTypeDic[gridType1][((gridX + "_") + gridY)] = gridComp;
-				};
-			};
-			var tempMapThingDic:Dictionary = new Dictionary();
-			for (var mapThingKey:String in mapThingDic)
-			{
-				tempMapThingDic[mapThingKey] = mapThingDic[mapThingKey];
-			};
-			MapMgr.inst.mapThingDic = new Dictionary();
-			for (var mapThingKey1:String in tempMapThingDic)
-			{
-				var mapThingInfo:MapThingInfo = tempMapThingDic[mapThingKey1][0];
-				var mapThingComp:GButton = tempMapThingDic[mapThingKey1][1];
-				var _local_4:* = (mapThingInfo.x + (left * _cellSize));
-				mapThingInfo.x = _local_4;
-				mapThingComp.x = _local_4;
-				var _local_3:* = (mapThingInfo.y + (top * _cellSize));
-				mapThingInfo.y = _local_3;
-				mapThingComp.y = _local_3;
-				mapThingComp.name = ((mapThingComp.x + "_") + mapThingComp.y);
-				MapMgr.inst.mapThingDic[mapThingComp.name] = [mapThingInfo, mapThingComp];
-			};
-			mapThingSelectSp.rmSelf();
-			numCols = (numCols + (left + right));
-			numRows = (numRows + (top + bottom));
-			MapMgr.inst.mapWidth = (numCols * _cellSize);
-			MapMgr.inst.mapHeight = (numRows * _cellSize);
-			init(true);
-			emit(GameEvent.ResizeMapSucc);
+					grp_floor.addChild(loader);
+				}else{
+					mapMgr.mapWidth = totWidth;
+					mapMgr.mapHeight = totHeight;
+					Global.emmiter.emit(GameEvent.UpdateMapInfo);
+					trace("宽高:" + mapMgr.mapWidth + "," + mapMgr.mapHeight);
+					if(cb) cb.call();
+				}
+			}
 		}
 		
-		private function onChangeMapThingXY(_arg_1:Object):void
+		private function onCheckShowGrid(data:Object):void
 		{
-			var _local_2:Object = _arg_1.body;
-			if (mapThingSelectSp.isShow)
-			{
-				mapThingSelectSp.drawRectLine((_local_2.x - (_local_2.width / 2)), (_local_2.y - (_local_2.height / 2)), _local_2.width, _local_2.height);
-			};
+			lineContainer.visible = !lineContainer.visible;
 		}
 		
+		private function onCheckShowPath(data:Object):void
+		{
+			gridContainer.visible = !gridContainer.visible;
+		}
+		
+		private function onToCenter(data:Object):void
+		{
+			var toX:Number = -center.x * curScale + view.viewWidth / 2 - center.width / 2 * curScale;
+			var toY:Number = -center.y * curScale + view.viewHeight / 2 - center.height / 2 * curScale - offY * curScale;
+			grp_map.setXY(toX, toY);
+			checkLimitPos(); 
+		}
+		
+		private function onMouseWheel(evt:MouseEvent):void
+		{
+			var mousePos: Point = new Point(Global.stage.mouseX, Global.stage.mouseY);
+			evt.delta > 0 ? scaleMap(0.1, mousePos) : scaleMap(-0.1, mousePos);
+		}
+		
+		private function scaleMap(deltaScale: Number, mousePos: Point):void{
+			var scale: Number = grp_map.scaleX + deltaScale;
+			var minScale:Number = Math.max(view.viewWidth / mapMgr.mapWidth, view.viewHeight / mapMgr.mapHeight);
+			if(scale > 2) scale = 2;
+			if(scale < minScale) scale = minScale;
+			var localUIPos: Point = grp_map.globalToLocal(mousePos.x, mousePos.y);
+			grp_map.setScale(scale, scale);
+			mapMgr.mapScale = curScale = scale;
+			var globalPos: Point = grp_map.localToGlobal(localUIPos.x, localUIPos.y);
+			var moveDelta: Point = new Point(mousePos.x - globalPos.x, mousePos.y - globalPos.y);
+			var toX:Number = grp_map.x + moveDelta.x;
+			var toY:Number = grp_map.y + moveDelta.y;
+			grp_map.setXY(toX, toY);
+			checkLimitPos();
+		}
+		
+		private function checkLimitPos():void{
+			var maxScrollX:Number = stageWidth - view.viewWidth;
+			var maxScrollY:Number = stageHeight - view.viewHeight;
+			if(grp_map.x > 0) grp_map.x = 0;
+			if(grp_map.x < -maxScrollX) grp_map.x = -maxScrollX;
+			if(grp_map.y > 0) grp_map.y = 0;
+			if(grp_map.y < -maxScrollY) grp_map.y = -maxScrollY;
+		}
+		
+		private function get stageWidth():Number{
+			return mapMgr.mapWidth * curScale;
+		}
+		
+		private function get stageHeight():Number{
+			return mapMgr.mapHeight * curScale;
+		}
+		
+		private function onToOriginalScale(data:Object = null):void
+		{
+			if(curScale == 1) return;
+			var mousePos:Point = new Point(this.x + view.viewWidth / 2, this.y + view.viewHeight/2);
+			scaleMap(1 - curScale, mousePos);
+		}
+		
+		private function onMouseMiddleClick(event:Event):void
+		{
+			var localPos:Point = grp_map.globalToLocal(Global.stage.mouseX, Global.stage.mouseY);
+			if (localPos.y <= offY) return;//点击的是顶部预留的区域
+			var gridXY: Point = mapMgr.pos2GridXY(localPos.x, localPos.y - 100);
+			if(mapMgr.mouseGridTextField) mapMgr.mouseGridTextField.text = gridXY.y + ", " + gridXY.x; 
+		}
+		
+		private function onClearAllData(data:Object):void
+		{
+			var existData:Boolean = mapMgr.hasExitGridData();
+			MsgMgr.ShowMsg("数据已全部清除！！！");
+			if(existData) init();
+		}
+		
+		private function onChangeMapThingXY(data:Object):void{
+			var body:Object = data.body;
+			if(mapThingSelectSp.isShow) mapThingSelectSp.drawRectLine(body.x - body.width/2, body.y - body.height/2, body.width, body.height);
+		}
+		
+		/** 场景物件拖拽放下时**/
 		private function onDragMapThingDown(data:Object):void
 		{
-			function imgLoaded():void
-			{
-				mapThingInfo.width = mapThingComp.width;
-				mapThingInfo.height = mapThingComp.height;
-				if (!isImportJson)
-				{
-					emit(GameEvent.ClickMapTing);
-					TweenMax.delayedCall(0.1, function ():void
-					{
-						mapThingSelectSp.drawRectLine((mapThingX - (mapThingComp.width / 2)), (mapThingY - (mapThingComp.height / 2)), mapThingComp.width, mapThingComp.height);
-						mapThingContainer.displayListContainer.addChild(mapThingSelectSp);
-					});
-				};
-			};
 			var body:Object = data.body;
 			var url:String = body.url;
-			var isImportJson:Boolean = body.isImportJson;
-			var mapThingX:int = int(((isImportJson) ? body.x : ((Global.stage.mouseX + view.scrollPane.posX) / curScale)));
-			var mapThingY:int = int(((isImportJson) ? body.y : (((Global.stage.mouseY + view.scrollPane.posY) - (offY * curScale)) / curScale)));
-			var anchorX:Number = ((body.anchorX == undefined) ? 0.5 : body.anchorX);
-			var anchorY:Number = ((body.anchorY == undefined) ? 0.5 : body.anchorY);
-			if (((((mapThingX < 0) || (mapThingY < 0)) || (mapThingX >= MapMgr.inst.mapWidth)) || (mapThingY >= MapMgr.inst.mapHeight)))
-			{
-				return;
-			};
-			if (!MapMgr.inst.mapThingDic)
-			{
-				MapMgr.inst.mapThingDic = new Dictionary();
-			};
-			var splitUrl:Array = url.split((MapMgr.inst.mapThingRootUrl + "\\"));
-			var elementName:String = splitUrl[(splitUrl.length - 1)];
+			var isImportJson:Boolean = body.isImportJson;//是否为导入json进来
+			var localPos:Point = grp_map.globalToLocal(Global.stage.mouseX, Global.stage.mouseY);
+			var mapThingX:Number = isImportJson ? body.x : localPos.x;//场景物件坐标X
+			var mapThingY:Number = isImportJson ? body.y : localPos.y - offY;//场景物件坐标Y
+			var anchorX:Number = body.anchorX == undefined ? 0.5 : body.anchorX;
+			var anchorY:Number = body.anchorY == undefined ? 0.5 : body.anchorY;
+			if (mapThingX < 0 || mapThingY < 0 ||mapThingX >= mapMgr.mapWidth || mapThingY >= mapMgr.mapHeight) return;//超出边界
+			if(!mapMgr.mapThingDic) mapMgr.mapThingDic = new Dictionary();
+			var splitUrl:Array = url.split(mapMgr.mapThingRootUrl + "\\");
+			var elementName:String = splitUrl[splitUrl.length - 1];
 			var mapThingInfo:MapThingInfo = new MapThingInfo();
-			var mapThingComp:GButton = MapMgr.inst.getMapThingComp(url, anchorX, anchorY, imgLoaded);
-			var isBelve:Boolean = (elementName.indexOf("black.png") > -1);
-			if (((isBelve) && (!(isImportJson))))
-			{
+			var mapThingComp:GButton = mapMgr.getMapThingComp(url,anchorX,anchorY,imgLoaded);
+			var isBelve:Boolean = elementName.indexOf(mapMgr.bavelResStr) > -1;//是否为斜角顶点
+			if(isBelve && !isImportJson){
 				var gridInfo:Array = getGridInfoByMousePos();
-				var gridPosX:int = gridInfo[0];
-				var gridPosY:int = gridInfo[1];
-				var pointArr:Array = [[(gridPosX * _cellSize), (gridPosY * _cellSize)], [((gridPosX * _cellSize) + _cellSize), (gridPosY * _cellSize)], [((gridPosX * _cellSize) + _cellSize), ((gridPosY * _cellSize) + _cellSize)], [(gridPosX * _cellSize), ((gridPosY * _cellSize) + _cellSize)]];
+				var gridPosX:int = gridInfo[0];//格子所在的列
+				var gridPosY:int =  gridInfo[1];//格子所在的行
+				var pointArr:Array = [
+					[gridPosX * _cellSize, gridPosY * _cellSize],
+					[gridPosX * _cellSize + _cellSize, gridPosY * _cellSize],
+					[gridPosX * _cellSize + _cellSize, gridPosY * _cellSize + _cellSize],
+					[gridPosX * _cellSize, gridPosY * _cellSize + _cellSize],
+				];
+				var minDist: Number;//最小距离
 				var distArr:Array = [];
-				distArr.push(BaseUT.distance(mapThingX, mapThingY, pointArr[0][0], pointArr[0][1]));
-				distArr.push(BaseUT.distance(mapThingX, mapThingY, pointArr[1][0], pointArr[1][1]));
-				distArr.push(BaseUT.distance(mapThingX, mapThingY, pointArr[2][0], pointArr[2][1]));
-				distArr.push(BaseUT.distance(mapThingX, mapThingY, pointArr[3][0], pointArr[3][1]));
-				var i:int = 0;
-				while (i < distArr.length)
-				{
-					if (!minDist)
-					{
-						var minDist:Number = distArr[i];
-					}
-					else
-					{
-						if (distArr[i] < minDist)
-						{
-							minDist = distArr[i];
-						};
-					};
-					i++;
-				};
-				var minIndex:int = distArr.indexOf(minDist);
+				distArr.push(BaseUT.distance(int(mapThingX),int(mapThingY),pointArr[0][0],pointArr[0][1]));
+				distArr.push(BaseUT.distance(int(mapThingX),int(mapThingY),pointArr[1][0],pointArr[1][1]));
+				distArr.push(BaseUT.distance(int(mapThingX),int(mapThingY),pointArr[2][0],pointArr[2][1]));
+				distArr.push(BaseUT.distance(int(mapThingX),int(mapThingY),pointArr[3][0],pointArr[3][1]));
+				for(var i:int = 0;i < distArr.length; i++){
+					if(!minDist) minDist = distArr[i];
+					else if(distArr[i] < minDist) minDist = distArr[i];
+				}
+				var minIndex: int = distArr.indexOf(minDist);
 				mapThingX = pointArr[minIndex][0];
 				mapThingY = pointArr[minIndex][1];
-			};
-			var _local_3:* = mapThingX;
-			mapThingInfo.x = _local_3;
-			mapThingComp.x = _local_3;
-			_local_3 = mapThingY;
-			mapThingInfo.y = _local_3;
-			mapThingComp.y = _local_3;
+			}
+			mapThingComp.x = mapThingInfo.x = mapThingX;
+			mapThingComp.y = mapThingInfo.y = mapThingY;
 			mapThingComp.setPivot(anchorX, anchorY, true);
-			mapThingComp.name = ((mapThingX + "_") + mapThingY);
+			mapThingComp.name = int(mapThingX) + "_" + int(mapThingY);
 			mapThingInfo.thingName = elementName;
 			mapThingInfo.anchorX = anchorX;
 			mapThingInfo.anchorY = anchorY;
 			mapThingContainer.addChild(mapThingComp);
-			MapMgr.inst.mapThingDic[mapThingComp.name] = [mapThingInfo, mapThingComp];
+			mapMgr.mapThingDic[mapThingComp.name] = [mapThingInfo, mapThingComp];
 			mapThingSelectSp.rmSelf();
-			if (body.taskId)
-			{
-				mapThingInfo.taskId = body.taskId;
-			};
-			if (body.groupId)
-			{
-				mapThingInfo.groupId = body.groupId;
-			};
-			if (body.groupIdStr)
-			{
-				mapThingInfo.groupIdStr = body.groupIdStr;
-			};
-			if (body.isByDrag)
-			{
-				if (isBelve)
-				{
-					mapThingInfo.type = 999;
-				};
-			};
-			if (body.type)
-			{
-				mapThingInfo.type = body.type;
-			};
-			if (!isImportJson)
-			{
+			if(body.taskId) mapThingInfo.taskId = body.taskId;
+			if(body.groupId) mapThingInfo.groupId = body.groupId;
+			if(body.groupIdStr) mapThingInfo.groupIdStr = body.groupIdStr;
+			if(body.isByDrag){
+				if(isBelve) mapThingInfo.type = Enum.MapThingType_bevel;
+			}
+			if(body.type) mapThingInfo.type = body.type;
+			if(!isImportJson){
 				_lastSelectMapThingComp = mapThingComp;
-				MapMgr.inst.curMapThingInfo = mapThingInfo;
-			};
-			mapThingComp.addClickListener(function (evt:GTouchEvent):void
-			{
-				if (_gridType != "GridType_MapThing")
-				{
-					return;
-				};
-				var btn:GButton = (evt.currentTarget as GButton);
-				var typeKey:String = ((("GridType_MapThing_" + btn.x) + "_") + btn.y);
-				var mapThingGridDic:Dictionary = MapMgr.inst.gridTypeDic[typeKey];
+				mapMgr.curMapThingInfo = mapThingInfo;
+			}
+			function imgLoaded():void{
+				mapThingInfo.width = mapThingComp.width;
+				mapThingInfo.height = mapThingComp.height;
+				if(!isImportJson){
+					emit(GameEvent.ClickMapTing);
+					//物件选中框
+					TweenMax.delayedCall(0.1, function():void{
+						mapThingSelectSp.drawRectLine(mapThingX - mapThingComp.width/2, mapThingY - mapThingComp.height/2, mapThingComp.width, mapThingComp.height);
+						mapThingContainer.displayListContainer.addChild(mapThingSelectSp);
+					});
+				}
+			}
+			mapThingComp.addClickListener(function(evt:GTouchEvent):void{
+				if (_gridType != Enum.MapThing || _isPressSpace) return;
+				var btn:GButton = evt.currentTarget as GButton;
+				var btnPos:Point = new Point(int(btn.x), int(btn.y));
+				var typeKey:String = Enum.MapThing + mapMgr.curMapThingTriggerType + "_" + btnPos.x + "_" + btnPos.y;
+				var mapThingGridDic:Dictionary = mapMgr.gridTypeDic[typeKey];
 				var gridInfo:Array = getGridInfoByMousePos();
-				var gridPosX:int = gridInfo[0];
-				var gridPosY:int = gridInfo[1];
-				if ((((_isCtrlDown) && (mapThingGridDic)) && (mapThingGridDic[((gridPosX + "_") + gridPosY)])))
-				{
-					return;
-				};
-				MapMgr.inst.curMapThingInfo = MapMgr.inst.mapThingDic[btn.name][0];
-				if (_isCtrlDown)
-				{
-					if (((mapThingSelectSp.curX == btn.x) && (mapThingSelectSp.curY == btn.y)))
-					{
-						mapThingSelectSp.rmSelf();
-					};
+				var gridPosX:int = gridInfo[0];//格子所在的列
+				var gridPosY:int =  gridInfo[1];//格子所在的行
+				if(_isCtrlDown && mapThingGridDic && mapThingGridDic[gridPosX + "_" + gridPosY]) return;//清除时先检测该位置下是否有格子，有的话处理清除格子而不是清除场景物件
+				mapMgr.curMapThingInfo = mapMgr.mapThingDic[btn.name][0];
+				if(_isCtrlDown){
+					if(mapThingSelectSp.curX == btnPos.x && mapThingSelectSp.curY == btnPos.y) mapThingSelectSp.rmSelf();
 					btn.dispose();
 					mapThingSelectSp.rmSelf();
-					MapMgr.inst.curMapThingInfo = null;
-					MapMgr.inst.rmMapThingGrid(((btn.x + "_") + btn.y));
-					delete MapMgr.inst.mapThingDic[btn.name]; //not popped
+					mapMgr.curMapThingInfo = null;
+					mapMgr.rmMapThingGrid(btnPos.x + "_" + btnPos.y);
+					delete mapMgr.mapThingDic[btn.name];
 					return;
-				};
-				if (_lastSelectMapThingComp != btn)
-				{
+				}
+				if(_lastSelectMapThingComp != btn) {//这样做是为了再切换选中不同场景物件时，不会选中后就马上绘制触发区域格子
 					mapThingSelectSp.rmSelf();
 					_lastSelectMapThingComp = btn;
-				};
-				TweenMax.delayedCall(0.1, function ():void
-				{
-					mapThingSelectSp.drawRectLine((btn.x - (btn.width / 2)), (btn.y - (btn.height / 2)), btn.width, btn.height);
-					if (((!(mapThingSelectSp.parent)) || (!(mapThingSelectSp.parent.contains(mapThingSelectSp)))))
-					{
+				}
+				TweenMax.delayedCall(0.1,function():void{//延迟0.1秒，这样做是为了在切换选中不同场景物件时，不会选中后就马上绘制触发区域格子
+					//物件选中框
+					mapThingSelectSp.drawRectLine(btn.x-btn.width/2, btn.y-btn.height/2, btn.width, btn.height);
+					if(!mapThingSelectSp.parent || !mapThingSelectSp.parent.contains(mapThingSelectSp)){
 						mapThingContainer.displayListContainer.addChild(mapThingSelectSp);
-					};
+					}
 				});
+				
 				emit(GameEvent.ClickMapTing);
 			});
-			mapThingComp.addEventListener("rightClick", function (_arg_1:MouseEvent):void
-			{
-				if (_gridType != "GridType_MapThing")
-				{
-					return;
-				};
-				if (_isRightDownDrawing)
-				{
-					return;
-				};
-				var _local_2:GButton = (_arg_1.currentTarget as GButton);
-				var _local_3:MapThingInfo = MapMgr.inst.mapThingDic[_local_2.name][0];
-				if (!_local_3)
-				{
-					return;
-				};
-				emit(GameEvent.DragMapThingStart, {
-					"url":_local_2.icon,
-					"taskId":_local_3.taskId,
-					"groupId":_local_3.groupId,
-					"type":_local_3.type
+			/**右键按下重新拖拽物件**/ 
+			mapThingComp.addEventListener(MouseEvent.RIGHT_CLICK, function(evt:MouseEvent):void{
+				if (_gridType != Enum.MapThing || _isPressSpace || _isLeftDown) return;
+				var btn:GButton = evt.currentTarget as GButton;
+				var curMapThingInfo:MapThingInfo = mapMgr.mapThingDic[btn.name][0];
+				if(!curMapThingInfo) return;
+				emit(GameEvent.DragMapThingStart,{
+					url:btn.icon, 
+					taskId:curMapThingInfo.taskId,
+					groupId:curMapThingInfo.groupId, 
+					type:curMapThingInfo.type
 				});
-				_local_2.dispose();
+				btn.dispose();
 				mapThingSelectSp.rmSelf();
-				MapMgr.inst.curMapThingInfo = null;
-				MapMgr.inst.rmMapThingGrid(((_local_2.x + "_") + _local_2.y));
-				delete MapMgr.inst.mapThingDic[_local_2.name]; //not popped
-			});
+				mapMgr.curMapThingInfo = null;
+				mapMgr.rmMapThingGrid(int(btn.x) + "_" + int(btn.y));
+				delete mapMgr.mapThingDic[btn.name];
+			})
+			
 		}
 		
-		private function onCloseDemo(_arg_1:Object):void
+		private function onCloseDemo(data:Object):void
 		{
 			pet.visible = false;
-			view.removeEventListener("enterFrame", onUpdate);
+			view.removeEventListener(Event.ENTER_FRAME, onUpdate);
 		}
 		
-		private function onRunDemo(_arg_1:Object):void
+		private function onRunDemo(data:Object):void
 		{
-			var _local_5:* = null;
-			var _local_2:Dictionary = MapMgr.inst.gridTypeDic["GridType_walk"];
-			if (((!(_local_2)) || (!(BaseUT.getDictionaryCount(_local_2)))))
+			var _tempwalkGridDic:Dictionary = mapMgr.gridTypeDic[Enum.Walk];
+			if (!_tempwalkGridDic || !BaseUT.getDictionaryCount(_tempwalkGridDic))
 			{
 				MsgMgr.ShowMsg("没有找到可行走的格子");
 				return;
-			};
-			var _local_3:Point = new Point();
-			for (var _local_4:String in _local_2)
+			}
+			var firstWalkGridVec:Point = new Point();
+			for (var key:String in _tempwalkGridDic)
 			{
-				_local_5 = _local_4.split("_");
-				_local_3.x = _local_5[0];
-				_local_3.y = _local_5[1];
+				var splitKey:Array = key.split("_");
+				firstWalkGridVec.x = int(splitKey[0]);
+				firstWalkGridVec.y = int(splitKey[1]);
 				break;
-			};
+			}
 			pet.visible = true;
-			setPetPosAndRollCamera((_local_3.x * _cellSize), ((_local_3.y * _cellSize) + _cellSize), true);
-			view.addEventListener("enterFrame", onUpdate);
+			setPetPosAndRollCamera(firstWalkGridVec.x * _cellSize, firstWalkGridVec.y * _cellSize + _cellSize, true);
+			view.addEventListener(Event.ENTER_FRAME, onUpdate);
 		}
 		
-		protected function onUpdate(_arg_1:Event):void
+		protected function onUpdate(event:Event):void
 		{
-			var _local_6:JoystickLayer = MapMgr.inst.joystick;
-			if (!_local_6.isMoving())
-			{
-				return;
-			};
-			var _local_8:Point = _local_6.vector;
-			var _local_7:Point = BaseUT.angle_to_vector(_local_6.curDegree);
-			var _local_2:Number = (_local_7.x * speed);
-			var _local_4:Number = (_local_7.y * speed);
-			pet.scaleX = ((_local_8.x > 0) ? 1 : -1);
-			var _local_3:Number = (pet.x + _local_2);
-			var _local_5:Number = (pet.y + _local_4);
-			setPetPosAndRollCamera(_local_3, _local_5);
+			var joystick:JoystickLayer = mapMgr.joystick;
+			
+			if (!joystick.isMoving()) return;
+			//摇杆坐标
+			var joysticPos:Point = joystick.vector;
+			//向量归一化
+			var dir:Point = BaseUT.angle_to_vector(joystick.curDegree);
+			//乘速度
+			var dir_x:Number = dir.x * speed;
+			var dir_y:Number = dir.y * speed;
+			//角色方向
+			pet.scaleX = joysticPos.x > 0 ? 1 : -1;
+			//角色坐标加上方向
+			var toX:Number = pet.x + dir_x;
+			var toY:Number = pet.y + dir_y;
+			
+			setPetPosAndRollCamera(toX, toY);
 		}
 		
-		private function setPetPosAndRollCamera(_arg_1:Number, _arg_2:Number, _arg_3:Boolean=false):void
+		
+		/** 滚动摄像机视野 && 移动镜头 **/
+		private function setPetPosAndRollCamera(toX:Number, toY:Number, needAni:Boolean = false):void
 		{
-			if (_arg_1 < 0)
-			{
-				_arg_1 = 0;
-			};
-			if (_arg_1 > (MapMgr.inst.mapWidth - (pet.width / 2)))
-			{
-				_arg_1 = (MapMgr.inst.mapWidth - (pet.width / 2));
-			};
-			if (_arg_2 < 37)
-			{
-				_arg_2 = 37;
-			};
-			if (_arg_2 > (MapMgr.inst.mapHeight - pet.height))
-			{
-				_arg_2 = (MapMgr.inst.mapHeight - pet.height);
-			};
-			pet.setXY(_arg_1, _arg_2);
-			var _local_4:ScrollPane = view.scrollPane;
-			_local_4.setPosX((pet.x - (_local_4.viewWidth / 2)), _arg_3);
-			_local_4.setPosY(((pet.y - (_local_4.viewHeight / 2)) + (offY * curScale)), _arg_3);
+			//判断行走界限 && 设置角色位置
+			if (toX < 0) toX = 0;
+			if (toX > mapMgr.mapWidth - pet.width/2) toX = mapMgr.mapWidth - pet.width/2;
+			if (toY < 37) toY = 37;
+			if (toY > mapMgr.mapHeight - pet.height) toY = mapMgr.mapHeight - pet.height;
+			pet.setXY(toX, toY);
+			
+			//移动镜头
+			grp_map.setXY(-pet.x + view.viewWidth / 2, -pet.y + view.viewHeight / 2 - offY*curScale);
 		}
 		
-		protected function onKeyUp(_arg_1:KeyboardEvent):void
+		protected function onKeyUp(event:KeyboardEvent):void
 		{
-			if (_arg_1.keyCode == 17)
-			{
+			if(event.keyCode == 17){
 				_isCtrlDown = false;
-			};
+			}else if(event.keyCode == 32){
+				_isPressSpace = false;
+			}
 		}
 		
-		private function onKeyDown(_arg_1:KeyboardEvent):void
+		private function onKeyDown(event:KeyboardEvent):void
 		{
-			if (((_arg_1.keyCode == 17) && (!(_isCtrlDown))))
-			{
+			
+			if(event.keyCode == 17){
 				_isCtrlDown = true;
-			};
+			}else if(event.keyCode == 32){
+				_isPressSpace = true;
+			}
 		}
 		
-		override protected function onExit():void
-		{
-			Global.stage.removeEventListener("keyDown", onKeyDown);
-			Global.stage.removeEventListener("keyUp", onKeyUp);
-			view.removeEventListener("enterFrame", onUpdate);
+		protected override function onExit():void{
+			Global.stage.removeEventListener(KeyboardEvent.KEY_DOWN,onKeyDown);
+			Global.stage.removeEventListener(KeyboardEvent.KEY_UP,onKeyUp);
+			view.removeEventListener(Event.ENTER_FRAME, onUpdate);
 		}
-		
-		
 	}
-}//package modules.mapEditor
+}

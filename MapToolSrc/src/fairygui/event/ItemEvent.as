@@ -13,6 +13,7 @@ package fairygui.event
 		public var rightButton:Boolean;
 		
 		public static const CLICK:String = "itemClick";
+		public static const RIGHT_CLICK:String = "itemRightClick";
 		
 		public function ItemEvent(type:String, itemObject:GObject=null,
 								  stageX:Number=0, stageY:Number=0, clickCount:int=1, rightButton:Boolean=false) {

@@ -1,4 +1,4 @@
-package 
+package
 {
 	import com.common.util.KeyMgr;
 	import com.core.loader.LoadQueue;
@@ -6,50 +6,50 @@ package
 	import com.core.loader.ResContent;
 	import com.simpvmc.NotifierBase;
 	import com.simpvmc.SyncEventDispatcher;
-	
 	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.utils.ByteArray;
-	
 	import fairygui.GLoader;
 	import fairygui.GRoot;
 	import fairygui.UIConfig;
 	import fairygui.UIObjectFactory;
 	import fairygui.UIPackage;
-	
 	import framework.base.BaseUT;
 	import framework.base.Emiter;
 	import framework.base.FrameRate;
 	import framework.base.Global;
 	import framework.base.ScaleMode;
 	import framework.mgr.SceneMgr;
-	
 	import modules.base.InitModule;
-
-	[SWF(width=1550,height=910)]
-	public class MapTool extends Sprite 
+	/**
+	 * 主入口
+	 * @author CYK
+	 * 
+	 */
+	[SWF(width=1705,height=1001)]
+	public class MapTool extends Sprite
 	{
-		
-		private var _preResList:Array = ["assets/Common.zip"];
-		
+		private var _preResList:Array = ["assets/Common.zip"];//预载资源列表
 		public function MapTool()
 		{
-			this.addEventListener("addedToStage", this.oAddtoStage);
+			this.addEventListener(Event.ADDED_TO_STAGE, this.oAddtoStage);
 		}
 		
-		protected function oAddtoStage(_arg_1:Event):void
+		protected function oAddtoStage(event:Event):void
 		{
-			Global.stage = stage;
+			Global.stage=stage;
 			NotifierBase.stage4ntfy = new SyncEventDispatcher();
 			Global.emmiter = new Emiter();
-			BaseUT.scaleMode = new ScaleMode(1550, 910, 910, 910);
+			BaseUT.scaleMode = new ScaleMode(1705, 1001, 1001, 1001);
 			InitModule.init();
 			stage.color = 0;
 			stage.frameRate = 60;
-			stage.align = "TL";
-			stage.scaleMode = "noScale";
-			var _local_2:LoadQueue = new LoadQueue(_preResList, null, null, onQueueComplete);
-			_local_2.startLoad();
+			stage.align = StageAlign.TOP_LEFT;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			var loadQueue:LoadQueue = new LoadQueue(_preResList, null, null, onQueueComplete);
+			loadQueue.startLoad();
 			KeyMgr.getInstance().init(stage);
 		}
 		
@@ -65,18 +65,20 @@ package
 			UIConfig.defaultScrollTouchEffect = true;
 			//等待图片资源全部解码，也可以选择不等待，这样图片会在用到的时候才解码
 			UIPackage.waitToLoadCompleted(continueInit);
+			
 		}
 		
-		private function continueInit():void
-		{
+		private function continueInit():void {
 			stage.addChild(GRoot.inst.displayObject);
 			SceneMgr.inst.run("MapEditorScene");
-			var _local_1:FrameRate = new FrameRate(0xFFFFFF, true);
-			_local_1.x = 10;
-			_local_1.y = 10;
-			stage.addChild(_local_1);
+			
+			var fr:FrameRate=new FrameRate(0xffffff,true);
+			fr.x=10;
+			fr.y=10;
+			stage.addChild(fr);
 		}
 		
-		
 	}
+	
+	
 }

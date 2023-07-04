@@ -46,8 +46,8 @@ package fairygui
 		private var _externalLoader:Loader;
 		private var _initExternalURLBeforeLoadSuccess:String;
 		
-		private static var _errorSignPool:GObjectPool = new GObjectPool();
 		public var externalLoadCompleted:Function;
+		private static var _errorSignPool:GObjectPool = new GObjectPool();
 		
 		public function GLoader()
 		{
@@ -466,7 +466,6 @@ package fairygui
 				_contentSourceWidth = content.width;
 				_contentSourceHeight =  content.height;
 			}
-			if(externalLoadCompleted) externalLoadCompleted.call(this);
 			updateLayout();
 		}
 		
@@ -481,6 +480,7 @@ package fairygui
 			{
 				onExternalLoadSuccess(_externalLoader.content);
 			}
+			if(externalLoadCompleted) externalLoadCompleted.call(this);
 			_initExternalURLBeforeLoadSuccess = null;
 		}
 		

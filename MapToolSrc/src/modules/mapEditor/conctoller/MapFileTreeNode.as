@@ -1,21 +1,19 @@
-﻿// Decompiled by AS3 Sorcerer 6.78
-// www.buraks.com/as3sorcerer
-
-//modules.mapEditor.conctoller.MapFileTreeNode
-
 package modules.mapEditor.conctoller
 {
-    import __AS3__.vec.Vector;
-
-    public class MapFileTreeNode 
-    {
-
-        public var isDir:Boolean;
-        public var fileArr:Vector.<MapFileTreeNode>;
-        public var path:String;
-        public var name:String;
-
-
-    }
-}//package modules.mapEditor.conctoller
-
+	/**
+	 * 地图资源目录节点信息 
+	 * @author cyk
+	 * 
+	 */	
+	public class MapFileTreeNode
+	{
+		public var isDir:Boolean;//是否为文件夹
+		public var fileArr:Vector.<MapFileTreeNode>;//文件列表
+		public var path:String;//文件完整路径
+		public var name:String;//文件名
+		public function MapFileTreeNode()
+		{
+			
+		}
+	}
+}

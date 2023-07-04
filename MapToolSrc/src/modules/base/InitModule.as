@@ -1,45 +1,42 @@
-﻿// Decompiled by AS3 Sorcerer 6.78
-// www.buraks.com/as3sorcerer
-
-//modules.base.InitModule
-
 package modules.base
 {
-    import framework.mgr.ModuleMgr;
-    import modules.mapEditor.MapEditorScene;
-    import modules.mapEditor.MapEditorLayer;
-    import modules.mapEditor.MapComp;
-    import modules.common.JuHuaDlg;
-    import modules.common.MsgBoxDlg;
-
-    public class InitModule 
-    {
-
-
-        public static function init():void
-        {
-            registerModule();
-            registerLayer();
-        }
-
-        private static function registerModule():void
-        {
-            ModuleMgr.registerModule(MapEditorScene, ["assets/MapEditor.zip"]);
-        }
-
-        private static function registerLayer():void
-        {
-            var _local_2:int;
-            var _local_1:Array = [MapEditorLayer, MapComp, JuHuaDlg, MsgBoxDlg];
-            _local_2 = 0;
-            while (_local_2 < _local_1.length)
-            {
-                ModuleMgr.registerLayer(_local_1[_local_2]);
-                _local_2++;
-            };
-        }
-
-
-    }
-}//package modules.base
-
+	import framework.mgr.ModuleMgr;
+	
+	import modules.common.JuHuaDlg;
+	import modules.common.MsgBoxDlg;
+	import modules.mapEditor.MapComp;
+	import modules.mapEditor.MapEditorLayer;
+	import modules.mapEditor.MapEditorScene;
+	
+	/**
+	 *初始化模块信息 
+	 * @author cyk
+	 * 
+	 */
+	public class InitModule
+	{
+		public static function init():void{
+			registerModule();
+			registerLayer();
+		}
+		
+		/** 注册模块scene**/
+		private static function registerModule(): void{
+			ModuleMgr.registerModule(MapEditorScene,["assets/MapEditor.zip"]);
+		}
+		
+		/** 注册页面（所有显示界面和组件都必须在这里注册）**/
+		private static function registerLayer():void{
+			var allLayerArr:Array = [
+				MapEditorLayer,
+				MapComp,
+				JuHuaDlg,
+				MsgBoxDlg,
+			]
+				
+			for(var i:int = 0;i<allLayerArr.length;i++){
+				ModuleMgr.registerLayer(allLayerArr[i]);
+			}
+		}
+	}
+}

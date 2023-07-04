@@ -78,6 +78,10 @@ package fairygui
 			updateGear(7);
 		}
 		
+		final public function get iconObject():GObject{
+			return _iconObject;
+		}
+		
 		final public function get selectedIcon():String
 		{
 			return _selectedIcon;

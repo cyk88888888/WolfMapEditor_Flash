@@ -1,24 +1,20 @@
-﻿package modules.mapEditor.conctoller
+package modules.mapEditor.conctoller
 {
-	import __AS3__.vec.Vector;
-	
-	public class MapJsonInfo 
+	public class MapJsonInfo
 	{
-		
-		public var mapWidth:int;
-		public var mapHeight:int;
-		public var totRow:int;
-		public var totCol:int;
-		public var cellSize:int;
-		public var walkList:Array;
-		public var blockList:Array;
-		public var blockVertList:Array;
-		public var waterList:Array;
-		public var waterVertList:Array;
-		public var startList:Array;
-		public var mapThingList:Vector.<MapThingInfo>;
-		public var borderList:Array;
-		
+		public var mapWidth:int;//地图宽
+		public var mapHeight:int;//地图高
+		public var totRow:int;//总行数
+		public var totCol:int;//总列数
+		public var cellSize:int;//格子大小
+		public var walkList: Array;//可行走和不可行走列表，1为可行走，0为不可行走
+		public var blockList :Array;//墙壁格子列表
+		public var blockVertList:Array;//墙壁顶点格子列表
+		public var waterList:Array;//水域格子列表
+		public var waterVertList:Array;//落水点列表
+		public var startList:Array;//起始点列表
+		public var mapThingList:Vector.<MapThingInfo>;//场景物件信息列表
+		public var borderList: Array;//边界顶点列表 => [{x:1, y:1, groupId:[1,2]},{x:2, y2, groupId:[1]}]
 		public function MapJsonInfo()
 		{
 			walkList = [];
@@ -30,6 +26,5 @@
 			mapThingList = new Vector.<MapThingInfo>();
 			borderList = [];
 		}
-		
 	}
-}//package modules.mapEditor.conctoller
+}

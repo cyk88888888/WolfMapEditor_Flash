@@ -1,180 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component size="1550,910" designImageLayer="1">
+<component size="1705,1001" designImageLayer="1">
   <displayList>
-    <graph id="n31_n273" name="n31" xy="0,0" size="1550,910" type="rect" fillColor="#ff999999">
+    <graph id="n31_n273" name="n31" xy="0,0" size="1705,1001" type="rect" fillColor="#ff999999">
       <relation target="" sidePair="width-width,height-height"/>
     </graph>
-    <component id="n1_g4oc" name="mapComp" src="nx961d" fileName="components/MapComp.xml" xy="0,1" size="1033,910"/>
-    <component id="n3_g4oc" name="btn_walk" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1043,9" size="120,36" group="n41_vtkz" scale="0.8,0.8">
+    <component id="n1_g4oc" name="mapComp" src="nx961d" fileName="components/MapComp.xml" xy="0,0" size="1200,1001"/>
+    <component id="n3_g4oc" name="btn_walk" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,9" size="120,36" group="n41_vtkz" scale="0.8,0.8">
       <Button title="设置可行走"/>
     </component>
-    <component id="n2_g4oc" name="btn_block" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1043,43" size="120,36" group="n41_vtkz" scale="0.8,0.8" visible="false">
+    <component id="n2_g4oc" name="btn_block" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,43" size="120,36" group="n41_vtkz" scale="0.8,0.8" visible="false">
       <Button title="设置障碍物"/>
     </component>
-    <component id="n4_g4oc" name="btn_blockVert" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1043,45" size="164,36" group="n41_vtkz" scale="0.8,0.8">
+    <component id="n4_g4oc" name="btn_blockVert" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,45" size="164,36" group="n41_vtkz" scale="0.8,0.8">
       <Button title="设置可视墙顶点"/>
     </component>
-    <component id="n11_vlox" name="btn_clearWalk" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1154,9" size="172,36" group="n41_vtkz" scale="0.8,0.8">
-      <Button title="清除全部可行走"/>
-    </component>
-    <component id="n12_vlox" name="btn_clearBolck" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1154,43" size="165,36" group="n41_vtkz" scale="0.8,0.8" visible="false">
-      <Button title="清除全部障碍物"/>
-    </component>
-    <component id="n13_vlox" name="btn_clearBolckVert" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1191,45" size="210,36" group="n41_vtkz" scale="0.8,0.8">
-      <Button title="清除全部可视墙顶点"/>
-    </component>
-    <component id="n19_d7z4" name="btn_water" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1043,118" size="120,36" group="n41_vtkz" scale="0.8,0.8">
+    <component id="n19_d7z4" name="btn_water" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,118" size="120,36" group="n41_vtkz" scale="0.8,0.8" visible="false">
       <Button title="设置水域"/>
     </component>
-    <component id="n20_d7z4" name="btn_clearWater" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1154,118" size="165,36" group="n41_vtkz" scale="0.8,0.8">
-      <Button title="清除全部水域"/>
-    </component>
-    <component id="n36_vtkz" name="btn_start" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1043,196" size="120,36" group="n41_vtkz" scale="0.8,0.8">
+    <component id="n36_vtkz" name="btn_start" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,152" size="120,36" group="n41_vtkz" scale="0.8,0.8">
       <Button title="设置起始点"/>
     </component>
-    <component id="n37_vtkz" name="btn_clearStart" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1154,196" size="165,36" group="n41_vtkz" scale="0.8,0.8">
-      <Button title="清除全部起始点"/>
-    </component>
-    <component id="n30_bfx2" name="btn_clearAll" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1394,90" size="165,36" group="n41_vtkz" scale="0.8,0.8">
+    <component id="n30_bfx2" name="btn_clearAll" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1428,9" size="165,36" group="n41_vtkz" scale="0.8,0.8">
       <Button title="清除全部数据"/>
     </component>
-    <component id="n92_qig8" name="btn_waterVert" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1044,156" size="120,36" group="n41_vtkz" scale="0.8,0.8">
+    <component id="n92_qig8" name="btn_waterVert" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1208,117" size="120,36" group="n41_vtkz" scale="0.8,0.8">
       <Button title="设置落水点"/>
     </component>
-    <component id="n93_qig8" name="btn_clearWaterVert" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1154,156" size="165,36" group="n41_vtkz" scale="0.8,0.8">
-      <Button title="清除全部落水点"/>
-    </component>
-    <component id="n98_gke3" name="btn_visible" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1043,82" size="149,36" group="n41_vtkz" scale="0.8,0.8">
+    <component id="n98_gke3" name="btn_visible" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,82" size="149,36" group="n41_vtkz" scale="0.8,0.8">
       <Button title="设置可视墙"/>
     </component>
-    <component id="n99_gke3" name="btn_clearVisible" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1174,82" size="197,36" group="n41_vtkz" scale="0.8,0.8">
-      <Button title="清除全部可视墙"/>
-    </component>
-    <component id="n106_eq6j" name="btn_startWall" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1046,44" size="164,36" group="n41_vtkz" scale="0.8,0.8" visible="false">
+    <component id="n106_eq6j" name="btn_startWall" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1210,44" size="164,36" group="n41_vtkz" scale="0.8,0.8" visible="false">
       <Button title="设置起始墙"/>
     </component>
-    <component id="n46_vtkz" name="btn_mapThing" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1043,234" size="160,36" group="n41_vtkz" scale="0.8,0.8">
+    <component id="n46_vtkz" name="btn_mapThing" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,187" size="160,36" group="n41_vtkz" scale="0.8,0.8">
       <Button title="设置场景物件"/>
     </component>
-    <component id="n107_eq6j" name="btn_switchWall" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1194,44" size="164,36" group="n41_vtkz" scale="0.8,0.8" visible="false">
+    <component id="n107_eq6j" name="btn_switchWall" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1358,44" size="164,36" group="n41_vtkz" scale="0.8,0.8" visible="false">
       <Button title="设置开关墙"/>
     </component>
-    <group id="n41_vtkz" name="grp_gripType" xy="1043,9" size="516,261"/>
-    <graph id="n45_vtkz" name="n45" xy="1046,271" size="265,338" group="n47_vtkz" type="rect" fillColor="#ffccffff">
+    <group id="n41_vtkz" name="grp_gripType" xy="1207,9" size="386,214"/>
+    <graph id="n45_vtkz" name="n45" xy="1207,225" size="266,533" group="n47_vtkz" type="rect" fillColor="#ffccffff">
       <relation target="" sidePair="width-width,height-height"/>
     </graph>
-    <list id="n44_vtkz" name="list_tree" xy="1049,275" size="259,330" group="n47_vtkz" overflow="scroll" scrollBarFlags="128" defaultItem="ui://g2zhtj9bpmk31" treeView="true" indent="15" clickToExpand="1"/>
-    <text id="n57_vtkz" name="n57" xy="1321,277" size="67,24" group="n59_vtkz" fontSize="16" color="#ffffff" text="taskId："/>
-    <graph id="n56_vtkz" name="n56" xy="1381,274" size="71,31" group="n59_vtkz" type="rect"/>
-    <text id="n58_vtkz" name="txt_taskId" xy="1386,278" size="61,24" group="n59_vtkz" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="2"/>
-    <group id="n59_vtkz" name="n59" xy="1321,274" size="131,31" group="n117_nlz9"/>
-    <text id="n113_v21r" name="n113" xy="1321,318" size="81,24" group="n116_v21r" fontSize="16" color="#ffffff" text="groupId："/>
-    <graph id="n114_v21r" name="n114" xy="1396,315" size="71,31" group="n116_v21r" type="rect"/>
-    <text id="n115_v21r" name="txt_groupId" xy="1401,319" size="61,24" group="n116_v21r" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="2"/>
-    <group id="n116_v21r" name="n116" xy="1321,315" size="146,31" group="n117_nlz9"/>
-    <text id="n102_eq6j" name="n102" xy="1321,357" size="84,24" group="n105_eq6j" fontSize="16" color="#ffffff" text="物件类型："/>
-    <component id="n108_n4uv" name="combo_taskType" src="n4uv22" fileName="components/ComboBox.xml" pkg="g2zhtj9b" xy="1404,359" size="100,20" group="n105_eq6j">
+    <list id="n44_vtkz" name="list_tree" xy="1210,229" size="259,525" group="n47_vtkz" overflow="scroll" scrollBarFlags="128" defaultItem="ui://g2zhtj9bpmk31" treeView="true" indent="15" clickToExpand="1"/>
+    <text id="n57_vtkz" name="n57" xy="1482,231" size="67,24" group="n59_vtkz" fontSize="16" color="#ffffff" autoSize="none" text="taskId："/>
+    <graph id="n56_vtkz" name="n56" xy="1542,228" size="71,33" group="n59_vtkz" type="rect"/>
+    <text id="n58_vtkz" name="txt_taskId" xy="1547,232" size="61,24" group="n59_vtkz" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="2"/>
+    <group id="n59_vtkz" name="n59" xy="1482,228" size="131,33" group="n117_nlz9"/>
+    <text id="n113_v21r" name="n113" xy="1482,272" size="81,24" group="n116_v21r" fontSize="16" color="#ffffff" autoSize="none" text="groupId："/>
+    <graph id="n114_v21r" name="n114" xy="1557,269" size="71,33" group="n116_v21r" type="rect"/>
+    <text id="n115_v21r" name="txt_groupId" xy="1562,273" size="61,24" group="n116_v21r" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="2"/>
+    <group id="n116_v21r" name="n116" xy="1482,269" size="146,33" group="n117_nlz9"/>
+    <text id="n102_eq6j" name="n102" xy="1482,311" size="84,34" group="n105_eq6j" fontSize="16" color="#ffffff" text="物件类型："/>
+    <component id="n108_n4uv" name="combo_taskType" src="n4uv22" fileName="components/ComboBox.xml" pkg="g2zhtj9b" xy="1565,313" size="100,30" group="n105_eq6j">
       <ComboBox visibleItemCount="10" autoClearItems="true">
         <item title="任务" value="1"/>
         <item title="起始围栏" value="2"/>
       </ComboBox>
     </component>
-    <group id="n105_eq6j" name="n105" xy="1321,357" size="183,24" group="n117_nlz9"/>
-    <text id="n110_uxy4" name="n110" xy="1321,395" size="84,24" group="n112_uxy4" fontSize="16" color="#ffffff" text="触发类型："/>
-    <component id="n111_uxy4" name="combo_triggerType" src="n4uv22" fileName="components/ComboBox.xml" pkg="g2zhtj9b" xy="1406,396" size="100,20" group="n112_uxy4">
+    <group id="n105_eq6j" name="n105" xy="1482,311" size="183,34" group="n117_nlz9"/>
+    <text id="n110_uxy4" name="n110" xy="1482,349" size="84,34" group="n112_uxy4" fontSize="16" color="#ffffff" text="触发类型："/>
+    <component id="n111_uxy4" name="combo_triggerType" src="n4uv22" fileName="components/ComboBox.xml" pkg="g2zhtj9b" xy="1567,350" size="100,30" group="n112_uxy4">
       <ComboBox visibleItemCount="10" autoClearItems="true">
         <item title="发亮" value="1"/>
         <item title="其他标识" value="2"/>
       </ComboBox>
     </component>
-    <group id="n112_uxy4" name="n112" xy="1321,395" size="185,24" group="n117_nlz9"/>
-    <text id="n133_vmus" name="n133" xy="1321,434" size="28,24" group="n136_vmus" fontSize="16" color="#ffffff" text="x："/>
-    <graph id="n134_vmus" name="n134" xy="1351,431" size="71,31" group="n136_vmus" type="rect"/>
-    <text id="n135_vmus" name="txt_x" xy="1356,435" size="61,24" group="n136_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="4"/>
-    <group id="n136_vmus" name="n136" xy="1321,431" size="101,31" group="n117_nlz9"/>
-    <text id="n137_vmus" name="n137" xy="1428,434" size="29,24" group="n140_vmus" fontSize="16" color="#ffffff" text="y："/>
-    <graph id="n138_vmus" name="n138" xy="1458,431" size="71,31" group="n140_vmus" type="rect"/>
-    <text id="n139_vmus" name="txt_y" xy="1463,435" size="61,24" group="n140_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="4"/>
-    <group id="n140_vmus" name="n140" xy="1428,431" size="101,31" group="n117_nlz9"/>
-    <text id="n141_vmus" name="n141" xy="1321,471" size="84,24" group="n144_vmus" fontSize="16" color="#ffffff" text="anchorX："/>
-    <graph id="n142_vmus" name="n142" xy="1400,468" size="71,31" group="n144_vmus" type="rect"/>
-    <text id="n143_vmus" name="txt_anchorX" xy="1405,472" size="61,24" group="n144_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0.5" maxLength="8" restrict="[0-9]" keyboardType="2"/>
-    <group id="n144_vmus" name="n144" xy="1321,468" size="150,31" group="n117_nlz9"/>
-    <text id="n145_vmus" name="n145" xy="1321,506" size="83,24" group="n148_vmus" fontSize="16" color="#ffffff" text="anchorY："/>
-    <graph id="n146_vmus" name="n146" xy="1400,503" size="71,31" group="n148_vmus" type="rect"/>
-    <text id="n147_vmus" name="txt_anchorY" xy="1405,507" size="61,24" group="n148_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0.5" maxLength="8" restrict="[0-9]" keyboardType="2"/>
-    <group id="n148_vmus" name="n148" xy="1321,503" size="150,31" group="n117_nlz9"/>
-    <text id="n150_p30h" name="n150" xy="1321,547" size="84,24" group="n153_p30h" fontSize="16" color="#ffffff" text="物件宽高："/>
-    <text id="n154_p30h" name="txt_thingRect" xy="1402,547" size="96,24" group="n153_p30h" fontSize="16" autoSize="none" text="4000, 4000"/>
-    <group id="n153_p30h" name="n153" xy="1321,547" size="177,24" group="n117_nlz9"/>
-    <group id="n117_nlz9" name="grp_mapThingInfo" xy="1321,274" size="208,297" group="n47_vtkz" visible="false" advanced="true"/>
-    <text id="n128_nlz9" name="n128" xy="1319,277" size="81,24" group="n131_nlz9" fontSize="16" color="#ffffff" text="groupId："/>
-    <graph id="n129_nlz9" name="n129" xy="1394,274" size="71,31" group="n131_nlz9" type="rect"/>
-    <text id="n130_nlz9" name="txt_groupId2" xy="1399,278" size="61,24" group="n131_nlz9" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="10" keyboardType="2"/>
-    <group id="n131_nlz9" name="n131" xy="1319,274" size="146,31" group="n132_nlz9"/>
-    <group id="n132_nlz9" name="grp_bevel" xy="1319,274" size="146,31" group="n47_vtkz" visible="false" advanced="true"/>
-    <group id="n47_vtkz" name="grp_mapThing" xy="1046,271" size="483,338"/>
-    <graph id="n9_g4oc" name="n9" xy="1152,734" size="70,34" group="n40_vtkz" type="rect"/>
-    <text id="n90_qig8" name="txt_mapRect" xy="1125,699" size="96,24" group="n40_vtkz" fontSize="16" autoSize="none" text="4000, 4000"/>
-    <text id="n7_g4oc" name="n7" xy="1043,739" size="116,24" group="n40_vtkz" fontSize="16" color="#ffffff" text="设置格子大小："/>
-    <text id="n8_g4oc" name="txt_cellSize" xy="1156,739" size="60,24" group="n40_vtkz" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="40" maxLength="3" restrict="[0-9]" keyboardType="2"/>
-    <component id="n10_g4oc" name="btn_resizeGrid" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1234,736" size="107,36" group="n40_vtkz" scale="0.8,0.8">
+    <group id="n112_uxy4" name="n112" xy="1482,349" size="185,34" group="n117_nlz9"/>
+    <text id="n133_vmus" name="n133" xy="1482,388" size="28,24" group="n136_vmus" fontSize="16" color="#ffffff" autoSize="none" text="x："/>
+    <graph id="n134_vmus" name="n134" xy="1512,385" size="71,33" group="n136_vmus" type="rect"/>
+    <text id="n135_vmus" name="txt_x" xy="1517,389" size="61,24" group="n136_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="4"/>
+    <group id="n136_vmus" name="n136" xy="1482,385" size="101,33" group="n117_nlz9"/>
+    <text id="n137_vmus" name="n137" xy="1589,388" size="29,24" group="n140_vmus" fontSize="16" color="#ffffff" autoSize="none" text="y："/>
+    <graph id="n138_vmus" name="n138" xy="1619,385" size="71,33" group="n140_vmus" type="rect"/>
+    <text id="n139_vmus" name="txt_y" xy="1624,389" size="61,24" group="n140_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="4"/>
+    <group id="n140_vmus" name="n140" xy="1589,385" size="101,33" group="n117_nlz9"/>
+    <text id="n141_vmus" name="n141" xy="1482,425" size="84,24" group="n144_vmus" fontSize="16" color="#ffffff" autoSize="none" text="anchorX："/>
+    <graph id="n142_vmus" name="n142" xy="1561,422" size="71,33" group="n144_vmus" type="rect"/>
+    <text id="n143_vmus" name="txt_anchorX" xy="1566,426" size="61,24" group="n144_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0.5" maxLength="8" restrict="[0-9]" keyboardType="2"/>
+    <group id="n144_vmus" name="n144" xy="1482,422" size="150,33" group="n117_nlz9"/>
+    <text id="n145_vmus" name="n145" xy="1482,460" size="83,24" group="n148_vmus" fontSize="16" color="#ffffff" autoSize="none" text="anchorY："/>
+    <graph id="n146_vmus" name="n146" xy="1561,457" size="71,33" group="n148_vmus" type="rect"/>
+    <text id="n147_vmus" name="txt_anchorY" xy="1566,461" size="61,24" group="n148_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0.5" maxLength="8" restrict="[0-9]" keyboardType="2"/>
+    <group id="n148_vmus" name="n148" xy="1482,457" size="150,33" group="n117_nlz9"/>
+    <text id="n150_p30h" name="n150" xy="1482,501" size="84,24" group="n153_p30h" fontSize="16" color="#ffffff" autoSize="none" text="物件宽高："/>
+    <text id="n154_p30h" name="txt_thingRect" xy="1563,501" size="96,24" group="n153_p30h" fontSize="16" autoSize="none" text="4000, 4000"/>
+    <group id="n153_p30h" name="n153" xy="1482,501" size="177,24" group="n117_nlz9"/>
+    <group id="n117_nlz9" name="grp_mapThingInfo" xy="1482,228" size="208,297" group="n47_vtkz" visible="false" advanced="true"/>
+    <text id="n128_nlz9" name="n128" xy="1480,231" size="81,34" group="n131_nlz9" fontSize="16" color="#ffffff" text="groupId："/>
+    <graph id="n129_nlz9" name="n129" xy="1555,228" size="71,41" group="n131_nlz9" type="rect"/>
+    <text id="n130_nlz9" name="txt_groupId2" xy="1560,232" size="61,34" group="n131_nlz9" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="10" keyboardType="2"/>
+    <group id="n131_nlz9" name="n131" xy="1480,228" size="146,41" group="n132_nlz9"/>
+    <group id="n132_nlz9" name="grp_bevel" xy="1480,228" size="146,41" group="n47_vtkz" visible="false" advanced="true"/>
+    <group id="n47_vtkz" name="grp_mapThing" xy="1207,225" size="483,533"/>
+    <graph id="n9_g4oc" name="n9" xy="1316,830" size="70,34" group="n40_vtkz" type="rect"/>
+    <text id="n90_qig8" name="txt_mapRect" xy="1289,795" size="96,24" group="n40_vtkz" fontSize="16" autoSize="none" text="4000, 4000"/>
+    <text id="n7_g4oc" name="n7" xy="1207,835" size="116,24" group="n40_vtkz" fontSize="16" color="#ffffff" text="设置格子大小："/>
+    <text id="n8_g4oc" name="txt_cellSize" xy="1320,835" size="60,24" group="n40_vtkz" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="40" maxLength="3" restrict="[0-9]" keyboardType="2"/>
+    <component id="n10_g4oc" name="btn_resizeGrid" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1398,832" size="107,36" group="n40_vtkz" scale="0.8,0.8">
       <Button title="确定"/>
     </component>
-    <text id="n14_o1cz" name="n14" xy="1043,698" size="84,24" group="n40_vtkz" fontSize="16" color="#ffffff" text="地图宽高："/>
-    <component id="n35_vtkz" name="btn_gridRange" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1299,780" size="107,36" group="n40_vtkz" scale="0.8,0.8">
+    <text id="n14_o1cz" name="n14" xy="1207,794" size="84,24" group="n40_vtkz" fontSize="16" color="#ffffff" text="地图宽高："/>
+    <component id="n35_vtkz" name="btn_gridRange" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1463,876" size="107,36" group="n40_vtkz" scale="0.8,0.8">
       <Button title="确定"/>
     </component>
-    <graph id="n32_vtkz" name="n32" xy="1213,778" size="73,32" group="n40_vtkz" type="rect"/>
-    <text id="n33_vtkz" name="n33" xy="1043,784" size="180,24" group="n40_vtkz" fontSize="16" color="#ffffff" text="设置格子扩散范围大小："/>
-    <text id="n34_vtkz" name="txt_gridRange" xy="1218,782" size="60,24" group="n40_vtkz" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="3" restrict="[0-9]" keyboardType="2"/>
-    <text id="n96_qig8" name="n96" xy="1257,697" size="116,24" group="n40_vtkz" fontSize="16" color="#ffffff" text="鼠标所处行列："/>
-    <text id="n95_qig8" name="txt_mouseGridXY" xy="1369,699" size="96,24" group="n40_vtkz" fontSize="16" autoSize="none" text="0, 0"/>
-    <text id="n97_qig8" name="n97" xy="1316,672" size="224,24" group="n40_vtkz" fontSize="16" color="#ff0000" text="(按鼠标中键刷新鼠标所处行列)">
+    <graph id="n32_vtkz" name="n32" xy="1377,874" size="73,32" group="n40_vtkz" type="rect"/>
+    <text id="n33_vtkz" name="n33" xy="1207,880" size="180,24" group="n40_vtkz" fontSize="16" color="#ffffff" text="设置格子扩散范围大小："/>
+    <text id="n34_vtkz" name="txt_gridRange" xy="1382,878" size="60,24" group="n40_vtkz" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="3" restrict="[0-9]" keyboardType="2"/>
+    <text id="n96_qig8" name="n96" xy="1421,793" size="116,24" group="n40_vtkz" fontSize="16" color="#ffffff" text="鼠标所处行列："/>
+    <text id="n95_qig8" name="txt_mouseGridXY" xy="1533,795" size="96,24" group="n40_vtkz" fontSize="16" autoSize="none" text="0, 0"/>
+    <text id="n97_qig8" name="n97" xy="1472,768" size="224,24" group="n40_vtkz" fontSize="16" color="#ff0000" text="(按鼠标中键刷新鼠标所处行列)">
       <relation target="" sidePair="right-right"/>
     </text>
-    <group id="n40_vtkz" name="grp_mapInfo" xy="1043,672" size="497,144"/>
-    <component id="n5_g4oc" name="btn_exportJson" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1043,828" size="143,36" group="n39_vtkz" scale="0.8,0.8">
+    <group id="n40_vtkz" name="grp_mapInfo" xy="1207,768" size="489,144"/>
+    <component id="n5_g4oc" name="btn_exportJson" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1207,924" size="143,36" group="n39_vtkz" scale="0.8,0.8">
       <Button title="保存地图数据"/>
     </component>
-    <component id="n38_vtkz" name="btn_changeMap" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1043,867" size="152,36" group="n39_vtkz" scale="0.8,0.8">
+    <component id="n38_vtkz" name="btn_changeMap" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1207,963" size="152,36" group="n39_vtkz" scale="0.8,0.8">
       <Button title="切换地图目录"/>
     </component>
-    <component id="n22_t19y" name="btn_runDemo" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1444,867" size="115,36" group="n39_vtkz" scale="0.8,0.8">
+    <component id="n22_t19y" name="btn_runDemo" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1608,963" size="115,36" group="n39_vtkz" scale="0.8,0.8">
       <Button title="测试运行"/>
     </component>
-    <component id="n28_bfx2" name="btn_toCenter" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1307,828" size="144,36" group="n39_vtkz" scale="0.8,0.8">
+    <component id="n28_bfx2" name="btn_toCenter" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1471,924" size="144,36" group="n39_vtkz" scale="0.8,0.8">
       <Button title="到中心点"/>
     </component>
-    <component id="n29_bfx2" name="btn_originalScale" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1176,828" size="144,36" group="n39_vtkz" scale="0.8,0.8">
+    <component id="n29_bfx2" name="btn_originalScale" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1340,924" size="144,36" group="n39_vtkz" scale="0.8,0.8">
       <Button title="回到原比例"/>
     </component>
-    <component id="n101_ggar" name="btn_showGrid" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1176,867" size="152,36" group="n39_vtkz" scale="0.8,0.8">
+    <component id="n101_ggar" name="btn_showGrid" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1340,963" size="152,36" group="n39_vtkz" scale="0.8,0.8">
       <Button title="显隐网格"/>
     </component>
-    <component id="n149_ofhn" name="btn_showPath" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1311,867" size="152,36" group="n39_vtkz" scale="0.8,0.8">
+    <component id="n149_ofhn" name="btn_showPath" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1475,963" size="152,36" group="n39_vtkz" scale="0.8,0.8">
       <Button title="显隐路点"/>
     </component>
-    <group id="n39_vtkz" name="grp_bottom" xy="1043,828" size="516,75"/>
-    <text id="n69_vtkz" name="n69" xy="1052,618" size="36,24" group="n72_vtkz" fontSize="16" color="#ffffff" text="上："/>
-    <graph id="n70_vtkz" name="n70" xy="1081,615" size="71,31" group="n72_vtkz" type="rect"/>
-    <text id="n71_vtkz" name="txt_top" xy="1086,619" size="61,24" group="n72_vtkz" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="7" restrict="[0-9\\-]" keyboardType="2"/>
-    <group id="n72_vtkz" name="n72" xy="1052,615" size="100,31" group="n89_vtkz"/>
-    <text id="n77_vtkz" name="n77" xy="1156,618" size="36,24" group="n80_vtkz" fontSize="16" color="#ffffff" text="下："/>
-    <graph id="n78_vtkz" name="n78" xy="1185,615" size="71,31" group="n80_vtkz" type="rect"/>
-    <text id="n79_vtkz" name="txt_bottom" xy="1190,619" size="61,24" group="n80_vtkz" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="7" restrict="[0-9\\-]" keyboardType="2"/>
-    <group id="n80_vtkz" name="n80" xy="1156,615" size="100,31" group="n89_vtkz"/>
-    <text id="n81_vtkz" name="n81" xy="1053,658" size="36,24" group="n84_vtkz" fontSize="16" color="#ffffff" text="左："/>
-    <graph id="n82_vtkz" name="n82" xy="1082,655" size="71,31" group="n84_vtkz" type="rect"/>
-    <text id="n83_vtkz" name="txt_left" xy="1087,659" size="61,24" group="n84_vtkz" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="7" restrict="[0-9\\-]" keyboardType="2"/>
-    <group id="n84_vtkz" name="n84" xy="1053,655" size="100,31" group="n89_vtkz"/>
-    <text id="n85_vtkz" name="n85" xy="1156,658" size="36,24" group="n88_vtkz" fontSize="16" color="#ffffff" text="右："/>
-    <graph id="n86_vtkz" name="n86" xy="1185,655" size="71,31" group="n88_vtkz" type="rect"/>
-    <text id="n87_vtkz" name="txt_right" xy="1190,659" size="61,24" group="n88_vtkz" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="7" restrict="[0-9\\-]" keyboardType="2"/>
-    <group id="n88_vtkz" name="n88" xy="1156,655" size="100,31" group="n89_vtkz"/>
-    <component id="n68_vtkz" name="btn_cutMap" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1272,639" group="n89_vtkz" scale="0.8,0.8">
-      <Button title="裁剪地图"/>
-    </component>
-    <group id="n89_vtkz" name="grp_cutMap" xy="1052,615" size="320,71"/>
+    <group id="n39_vtkz" name="grp_bottom" xy="1207,924" size="516,75"/>
   </displayList>
 </component>

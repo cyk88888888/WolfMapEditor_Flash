@@ -1,26 +1,33 @@
-﻿// Decompiled by AS3 Sorcerer 6.78
-// www.buraks.com/as3sorcerer
-
-//framework.base.ScaleMode
-
 package framework.base
 {
-    public class ScaleMode 
-    {
-
-        public var designWidth:Number;
-        public var designHeight:Number;
-        public var designHeight_min:Number;
-        public var designHeight_max:Number;
-
-        public function ScaleMode(_arg_1:Number, _arg_2:Number, _arg_3:Number, _arg_4:Number)
-        {
-            designWidth = _arg_1;
-            designHeight = _arg_2;
-            designHeight_min = _arg_3;
-            designHeight_max = _arg_4;
-        }
-
-    }
-}//package framework.base
-
+	/**
+	 * 页面最大最小宽高参数设置
+	 */
+	public class ScaleMode
+	{
+		/**
+		 * 设计宽度
+		 */
+		public var designWidth: Number;
+		/**
+		 * 设计高度
+		 */
+		public var designHeight: Number;
+		/**
+		 * 设计最小高度
+		 */
+		public var designHeight_min: Number;
+		/**
+		 * 设计最大高度
+		 */
+		public var designHeight_max: Number;
+		
+		public function ScaleMode(_designWidth:Number, _designHeight:Number, _designHeight_min:Number, _designHeight_max:Number)
+		{
+			designWidth = _designWidth;
+			designHeight = _designHeight;
+			designHeight_min = _designHeight_min;
+			designHeight_max = _designHeight_max;
+		}
+	}
+}

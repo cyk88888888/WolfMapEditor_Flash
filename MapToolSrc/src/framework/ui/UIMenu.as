@@ -4,11 +4,11 @@ package framework.ui
 	
 	import framework.mgr.SceneMgr;
 
-	public class UIMsg extends UILayer
+	public class UIMenu extends UILayer
 	{
 		public override function getParent():GComponent
 		{
-			return SceneMgr.inst.curScene.msg;
+			return SceneMgr.inst.curScene.menuLayer;
 		}
 	}
 }

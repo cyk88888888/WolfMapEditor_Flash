@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component size="640,600" overflow="scroll" scroll="both" scrollBarFlags="128" scrollBar="hidden">
+<component size="640,600" overflow="hidden" scroll="both">
   <displayList>
-    <graph id="n12_qig8" name="grp_bg" xy="0,0" size="640,600" alpha="0" type="rect"/>
     <component id="n17_ggar" name="grp_map" src="ggar1v" fileName="components/GrpMap.xml" xy="0,0"/>
   </displayList>
 </component>

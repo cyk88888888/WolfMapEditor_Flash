@@ -1,32 +1,46 @@
-﻿package modules.mapEditor
+package modules.mapEditor
 {
-	import framework.ui.UILayer;
-	import fairygui.GComponent;
-	import fairygui.GTextInput;
-	import fairygui.GTextField;
-	import fairygui.GTree;
+	import flash.events.Event;
+	import flash.events.FocusEvent;
+	import flash.events.MouseEvent;
+	
 	import fairygui.GButton;
 	import fairygui.GComboBox;
+	import fairygui.GComponent;
 	import fairygui.GGroup;
-	import modules.mapEditor.conctoller.MapMgr;
-	import modules.base.GameEvent;
-	import modules.mapEditor.conctoller.MapFileTreeNode;
+	import fairygui.GTextField;
+	import fairygui.GTextInput;
+	import fairygui.GTree;
 	import fairygui.GTreeNode;
-	import framework.base.BaseUT;
-	import __AS3__.vec.Vector;
-	import fairygui.event.ItemEvent;
-	import framework.base.Global;
-	import framework.mgr.SceneMgr;
-	import flash.events.MouseEvent;
-	import modules.mapEditor.conctoller.MapThingInfo;
-	import flash.events.Event;
 	import fairygui.event.GTouchEvent;
-	import modules.common.mgr.MsgMgr;
-	import framework.mgr.ModuleMgr;
-	import modules.mapEditor.joystick.JoystickLayer;
+	import fairygui.event.ItemEvent;
+	import fairygui.event.StateChangeEvent;
 	
-	public class MapEditorLayer extends UILayer 
+	import framework.base.BaseUT;
+	import framework.base.Global;
+	import framework.mgr.ModuleMgr;
+	import framework.mgr.SceneMgr;
+	import framework.ui.UILayer;
+	
+	import modules.base.Enum;
+	import modules.base.GameEvent;
+	import modules.common.mgr.MsgMgr;
+	import modules.mapEditor.conctoller.MapFileTreeNode;
+	import modules.mapEditor.conctoller.MapMgr;
+	import modules.mapEditor.conctoller.MapThingInfo;
+	import modules.mapEditor.joystick.JoystickLayer;
+
+	/**
+	 * 地图编辑器主界面
+	 * @author cyk
+	 * 
+	 */
+	public class MapEditorLayer extends UILayer
 	{
+		protected override function get pkgName():String
+		{
+			return "MapEditor";
+		}
 		
 		private var mapComp:GComponent;
 		private var txt_cellSize:GTextInput;
@@ -45,12 +59,8 @@
 		private var combo_taskType:GComboBox;
 		private var combo_triggerType:GComboBox;
 		private var _curSelectTypeBtn:GButton;
-		private var txt_top:GTextInput;
-		private var txt_bottom:GTextInput;
-		private var txt_left:GTextInput;
-		private var txt_right:GTextInput;
-		private var _isInCopyMapThing:Boolean;
-		private var _drawMapThingData:Object;
+		private var _isInCopyMapThing:Boolean;//是否点击地图目录场景树（没做这个标识会导致点击后，拖拽物件立即被销毁了）
+		private var _drawMapThingData:Object;//拖拽场景已有的物件的临时数据
 		private var btn_walk:GButton;
 		private var btn_block:GButton;
 		private var btn_blockVert:GButton;
@@ -65,29 +75,16 @@
 		private var grp_mapThingInfo:GGroup;
 		private var grp_bevel:GGroup;
 		
-		
-		override protected function get pkgName():String
-		{
-			return ("MapEditor");
-		}
-		
-		override protected function onEnter():void
-		{
+		protected override function onEnter():void{
 			txt_cellSize = view.getChild("txt_cellSize").asTextInput;
+			
 			txt_mapRect = view.getChild("txt_mapRect").asTextField;
 			txt_thingRect = view.getChild("txt_thingRect").asTextField;
-			MapMgr.inst.mouseGridTextField = (txt_mouseGridXY = view.getChild("txt_mouseGridXY").asTextField);
+			MapMgr.inst.mouseGridTextField = txt_mouseGridXY = view.getChild("txt_mouseGridXY").asTextField;
+			
 			txt_gridRange = view.getChild("txt_gridRange").asTextInput;
 			txt_gridRange.text = MapMgr.inst.gridRange.toString();
-			txt_top = view.getChild("txt_top").asTextInput;
-			txt_bottom = view.getChild("txt_bottom").asTextInput;
-			txt_left = view.getChild("txt_left").asTextInput;
-			txt_right = view.getChild("txt_right").asTextInput;
-			var _local_1:* = "0-9\\-";
-			txt_right.restrict = _local_1;
-			txt_left.restrict = _local_1;
-			txt_bottom.restrict = _local_1;
-			txt_top.restrict = _local_1;
+			
 			btn_walk = view.getChild("btn_walk").asButton;
 			btn_block = view.getChild("btn_block").asButton;
 			btn_blockVert = view.getChild("btn_blockVert").asButton;
@@ -98,36 +95,48 @@
 			btn_switchWall = view.getChild("btn_switchWall").asButton;
 			btn_mapThing = view.getChild("btn_mapThing").asButton;
 			btn_visible = view.getChild("btn_visible").asButton;
+			
 			mapComp = view.getChild("mapComp").asCom;
+			
 			grp_mapThingInfo = view.getChild("grp_mapThingInfo").asGroup;
 			grp_bevel = view.getChild("grp_bevel").asGroup;
+			
 			txt_taskId = view.getChild("txt_taskId").asTextInput;
-			txt_taskId.addEventListener("focusOut", onFocusOutTaskId);
+			txt_taskId.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutTaskId);
+			
 			txt_groupId = view.getChild("txt_groupId").asTextInput;
-			txt_groupId.addEventListener("focusOut", onFocusOutGroupId);
+			txt_groupId.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutGroupId);
+			
 			txt_groupId2 = view.getChild("txt_groupId2").asTextInput;
-			txt_groupId2.addEventListener("focusOut", onFocusOutGroupId2);
+			txt_groupId2.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutGroupId2);	
+			
 			txt_x = view.getChild("txt_x").asTextInput;
-			txt_x.addEventListener("focusOut", onFocusOutX);
+			txt_x.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutX);
+			
 			txt_y = view.getChild("txt_y").asTextInput;
-			txt_y.addEventListener("focusOut", onFocusOutY);
+			txt_y.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutY);
+			
 			txt_anchorX = view.getChild("txt_anchorX").asTextInput;
-			txt_anchorX.addEventListener("focusOut", onFocusOutAnchorX);
+			txt_anchorX.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutAnchorX);
+			
 			txt_anchorY = view.getChild("txt_anchorY").asTextInput;
-			txt_anchorY.addEventListener("focusOut", onFocusOutAnchorY);
-			_local_1 = "0-9 .\\-";
-			txt_anchorY.restrict = _local_1;
-			txt_anchorX.restrict = _local_1;
+			txt_anchorY.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutAnchorY);
+			
+			
+			txt_anchorX.restrict = txt_anchorY.restrict = txt_x.restrict = txt_y.restrict = "0-9 .\\-";
 			combo_taskType = view.getChild("combo_taskType").asComboBox;
-			combo_taskType.addEventListener("stateChanged", onClickTaskType);
+			combo_taskType.addEventListener(StateChangeEvent.CHANGED,onClickTaskType);
+			
 			combo_triggerType = view.getChild("combo_triggerType").asComboBox;
-			combo_triggerType.items = MapMgr.inst.triggerDesc;
+			combo_triggerType.items =  MapMgr.inst.triggerDesc;
 			combo_triggerType.values = MapMgr.inst.triggerTypes;
 			combo_triggerType.selectedIndex = 0;
-			combo_triggerType.addEventListener("stateChanged", onClickTriggerType);
+			combo_triggerType.addEventListener(StateChangeEvent.CHANGED, onClickTriggerType);
+			
 			list_tree = view.getChild("list_tree").asTree;
 			list_tree.treeNodeRender = renderTreeNode;
-			list_tree.addEventListener("itemClick", onClickMapTreeItem);
+			list_tree.addEventListener(ItemEvent.CLICK, onClickMapTreeItem);
+			
 			updateMapInfo(null);
 			onEmitter(GameEvent.UpdateMapInfo, updateMapInfo);
 			onEmitter(GameEvent.ResizeMapSucc, updateMapInfo);
@@ -136,474 +145,318 @@
 			onEmitter(GameEvent.ImportMapThingJson, updateMapThingPram);
 			onEmitter(GameEvent.ClickMapTing, onClickMapTing);
 			MapMgr.inst.changeMap(true);
-			view.addEventListener("click", onClickView, true);
-			view.addEventListener("mouseMove", mouseMove);
+			view.addEventListener(MouseEvent.CLICK, onClickView,true);
+			view.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
 		}
 		
-		private function updateListTree(data:Object):void
-		{
-			function createNodeRecursive(_arg_1:Vector.<MapFileTreeNode>, _arg_2:GTreeNode):void
-			{
-				var _local_3:* = null;
-				for each (var _local_4:MapFileTreeNode in _arg_1)
-				{
-					_local_3 = new GTreeNode(_local_4.isDir);
-					_local_3.data = ((_local_4.isDir) ? _local_4.name : [_local_4.name, ((BaseUT.checkIsPngOrJpg(_local_4.path)) ? _local_4.path : "ui://Common/file")]);
-					_arg_2.addChild(_local_3);
-					if (_local_4.isDir)
-					{
-						(createNodeRecursive(_local_4.fileArr, _local_3));
-					};
-				};
-			};
+		
+		/**刷新地图场景物件目录**/
+		private function updateListTree(data:Object):void{
 			list_tree.rootNode.removeChildren();
-			createNodeRecursive(MapMgr.inst.mapDirectoryStrut, list_tree.rootNode); //not popped
+			createNodeRecursive(MapMgr.inst.mapDirectoryStrut, list_tree.rootNode);
+			//递归创建节点
+			function createNodeRecursive(fileArr:Vector.<MapFileTreeNode>, parent:GTreeNode):void{
+				for each(var item:MapFileTreeNode in fileArr){
+					var node: GTreeNode = new GTreeNode(item.isDir);
+					node.data = item.isDir ? item.name : [item.name, BaseUT.checkIsPngOrJpg(item.path) ? item.path : MapMgr.inst.fileIcon];
+					parent.addChild(node);
+					if(item.isDir) createNodeRecursive(item.fileArr, node);
+				}
+			}
 		}
 		
-		private function updateMapThingPram(_arg_1:Object):void
-		{
-			var _local_6:int;
-			var _local_4:* = null;
-			var _local_3:Object = _arg_1.body[0];
-			var _local_2:Array = _local_3.thingTypeList;
-			var _local_7:Array = [];
-			var _local_5:Array = [];
-			_local_6 = 0;
-			while (_local_6 < _local_2.length)
-			{
-				_local_4 = _local_2[_local_6];
-				_local_7.push(_local_4.type);
-				_local_5.push(_local_4.desc);
-				_local_6++;
-			};
-			combo_taskType.items = _local_5;
-			combo_taskType.values = _local_7;
+		private function updateMapThingPram(data:Object):void{
+			var thingPramInfo:Object = data.body[0];
+			var thingTypeList:Array = thingPramInfo.thingTypeList;
+			var taskTypeArr:Array = [];
+			var taskDescArr:Array = [];
+			
+			for(var i:int = 0; i< thingTypeList.length; i++){
+				var obj:Object = thingTypeList[i];
+				taskTypeArr.push(obj.type);
+				taskDescArr.push(obj.desc);
+			}
+
+			//物件类型新增比较频繁，所以走配置
+			combo_taskType.items = taskDescArr;
+			combo_taskType.values = taskTypeArr;
 			combo_taskType.selectedIndex = 0;
 		}
 		
-		private function renderTreeNode(_arg_1:GTreeNode, _arg_2:GComponent):void
-		{
-			if (_arg_1.isFolder)
-			{
-				_arg_2.text = _arg_1.data+"";
+		private function renderTreeNode(node: GTreeNode,obj :GComponent):void{
+			if(node.isFolder){
+				obj.text = String(node.data);
+			}else if(node.data is Array){
+				obj.text = String(node.data[0]);
+				obj.icon = node.data[1];
+			}else{
+				obj.icon = MapMgr.inst.fileIcon;
+				obj.text = String(node.data);
 			}
-			else
-			{
-				if ((_arg_1.data is Array))
-				{
-					_arg_2.text = _arg_1.data[0];
-					_arg_2.icon = _arg_1.data[1];
-				}
-				else
-				{
-					_arg_2.icon = "ui://Common/file";
-					_arg_2.text = _arg_1.data+"";
-				};
-			};
 		}
 		
-		private function updateMapInfo(_arg_1:Object=null):void
-		{
-			txt_mapRect.text = ((MapMgr.inst.mapWidth + ", ") + MapMgr.inst.mapHeight);
+		private function updateMapInfo(data:Object=null):void{
+			txt_mapRect.text = MapMgr.inst.mapWidth + ", " + MapMgr.inst.mapHeight;
 			txt_cellSize.text = MapMgr.inst.cellSize.toString();
 		}
 		
-		private function onClickMapTreeItem(_arg_1:ItemEvent):void
-		{
-			var _local_2:GTreeNode = _arg_1.itemObject.treeNode;
-			if (!_local_2.isFolder)
-			{
+		private function onClickMapTreeItem(evt:ItemEvent):void{
+			var treeNode: GTreeNode = evt.itemObject.treeNode;
+			if(!treeNode.isFolder){
 				_isInCopyMapThing = true;
-				newDragMapThing(_local_2.data[1]);
-			};
+				newDragMapThing(treeNode.data[1]);
+			}
 		}
 		
-		private function onDragMapThingStart(_arg_1:Object):void
-		{
-			newDragMapThing(_arg_1.body.url);
+		/**开始拖拽场景已有的物件**/
+		private function onDragMapThingStart(data:Object):void{
+			newDragMapThing(data.body.url);
 			_drawMapThingData = {
-				"taskId":_arg_1.body.taskId,
-					"groupId":_arg_1.body.groupId,
-					"type":_arg_1.body.type
+				taskId: data.body.taskId, 
+				groupId: data.body.groupId, 
+				type: data.body.type
 			};
 		}
 		
-		private function newDragMapThing(_arg_1:String):void
-		{
+		private function newDragMapThing(icon:String):void{
 			disposeDragMapThing();
-			emit(GameEvent.ChangeGridType, ["GridType_MapThing"]);
-			changeGridType("GridType_MapThing", btn_mapThing);
-			_mapThingComp = MapMgr.inst.getMapThingComp(_arg_1);
+			emit(GameEvent.ChangeGridType, [Enum.MapThing]);
+			changeGridType(Enum.MapThing, btn_mapThing);
+			_mapThingComp = MapMgr.inst.getMapThingComp(icon);
 			_mapThingComp.x = Global.stage.mouseX;
 			_mapThingComp.y = Global.stage.mouseY;
 			_mapThingComp.setScale(MapMgr.inst.mapScale, MapMgr.inst.mapScale);
 			SceneMgr.inst.curScene.layer.addChild(_mapThingComp);
 			_mapThingComp.touchable = false;
+		
 		}
 		
-		private function onClickView(_arg_1:MouseEvent):void
+		private function onClickView(evt:MouseEvent):void
 		{
-			if (((!(_isInCopyMapThing)) && (_mapThingComp)))
-			{
-				if (Global.stage.mouseX <= mapComp.width)
-				{
-					emit(GameEvent.DragMapThingDown, {
-						"url":_mapThingComp.icon,
-						"taskId":((_drawMapThingData) ? _drawMapThingData.taskId : 0),
-						"groupId":((_drawMapThingData) ? _drawMapThingData.groupId : 0),
-						"type":((_drawMapThingData) ? _drawMapThingData.type : 0),
-						"isByDrag":true
+			if(!_isInCopyMapThing && _mapThingComp){
+				if(Global.stage.mouseX <= mapComp.width){
+					emit(GameEvent.DragMapThingDown,{
+						url: _mapThingComp.icon,
+						taskId: _drawMapThingData ? _drawMapThingData.taskId : 0,
+						groupId: _drawMapThingData ? _drawMapThingData.groupId : 0,
+						type: _drawMapThingData ? _drawMapThingData.type : 0,
+						isByDrag: true
 					});
-				};
+				}
 				disposeDragMapThing();
-			};
+			}
 			_isInCopyMapThing = false;
 		}
 		
-		private function mouseMove(_arg_1:MouseEvent):void
+		private function mouseMove(evt:MouseEvent):void
 		{
-			if (_mapThingComp)
-			{
+			if(_mapThingComp){
 				_mapThingComp.x = Global.stage.mouseX;
 				_mapThingComp.y = Global.stage.mouseY;
-			};
-		}
-		
-		private function onClickMapTing(_arg_1:Object):void
-		{
-			var _local_3:MapMgr = MapMgr.inst;
-			var _local_4:MapThingInfo = _local_3.curMapThingInfo;
-			var _local_2:* = (_local_4.type == 999);
-			if (_local_2)
-			{
-				txt_groupId2.text = ((_local_4.groupIdStr) ? _local_4.groupIdStr : "");
 			}
-			else
-			{
-				txt_taskId.text = (_local_4.taskId + "");
-				txt_groupId.text = (_local_4.groupId + "");
-				txt_x.text = (_local_4.x + "");
-				txt_y.text = (_local_4.y + "");
-				txt_anchorX.text = (_local_4.anchorX + "");
-				txt_anchorY.text = (_local_4.anchorY + "");
-				txt_thingRect.text = ((_local_4.width + ",") + _local_4.height);
-				combo_taskType.selectedIndex = (_local_4.type - 1);
-			};
-			grp_mapThingInfo.visible = (!(_local_2));
-			grp_bevel.visible = _local_2;
 		}
-		
-		private function onFocusOutTaskId(_arg_1:Event):void
-		{
-			if (MapMgr.inst.curMapThingInfo)
-			{
-				MapMgr.inst.curMapThingInfo.taskId = int(txt_taskId.text);
-			};
-		}
-		
-		private function onFocusOutGroupId(_arg_1:Event):void
-		{
-			if (MapMgr.inst.curMapThingInfo)
-			{
-				MapMgr.inst.curMapThingInfo.groupId = int(txt_groupId.text);
-			};
-		}
-		
-		private function onFocusOutGroupId2(_arg_1:Event):void
-		{
-			if (MapMgr.inst.curMapThingInfo)
-			{
-				MapMgr.inst.curMapThingInfo.groupIdStr = txt_groupId2.text;
-			};
-		}
-		
-		private function onFocusOutX(_arg_1:Event):void
-		{
-			var _local_5:int;
-			var _local_2:* = null;
+		private function onClickMapTing(data:Object):void{
 			var mapMgr:MapMgr = MapMgr.inst;
-			if (mapMgr.curMapThingInfo)
-			{
-				_local_5 = mapMgr.curMapThingInfo.x;
-				var _local_4:int = mapMgr.curMapThingInfo.y;
-				_local_2 = mapMgr.getMapThingCompByXY(_local_5, _local_4);
-				delete mapMgr.mapThingDic[_local_2.name];
-				var _local_6:* = txt_x.text;
-				mapMgr.curMapThingInfo.x = _local_6;
-				_local_2.x = _local_6;
-				_local_2.name = ((_local_2.x + "_") + _local_2.y);
-				mapMgr.mapThingDic[_local_2.name] = [mapMgr.curMapThingInfo, _local_2];
-				emit(GameEvent.ChangeMapThingXY, {
-					"x":_local_2.x,
-					"y":_local_2.y,
-					"width":_local_2.width,
-					"height":_local_2.height
-				});
-			};
+			var curMapThingInfo:MapThingInfo = mapMgr.curMapThingInfo;
+			var isBelve:Boolean = curMapThingInfo.type == Enum.MapThingType_bevel;//是否为斜角顶点
+			if(isBelve){
+				txt_groupId2.text = curMapThingInfo.groupIdStr ? curMapThingInfo.groupIdStr : "";
+			}else{
+				txt_taskId.text = curMapThingInfo.taskId+"";
+				txt_groupId.text = curMapThingInfo.groupId+"";
+				txt_x.text = curMapThingInfo.x+"";
+				txt_y.text = curMapThingInfo.y+"";
+				txt_anchorX.text = curMapThingInfo.anchorX+"";
+				txt_anchorY.text = curMapThingInfo.anchorY+"";
+				txt_thingRect.text = curMapThingInfo.width+","+curMapThingInfo.height;
+				combo_taskType.selectedIndex = curMapThingInfo.type - 1;
+			}
+		
+			grp_mapThingInfo.visible = !isBelve;
+			grp_bevel.visible = isBelve;
 		}
 		
-		private function onFocusOutY(_arg_1:Event):void
+		private function onFocusOutTaskId(event:Event):void
 		{
-			var _local_5:int;
-			var _local_2:* = null;
-			var _local_3:MapMgr = MapMgr.inst;
-			if (_local_3.curMapThingInfo)
-			{
-				_local_5 = _local_3.curMapThingInfo.x;
-				var _local_4:int = _local_3.curMapThingInfo.y;
-				_local_2 = _local_3.getMapThingCompByXY(_local_5, _local_4);
-				delete _local_3.mapThingDic[_local_2.name];
-				var _local_6:* = txt_y.text;
-				_local_3.curMapThingInfo.y = _local_6;
-				_local_2.y = _local_6;
-				_local_2.name = ((_local_2.x + "_") + _local_2.y);
-				_local_3.mapThingDic[_local_2.name] = [_local_3.curMapThingInfo, _local_2];
-				emit(GameEvent.ChangeMapThingXY, {
-					"x":_local_2.x,
-					"y":_local_2.y,
-					"width":_local_2.width,
-					"height":_local_2.height
-				});
-			};
+			if(MapMgr.inst.curMapThingInfo) MapMgr.inst.curMapThingInfo.taskId = int(txt_taskId.text);	
 		}
 		
-		private function onFocusOutAnchorX(_arg_1:Event):void
+		private function onFocusOutGroupId(event:Event):void
 		{
-			var _local_2:* = null;
-			var _local_5:Number;
-			var _local_3:MapMgr = MapMgr.inst;
-			if (_local_3.curMapThingInfo)
-			{
-				_local_2 = _local_3.getMapThingCompByXY(_local_3.curMapThingInfo.x, _local_3.curMapThingInfo.y);
-				delete _local_3.mapThingDic[_local_2.name];
-				_local_3.curMapThingInfo.anchorX = Number(txt_anchorX.text);
-				_local_5 = _local_3.curMapThingInfo.anchorX;
-				var _local_4:Number = _local_3.curMapThingInfo.anchorY;
-				_local_2.setPivot(_local_5, _local_4, true);
-				txt_x.text = (_local_2.x + "");
-				txt_y.text = (_local_2.y + "");
-				_local_3.curMapThingInfo.x = _local_2.x;
-				_local_3.curMapThingInfo.y = _local_2.y;
-				_local_2.name = ((_local_2.x + "_") + _local_2.y);
-				_local_3.mapThingDic[_local_2.name] = [_local_3.curMapThingInfo, _local_2];
-			};
+			if(MapMgr.inst.curMapThingInfo) MapMgr.inst.curMapThingInfo.groupId = int(txt_groupId.text);	
 		}
 		
-		private function onFocusOutAnchorY(_arg_1:Event):void
+		private function onFocusOutGroupId2(event:Event):void
 		{
-			var _local_2:* = null;
-			var _local_5:Number;
-			var _local_3:MapMgr = MapMgr.inst;
-			if (_local_3.curMapThingInfo)
-			{
-				_local_2 = _local_3.getMapThingCompByXY(_local_3.curMapThingInfo.x, _local_3.curMapThingInfo.y);
-				delete _local_3.mapThingDic[_local_2.name];
-				_local_3.curMapThingInfo.anchorY = Number(txt_anchorY.text);
-				_local_5 = _local_3.curMapThingInfo.anchorX;
-				var _local_4:Number = _local_3.curMapThingInfo.anchorY;
-				_local_2.setPivot(_local_5, _local_4, true);
-				txt_x.text = (_local_2.x + "");
-				txt_y.text = (_local_2.y + "");
-				_local_3.curMapThingInfo.x = _local_2.x;
-				_local_3.curMapThingInfo.y = _local_2.y;
-				_local_2.name = ((_local_2.x + "_") + _local_2.y);
-				_local_3.mapThingDic[_local_2.name] = [_local_3.curMapThingInfo, _local_2];
-			};
+			if(MapMgr.inst.curMapThingInfo) MapMgr.inst.curMapThingInfo.groupIdStr = txt_groupId2.text;	
+			
+		}
+		private function onFocusOutX(event:Event):void
+		{
+			var mapMgr:MapMgr = MapMgr.inst;
+			if(mapMgr.curMapThingInfo){
+				var oldX:Number = mapMgr.curMapThingInfo.x,oldY:Number = mapMgr.curMapThingInfo.y;
+				var mapThingComp:GButton = mapMgr.getMapThingCompByXY(oldX,oldY);
+				delete mapMgr.mapThingDic[mapThingComp.name];
+				mapThingComp.x = mapMgr.curMapThingInfo.x = Number(txt_x.text);
+				mapThingComp.name = int(mapThingComp.x) + "_" + int(mapThingComp.y);
+				mapMgr.mapThingDic[mapThingComp.name] = [mapMgr.curMapThingInfo, mapThingComp];
+				emit(GameEvent.ChangeMapThingXY, {x:mapThingComp.x, y:mapThingComp.y, width: mapThingComp.width, height: mapThingComp.height});
+			}
 		}
 		
-		private function onClickTaskType(_arg_1:Object):void
+		private function onFocusOutY(event:Event):void
 		{
-			var _local_2:int = combo_taskType.values[combo_taskType.selectedIndex];
-			if (MapMgr.inst.curMapThingInfo)
-			{
-				MapMgr.inst.curMapThingInfo.type = _local_2;
-			};
+			var mapMgr:MapMgr = MapMgr.inst;
+			if(mapMgr.curMapThingInfo) {
+				var oldX:Number = mapMgr.curMapThingInfo.x,oldY:Number = mapMgr.curMapThingInfo.y;
+				var mapThingComp:GButton = mapMgr.getMapThingCompByXY(oldX,oldY);
+				delete mapMgr.mapThingDic[mapThingComp.name];
+				mapThingComp.y = mapMgr.curMapThingInfo.y = Number(txt_y.text);	
+				mapThingComp.name = int(mapThingComp.x) + "_" + int(mapThingComp.y);
+				mapMgr.mapThingDic[mapThingComp.name] = [mapMgr.curMapThingInfo, mapThingComp];
+				emit(GameEvent.ChangeMapThingXY, {x:mapThingComp.x, y:mapThingComp.y, width: mapThingComp.width, height: mapThingComp.height});
+			}
 		}
 		
-		private function onClickTriggerType(_arg_1:Object):void
+		private function onFocusOutAnchorX(event:Event):void
 		{
-			var _local_2:int = combo_triggerType.values[combo_triggerType.selectedIndex];
-			MapMgr.inst.curMapThingTriggerType = _local_2;
+			var mapMgr:MapMgr = MapMgr.inst;
+			if(mapMgr.curMapThingInfo){
+				var mapThingComp:GButton = mapMgr.getMapThingCompByXY(mapMgr.curMapThingInfo.x,mapMgr.curMapThingInfo.y);
+				delete mapMgr.mapThingDic[mapThingComp.name];
+				mapMgr.curMapThingInfo.anchorX = Number(txt_anchorX.text);
+				var anchorX:Number = mapMgr.curMapThingInfo.anchorX,anchorY:Number = mapMgr.curMapThingInfo.anchorY;
+				mapThingComp.setPivot(anchorX,anchorY,true);
+				txt_x.text = mapThingComp.x+"";
+				txt_y.text = mapThingComp.y+"";
+				mapMgr.curMapThingInfo.x = mapThingComp.x;
+				mapMgr.curMapThingInfo.y = mapThingComp.y;
+				mapThingComp.name = mapThingComp.x + "_" + mapThingComp.y;
+				mapMgr.mapThingDic[mapThingComp.name] = [mapMgr.curMapThingInfo, mapThingComp];
+			}
 		}
 		
-		private function disposeDragMapThing():void
+		private function onFocusOutAnchorY(event:Event):void
 		{
-			if (_mapThingComp)
-			{
+			var mapMgr:MapMgr = MapMgr.inst;
+			if(mapMgr.curMapThingInfo){
+				var mapThingComp:GButton = mapMgr.getMapThingCompByXY(mapMgr.curMapThingInfo.x,mapMgr.curMapThingInfo.y);
+				delete mapMgr.mapThingDic[mapThingComp.name];
+				mapMgr.curMapThingInfo.anchorY = Number(txt_anchorY.text);
+				var anchorX:Number = mapMgr.curMapThingInfo.anchorX,anchorY:Number = mapMgr.curMapThingInfo.anchorY;
+				mapThingComp.setPivot(anchorX,anchorY,true);
+				txt_x.text = mapThingComp.x+"";
+				txt_y.text = mapThingComp.y+"";
+				mapMgr.curMapThingInfo.x = mapThingComp.x;
+				mapMgr.curMapThingInfo.y = mapThingComp.y;
+				mapThingComp.name = mapThingComp.x + "_" + mapThingComp.y;
+				mapMgr.mapThingDic[mapThingComp.name] = [mapMgr.curMapThingInfo, mapThingComp];
+			}
+		}
+		
+		private function onClickTaskType(data:Object):void
+		{
+			var type:int = combo_taskType.values[combo_taskType.selectedIndex];
+			if(MapMgr.inst.curMapThingInfo) MapMgr.inst.curMapThingInfo.type = type;	
+		}
+		
+		private function onClickTriggerType(data:Object):void
+		{
+			var type:int = combo_triggerType.values[combo_triggerType.selectedIndex];
+			MapMgr.inst.curMapThingTriggerType = type;
+		}
+		
+		
+		private function disposeDragMapThing():void{
+			if(_mapThingComp){
 				_mapThingComp.removeFromParent();
 				_mapThingComp.dispose();
 				_mapThingComp = null;
-			};
+			}
 			_drawMapThingData = null;
 		}
 		
-		public function _tap_btn_walk(_arg_1:GTouchEvent):void
-		{
-			changeGridType("GridType_walk", btn_walk);
+		public function _tap_btn_walk(evt:GTouchEvent):void{
+			changeGridType(Enum.Walk, btn_walk);
+		}
+		public function _tap_btn_block(evt:GTouchEvent):void{
+			changeGridType(Enum.Block, btn_block);
+		}
+		public function _tap_btn_visible(evt:GTouchEvent):void{
+			changeGridType(Enum.Visible, btn_visible);
 		}
 		
-		public function _tap_btn_block(_arg_1:GTouchEvent):void
-		{
-			changeGridType("GridType_block", btn_block);
+		public function _tap_btn_blockVert(evt:GTouchEvent):void{
+			changeGridType(Enum.BlockVerts, btn_blockVert);
 		}
-		
-		public function _tap_btn_visible(_arg_1:GTouchEvent):void
-		{
-			changeGridType("GridType_visible", btn_visible);
+		public function _tap_btn_water(evt:GTouchEvent):void{
+			changeGridType(Enum.Water,btn_water);
 		}
-		
-		public function _tap_btn_blockVert(_arg_1:GTouchEvent):void
-		{
-			changeGridType("GridType_blockVerts", btn_blockVert);
+		public function _tap_btn_waterVert(evt:GTouchEvent):void{
+			changeGridType(Enum.WaterVerts,btn_waterVert);
 		}
-		
-		public function _tap_btn_water(_arg_1:GTouchEvent):void
-		{
-			changeGridType("GridType_water", btn_water);
+		public function _tap_btn_mapThing(evt:GTouchEvent):void{
+			changeGridType(Enum.MapThing,btn_mapThing);
 		}
-		
-		public function _tap_btn_waterVert(_arg_1:GTouchEvent):void
-		{
-			changeGridType("GridType_WaterVerts", btn_waterVert);
+		public function _tap_btn_start(evt:GTouchEvent):void{
+			changeGridType(Enum.Start,btn_start);
 		}
-		
-		public function _tap_btn_mapThing(_arg_1:GTouchEvent):void
-		{
-			changeGridType("GridType_MapThing", btn_mapThing);
+		public function _tap_btn_startWall(evt:GTouchEvent):void{
+			changeGridType(Enum.StartWall,btn_startWall);
 		}
-		
-		public function _tap_btn_start(_arg_1:GTouchEvent):void
-		{
-			changeGridType("GridType_start", btn_start);
+		public function _tap_btn_switchWall(evt:GTouchEvent):void{
+			changeGridType(Enum.SwitchWall,btn_switchWall);
 		}
-		
-		public function _tap_btn_startWall(_arg_1:GTouchEvent):void
-		{
-			changeGridType("GridType_startWall", btn_startWall);
-		}
-		
-		public function _tap_btn_switchWall(_arg_1:GTouchEvent):void
-		{
-			changeGridType("GridType_switchWall", btn_switchWall);
-		}
-		
-		private function changeGridType(_arg_1:String, _arg_2:GButton):void
-		{
-			if (_curSelectTypeBtn == _arg_2)
-			{
-				return;
-			};
-			emit(GameEvent.ChangeGridType, [_arg_1]);
-			if (_curSelectTypeBtn)
-			{
-				_curSelectTypeBtn.selected = false;
-			};
-			_curSelectTypeBtn = _arg_2;
+		/**切换操作类型**/
+		private function changeGridType(type:String, btn:GButton):void{
+			if(_curSelectTypeBtn == btn) return;
+			emit(GameEvent.ChangeGridType, [type]);
+			if(_curSelectTypeBtn) _curSelectTypeBtn.selected = false;
+			_curSelectTypeBtn = btn;
 			_curSelectTypeBtn.selected = true;
-			_arg_2.getChild("n3").asGraph.alpha = 0.5;
-			_arg_2.getChild("n3").asGraph.color = MapMgr.inst.getColorByType(_arg_1);
-			var _local_3:* = false;
-			grp_bevel.visible = _local_3;
-			grp_mapThingInfo.visible = _local_3;
+			(btn.getChild("n3").asGraph).alpha = 0.5;
+			(btn.getChild("n3").asGraph).color = MapMgr.inst.getColorByType(type);
+			grp_mapThingInfo.visible = grp_bevel.visible = false;
 		}
-		
-		public function _tap_btn_clearWalk(_arg_1:GTouchEvent):void
-		{
-			emit(GameEvent.ClearGridType, ["GridType_walk"]);
-		}
-		
-		public function _tap_btn_clearBolck(_arg_1:GTouchEvent):void
-		{
-			emit(GameEvent.ClearGridType, ["GridType_block"]);
-		}
-		
-		public function _tap_btn_clearVisible(_arg_1:GTouchEvent):void
-		{
-			emit(GameEvent.ClearGridType, ["GridType_visible"]);
-		}
-		
-		public function _tap_btn_clearBolckVert(_arg_1:GTouchEvent):void
-		{
-			emit(GameEvent.ClearGridType, ["GridType_blockVerts"]);
-		}
-		
-		public function _tap_btn_clearWater(_arg_1:GTouchEvent):void
-		{
-			emit(GameEvent.ClearGridType, ["GridType_water"]);
-		}
-		
-		public function _tap_btn_clearWaterVert(_arg_1:GTouchEvent):void
-		{
-			emit(GameEvent.ClearGridType, ["GridType_WaterVerts"]);
-		}
-		
-		public function _tap_btn_clearStart(_arg_1:GTouchEvent):void
-		{
-			emit(GameEvent.ClearGridType, ["GridType_start"]);
-		}
-		
-		public function _tap_btn_resizeGrid(_arg_1:GTouchEvent):void
-		{
+		public function _tap_btn_resizeGrid(evt:GTouchEvent):void{
 			emit(GameEvent.ResizeGrid, [txt_cellSize.text]);
 		}
-		
-		public function _tap_btn_cutMap(_arg_1:GTouchEvent):void
-		{
-			emit(GameEvent.ResizeMap, [txt_top.text, txt_bottom.text, txt_left.text, txt_right.text]);
-		}
-		
-		public function _tap_btn_gridRange(_arg_1:GTouchEvent):void
-		{
+		public function _tap_btn_gridRange(evt:GTouchEvent):void{
 			MapMgr.inst.gridRange = int(txt_gridRange.text);
 			MsgMgr.ShowMsg("设置格子扩散范围大小成功！");
 		}
-		
-		public function _tap_btn_toCenter(_arg_1:GTouchEvent):void
-		{
+		public function _tap_btn_toCenter(evt:GTouchEvent):void{
 			emit(GameEvent.ToCenter);
 		}
-		
-		public function _tap_btn_originalScale(_arg_1:GTouchEvent):void
-		{
+		public function _tap_btn_originalScale(evt:GTouchEvent):void{
 			emit(GameEvent.ToOriginalScale);
 		}
-		
-		public function _tap_btn_exportJson(_arg_1:GTouchEvent):void
-		{
+		public function _tap_btn_exportJson(evt:GTouchEvent):void{
 			MapMgr.inst.exportJsonData();
 		}
-		
-		public function _tap_btn_importJson(_arg_1:GTouchEvent):void
-		{
+		public function _tap_btn_importJson(evt:GTouchEvent):void{
 			MapMgr.inst.importJsonData();
 		}
-		
-		public function _tap_btn_clearAll(_arg_1:GTouchEvent):void
-		{
+		public function _tap_btn_clearAll(evt:GTouchEvent):void{
 			emit(GameEvent.ClearAllData);
 		}
-		
-		public function _tap_btn_changeMap(_arg_1:GTouchEvent):void
-		{
+		public function _tap_btn_changeMap(evt:GTouchEvent):void{
 			MapMgr.inst.changeMap();
 		}
 		
-		public function _tap_btn_runDemo(_arg_1:GTouchEvent):void
-		{
+		public function _tap_btn_runDemo(evt:GTouchEvent):void{
 			ModuleMgr.inst.showLayer(JoystickLayer);
 			emit(GameEvent.RunDemo);
 		}
 		
-		public function _tap_btn_showGrid(_arg_1:GTouchEvent):void
-		{
+		public function _tap_btn_showGrid(evt:GTouchEvent):void{
 			emit(GameEvent.CheckShowGrid);
 		}
 		
-		public function _tap_btn_showPath(_arg_1:GTouchEvent):void
-		{
+		public function _tap_btn_showPath(evt:GTouchEvent):void{
 			emit(GameEvent.CheckShowPath);
 		}
-		
 		
 	}
 }

@@ -1,33 +1,46 @@
-﻿// Decompiled by AS3 Sorcerer 6.78
-// www.buraks.com/as3sorcerer
-
-//modules.mapEditor.comp.MapGridSp
-
 package modules.mapEditor.comp
 {
-    import flash.display.Sprite;
+	import flash.display.Sprite;
 
-    public class MapGridSp extends Sprite 
-    {
-
-
-        public function drawRect(_arg_1:Number, _arg_2:Number, _arg_3:Number, _arg_4:Number, _arg_5:Number):void
-        {
-            graphics.clear();
-            graphics.beginFill(_arg_5, 0.5);
-            graphics.drawRect(_arg_1, _arg_2, _arg_3, _arg_4);
-            graphics.endFill();
-        }
-
-        public function drawCircle(_arg_1:Number, _arg_2:Number, _arg_3:Number, _arg_4:Number):void
-        {
-            graphics.clear();
-            graphics.beginFill(_arg_4, 0.5);
-            graphics.drawCircle(_arg_1, _arg_2, _arg_3);
-            graphics.endFill();
-        }
-
-
-    }
-}//package modules.mapEditor.comp
-
+	/**
+	 * 地图格子
+	 * @author cyk
+	 * 
+	 */
+	public class MapGridSp extends Sprite
+	{
+		public function MapGridSp(){}
+		
+		/**
+		 * 绘制矩形
+		 * @param _x 绘制位置X
+		 * @param _y 绘制位置Y
+		 * @param wid 绘制宽度
+		 * @param hei 绘制高度
+		 * @param color 颜色 
+		 */		
+		public function drawRect(_x:Number,_y:Number,wid:Number,hei:Number,color:Number):void{
+			graphics.beginFill(color,0.5);
+			graphics.drawRect(_x, _y, wid, hei);
+			graphics.endFill();
+		}
+		
+		/**
+		 * 绘制圆
+		 * @param _x 绘制位置X
+		 * @param _y 绘制位置Y
+		 * @param wid radius 绘制半径
+		 * @param color 颜色
+		 */	
+		public function drawCircle(_x:Number,_y:Number,radius:Number,color:Number):void{
+			graphics.beginFill(color,0.5);
+			graphics.drawCircle(_x, _y,radius);
+			graphics.endFill();
+		}
+		
+		public function clear():void{
+			graphics.clear();
+		}
+		
+	}
+}

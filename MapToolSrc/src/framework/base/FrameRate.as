@@ -1,118 +1,103 @@
-﻿// Decompiled by AS3 Sorcerer 6.78
-// www.buraks.com/as3sorcerer
-
-//framework.base.FrameRate
-
 package framework.base
 {
-    import flash.display.Sprite;
-    import flash.utils.Timer;
-    import flash.text.TextField;
-    import flash.text.TextFormat;
-    import flash.filters.DropShadowFilter;
-    import flash.events.TimerEvent;
-    import flash.events.Event;
-
-    public class FrameRate extends Sprite 
-    {
-
-        private var _timer:Timer;
-        private var _text:TextField;
-        private var _tf:TextFormat;
-        private var _c:uint = 0;
-        private var _dropShadow:DropShadowFilter;
-        private var _graph:Sprite;
-        private var _graphBox:Sprite;
-        private var _graphCounter:uint;
-        private var _showGraph:Boolean;
-        private var _graphColor:uint;
-
-        public function FrameRate(_arg_1:uint=0, _arg_2:Boolean=false, _arg_3:Boolean=true, _arg_4:uint=0xFF0000)
-        {
-            var _local_5:* = false;
-            this.mouseChildren = _local_5;
-            this.mouseEnabled = _local_5;
-            _showGraph = _arg_3;
-            _graphColor = _arg_4;
-            if (_showGraph)
-            {
-                initGraph();
-            };
-            _dropShadow = new DropShadowFilter(1, 90, 0, 1, 2, 2);
-            _tf = new TextFormat();
-            _tf.color = _arg_1;
-            _tf.font = "_sans";
-            _tf.size = 11;
-            _text = new TextField();
-            _text.width = 100;
-            _text.height = 20;
-            _text.x = 3;
-            if (_arg_2)
-            {
-                _text.filters = [_dropShadow];
-            };
-            addChild(_text);
-            _timer = new Timer(500);
-            _timer.addEventListener("timer", onTimer);
-            _timer.start();
-            addEventListener("enterFrame", onFrame);
-        }
-
-        protected function onTimer(_arg_1:TimerEvent):void
-        {
-            var _local_2:Number = computeTime();
-            _text.text = (Math.floor(_local_2).toString() + " fps");
-            _text.setTextFormat(_tf);
-            _text.autoSize = "left";
-            if (_showGraph)
-            {
-                updateGraph(_local_2);
-            };
-        }
-
-        protected function onFrame(_arg_1:Event):void
-        {
-            _c++;
-        }
-
-        private function computeTime():Number
-        {
-            var _local_1:uint = _c;
-            _c = 0;
-            return ((_local_1 * 2) - 1);
-        }
-
-        public function updateGraph(_arg_1:Number):void
-        {
-            if (_graphCounter > 30)
-            {
-                _graph.x--;
-            };
-            _graphCounter++;
-            _graph.graphics.lineTo(_graphCounter, (1 + ((stage.frameRate - _arg_1) / 2)));
-        }
-
-        private function initGraph():void
-        {
-            _graphCounter = 0;
-            _graph = new Sprite();
-            _graphBox = new Sprite();
-            _graphBox.graphics.beginFill(0xFF0000);
-            _graphBox.graphics.drawRect(0, 0, 36, 100);
-            _graphBox.graphics.endFill();
-            _graph.mask = _graphBox;
-            var _local_1:* = 5;
-            _graphBox.x = _local_1;
-            _graph.x = _local_1;
-            _local_1 = 20;
-            _graphBox.y = _local_1;
-            _graph.y = _local_1;
-            _graph.graphics.lineStyle(1, _graphColor);
-            addChild(_graph);
-            addChild(_graphBox);
-        }
-
-
-    }
-}//package framework.base
-
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.TimerEvent;
+	import flash.filters.DropShadowFilter;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
+	import flash.utils.Timer;
+	/**
+	 * 显示帧率组件
+	 * @author cyk
+	 * 
+	 */
+	public class FrameRate extends Sprite
+	{
+		private var _timer:Timer;
+		private var _text:TextField;
+		private var _tf:TextFormat;
+		private var _c: uint=0;
+		private var _dropShadow: DropShadowFilter;
+		private var _graph:Sprite;
+		private var _graphBox:Sprite;
+		private var _graphCounter:uint;
+		private var _showGraph:Boolean;
+		private var _graphColor:uint;
+		public function FrameRate(textColor:uint = 0x000000,drawShadow:Boolean=false,showGraph:Boolean=true,graphColor:uint=0xff0000)
+		{
+			this.mouseEnabled = this.mouseChildren = false;
+			_showGraph = showGraph;
+			_graphColor=graphColor;
+			if(_showGraph){
+				initGraph();
+			}
+			_dropShadow=new DropShadowFilter(1,90,0,1,2,2);
+			_tf=new TextFormat();
+			_tf.color = textColor;
+			_tf.font="_sans";
+			_tf.size=11;
+			_text=new TextField();
+			_text.width=100;
+			_text.height=20;
+			_text.x=3;
+			if(drawShadow){
+				_text.filters=[_dropShadow];
+			}
+			addChild(_text);
+			
+			_timer=new Timer(500);
+			_timer.addEventListener(TimerEvent.TIMER,onTimer);
+			_timer.start();
+			
+			addEventListener(Event.ENTER_FRAME,onFrame);
+		}
+		
+		
+		protected function onTimer(event:TimerEvent):void
+		{
+			var val:Number=computeTime();
+			_text.text = Math.floor(val).toString()+" fps";
+			_text.setTextFormat(_tf);
+			_text.autoSize="left";
+			if(_showGraph){
+				updateGraph(val);
+			}
+		}
+		
+		protected function onFrame(event:Event):void
+		{
+			_c++;
+		}
+		
+		private function computeTime():Number{
+			var retValue:uint=_c;
+			_c=0;
+			return retValue*2-1;
+		}
+		
+		public function updateGraph(n:Number):void{
+			if(_graphCounter>30){
+				_graph.x--;
+			}
+			_graphCounter++;
+			_graph.graphics.lineTo(_graphCounter,1+(stage.frameRate-n)/2);
+		}
+		
+		private function initGraph():void{
+			_graphCounter=0;
+			_graph=new Sprite();
+			_graphBox=new Sprite();
+			_graphBox.graphics.beginFill(0xff0000);
+			_graphBox.graphics.drawRect(0,0,36,100);
+			_graphBox.graphics.endFill();
+			_graph.mask=_graphBox;
+			_graph.x = _graphBox.x = 5;
+			_graph.y = _graphBox.y = 20;
+			_graph.graphics.lineStyle(1,_graphColor);
+			
+			addChild(_graph);
+			addChild(_graphBox);
+		}
+	}
+}
