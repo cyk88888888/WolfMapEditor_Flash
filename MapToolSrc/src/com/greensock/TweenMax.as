@@ -254,7 +254,8 @@ package com.greensock
             while (_local_8 < _local_9)
             {
                 _local_6 = _local_5[_local_8];
-                if (((((_local_10) || (_local_6 is SimpleTimeline)) || ((_local_7 = (TweenLite(_local_6).target == TweenLite(_local_6).vars.onComplete)) && (_arg_3))) || ((_arg_2) && (!(_local_7)))))
+				_local_7 = TweenLite(_local_6).target == TweenLite(_local_6).vars.onComplete
+                if (((((_local_10) || (_local_6 is SimpleTimeline)) || ((_local_7) && (_arg_3))) || ((_arg_2) && (!(_local_7)))))
                 {
                     if (_arg_1)
                     {
