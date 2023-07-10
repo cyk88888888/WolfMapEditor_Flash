@@ -1,7 +1,6 @@
 package modules.mapEditor
 {
 	import com.greensock.TweenMax;
-	
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -9,18 +8,15 @@ package modules.mapEditor
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
-	
 	import fairygui.GButton;
 	import fairygui.GComponent;
 	import fairygui.GGraph;
 	import fairygui.GLoader;
 	import fairygui.event.GTouchEvent;
-	
 	import framework.base.BaseUT;
 	import framework.base.Global;
 	import framework.mgr.ModuleMgr;
 	import framework.ui.UIComp;
-	
 	import modules.base.Enum;
 	import modules.base.GameEvent;
 	import modules.common.JuHuaDlg;
@@ -78,6 +74,7 @@ package modules.mapEditor
 			pet = grp_container.getChild("pet").asLoader;
 			center = grp_container.getChild("center").asGraph;
 			mapThingSelectSp = new MapThingSelectSp();
+			mapThingSelectSp.mouseChildren = mapThingSelectSp.mouseEnabled = false;
 			view.addEventListener(MouseEvent.CLICK, onClick);
 			view.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 			view.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
@@ -144,7 +141,6 @@ package modules.mapEditor
 		private function removeAllGrid():void
 		{
 			gridSprite.removeChildren();
-			mapMgr.gridTypeDic = new Dictionary();
 			mapMgr.gridDataDic = new Dictionary();
 			_graphicsDic = new Dictionary();
 			_colorTypeDic = new Dictionary();
@@ -291,11 +287,7 @@ package modules.mapEditor
 				gridSubType = gridType == Enum.MapThing ? gridType + mapMgr.curMapThingTriggerType +"_"+ mapThingKey : gridType +"_"+ mapThingKey;
 				colorType = gridType == Enum.MapThing ? gridType + mapMgr.curMapThingTriggerType : gridType;
 			}
-			if(!mapMgr.gridTypeDic[gridSubType]) mapMgr.gridTypeDic[gridSubType] = new Dictionary();
-			var curGridTypeDic:Dictionary = mapMgr.gridTypeDic[gridSubType];
 			var gridKey:String = gridPosX + "_" + gridPosY;
-			if(curGridTypeDic[gridKey]) return;//该格子已有对应类型颜色格子
-			curGridTypeDic[gridKey] = gridKey;
 			var areaSize: int = mapMgr.areaGraphicsSize;
 			var areaKey:String = Math.floor(gridPosX / areaSize) + "_" + Math.floor(gridPosY / areaSize);
 			var gridDataDic: Dictionary = mapMgr.gridDataDic;
@@ -328,10 +320,7 @@ package modules.mapEditor
 				var mapThingKey: String = int(mapThingInfo.x) + "_" + int(mapThingInfo.y);
 				gridSubType = gridType + mapMgr.curMapThingTriggerType + "_" + mapThingKey;
 			}
-			var curGridTypeDic: Dictionary = mapMgr.gridTypeDic[gridSubType];
 			var gridKey: String = gridPosX + "_" + gridPosY;
-			if (!curGridTypeDic || !curGridTypeDic[gridKey]) return;
-			delete curGridTypeDic[gridKey];
 			var areaSize: int = mapMgr.areaGraphicsSize;
 			var areaKey:String = Math.floor(gridPosX / areaSize) + "_" + Math.floor(gridPosY / areaSize);
 			var gridDataDic: Dictionary = mapMgr.gridDataDic;
@@ -428,7 +417,7 @@ package modules.mapEditor
 						var tempMapThingInfo: MapThingInfo = new MapThingInfo();
 						tempMapThingInfo.x = mapThingData.x;
 						tempMapThingInfo.y = mapThingData.y;
-						mapMgr.curMapThingInfo = tempMapThingInfo;//这里创建的临时mapthingInfo是为了导入地图数据时往gridTypeDic里塞格子数据用
+						mapMgr.curMapThingInfo = tempMapThingInfo;//这里创建的临时mapthingInfo是为了导入地图数据时往gridDataDic里塞格子数据用
 						if (mapThingData.area) addGridDataByType(Enum.MapThing1, mapThingData.area);
 						if (mapThingData.unWalkArea) addGridDataByType(Enum.MapThing2, mapThingData.unWalkArea);
 						if (mapThingData.keyManStandArea) addGridDataByType(Enum.MapThing3, mapThingData.keyManStandArea);
@@ -697,26 +686,12 @@ package modules.mapEditor
 					});
 				}
 			}
+			/** 点击选中场景物件**/
 			mapThingComp.addClickListener(function(evt:GTouchEvent):void{
 				if (_gridType != Enum.MapThing || _isPressSpace) return;
 				var btn:GButton = evt.currentTarget as GButton;
-				var btnPos:Point = new Point(int(btn.x), int(btn.y));
-				var typeKey:String = Enum.MapThing + mapMgr.curMapThingTriggerType + "_" + btnPos.x + "_" + btnPos.y;
-				var mapThingGridDic:Dictionary = mapMgr.gridTypeDic[typeKey];
-				var gridInfo:Array = getGridInfoByMousePos();
-				var gridPosX:int = gridInfo[0];//格子所在的列
-				var gridPosY:int =  gridInfo[1];//格子所在的行
-				if(_isCtrlDown && mapThingGridDic && mapThingGridDic[gridPosX + "_" + gridPosY]) return;//清除时先检测该位置下是否有格子，有的话处理清除格子而不是清除场景物件
 				mapMgr.curMapThingInfo = mapMgr.mapThingDic[btn.name][0];
-				if(_isCtrlDown){
-					if(mapThingSelectSp.curX == btnPos.x && mapThingSelectSp.curY == btnPos.y) mapThingSelectSp.rmSelf();
-					btn.dispose();
-					mapThingSelectSp.rmSelf();
-					mapMgr.curMapThingInfo = null;
-					mapMgr.rmMapThingGrid(btnPos.x + "_" + btnPos.y);
-					delete mapMgr.mapThingDic[btn.name];
-					return;
-				}
+				if(_isCtrlDown) return;
 				if(_lastSelectMapThingComp != btn) {//这样做是为了再切换选中不同场景物件时，不会选中后就马上绘制触发区域格子
 					mapThingSelectSp.rmSelf();
 					_lastSelectMapThingComp = btn;
@@ -728,15 +703,25 @@ package modules.mapEditor
 						mapThingContainer.displayListContainer.addChild(mapThingSelectSp);
 					}
 				});
-				
 				emit(GameEvent.ClickMapTing);
 			});
-			/**右键按下重新拖拽物件**/ 
+			
+			/**点击右键重新拖拽物件、按住ctrl+鼠标右键删除场景物件**/ 
 			mapThingComp.addEventListener(MouseEvent.RIGHT_CLICK, function(evt:MouseEvent):void{
 				if (_gridType != Enum.MapThing || _isPressSpace || _isLeftDown) return;
 				var btn:GButton = evt.currentTarget as GButton;
 				var curMapThingInfo:MapThingInfo = mapMgr.mapThingDic[btn.name][0];
 				if(!curMapThingInfo) return;
+				var btnPos:Point = new Point(int(btn.x), int(btn.y));
+				if(_isCtrlDown){//删除场景物件
+					if(mapThingSelectSp.curX == btnPos.x && mapThingSelectSp.curY == btnPos.y) mapThingSelectSp.rmSelf();
+					btn.dispose();
+					mapThingSelectSp.rmSelf();
+					mapMgr.curMapThingInfo = null;
+					mapMgr.rmMapThingGrid(btnPos.x + "_" + btnPos.y);
+					delete mapMgr.mapThingDic[btn.name];
+					return;
+				}
 				emit(GameEvent.DragMapThingStart,{
 					url:btn.icon, 
 					taskId:curMapThingInfo.taskId,
@@ -760,19 +745,23 @@ package modules.mapEditor
 		
 		private function onRunDemo(data:Object):void
 		{
-			var _tempwalkGridDic:Dictionary = mapMgr.gridTypeDic[Enum.Walk];
-			if (!_tempwalkGridDic || !BaseUT.getDictionaryCount(_tempwalkGridDic))
+			var gridTypeDataMap:Dictionary = mapMgr.gridDataDic[Enum.Walk];
+			if (!gridTypeDataMap)
 			{
 				MsgMgr.ShowMsg("没有找到可行走的格子");
 				return;
 			}
 			var firstWalkGridVec:Point = new Point();
-			for (var key:String in _tempwalkGridDic)
-			{
-				var splitKey:Array = key.split("_");
-				firstWalkGridVec.x = int(splitKey[0]);
-				firstWalkGridVec.y = int(splitKey[1]);
-				break;
+			var isExistGrid:Boolean;
+			for each(var areaData:Dictionary in gridTypeDataMap){
+				for each(var gridData:String in areaData){
+					var splitKey:Array = gridData.split("_");
+					firstWalkGridVec.x = int(splitKey[0]);
+					firstWalkGridVec.y = int(splitKey[1]);
+					isExistGrid = true;
+					break;
+				}
+				if(isExistGrid) break;
 			}
 			pet.visible = true;
 			setPetPosAndRollCamera(firstWalkGridVec.x * _cellSize, firstWalkGridVec.y * _cellSize + _cellSize, true);

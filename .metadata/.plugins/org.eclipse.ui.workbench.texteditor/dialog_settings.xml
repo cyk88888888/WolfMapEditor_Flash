@@ -3,26 +3,26 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="251" key="DIALOG_WIDTH"/>
 		<item value="430" key="DIALOG_Y_ORIGIN"/>
-		<item value="1333" key="DIALOG_X_ORIGIN"/>
 		<item value="400" key="DIALOG_HEIGHT"/>
+		<item value="1333" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Microsoft YaHei UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Microsoft YaHei UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="_arg_1" key="selection"/>
+		<item value="getMapThingComp" key="selection"/>
 		<list key="findhistory">
-			<item value="_arg_1"/>
-			<item value="gridRange"/>
-			<item value="_local_14"/>
-			<item value="_local_6"/>
-			<item value="addGrid"/>
+			<item value="getMapThingComp"/>
 			<item value="ChangeGridType"/>
-			<item value="removeAllGrid"/>
-			<item value="gridTypeDic = new Dictionary()"/>
+			<item value="Enum.MapThing"/>
+			<item value="MapThing"/>
+			<item value="startList"/>
+			<item value="_content"/>
+			<item value="_contentSourceWidth"/>
+			<item value="externalLoadCompleted"/>
 		</list>
 		<list key="replacehistory">
 		</list>

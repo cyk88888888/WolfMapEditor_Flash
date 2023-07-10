@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="39" version="2.0">
+<workbench progressCount="36" version="2.0">
 <workbenchAdvisor/>
 <window height="768" maximized="true" width="1024" x="130" y="130">
 <fastViewData fastViewLocation="1024"/>
@@ -29,53 +29,28 @@
 <folder appearance="1" expanded="2">
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
 <part id="0"/>
-<part id="1"/>
 <part id="2"/>
+<part id="1"/>
 <part id="3"/>
-<part id="4"/>
-<part id="5"/>
-<part id="6"/>
-<part id="7"/>
-<part id="8"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
 <editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapEditorLayer.as" partName="MapEditorLayer.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/MapEditorLayer.as" title="MapEditorLayer.as" tooltip="MapToolSrc/src/modules/mapEditor/MapEditorLayer.as" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/mapEditor/MapEditorLayer.as"/>
-<editorState selectionHorizontalPixel="0" selectionLength="14" selectionOffset="16588" selectionTopPixel="8992"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="8700" selectionTopPixel="4275"/>
 </editor>
-<editor activePart="true" focus="true" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapComp.as" partName="MapComp.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/MapComp.as" title="MapComp.as" tooltip="MapToolSrc/src/modules/mapEditor/MapComp.as" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/mapEditor/MapComp.as"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="10237" selectionTopPixel="6112"/>
-</editor>
-<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapMgr.as" partName="MapMgr.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as" title="MapMgr.as" tooltip="MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as" workbook="DefaultEditorWorkbook">
+<editor activePart="true" focus="true" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapMgr.as" partName="MapMgr.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as" title="MapMgr.as" tooltip="MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1642" selectionTopPixel="551"/>
+<editorState selectionHorizontalPixel="0" selectionLength="11" selectionOffset="1471" selectionTopPixel="779"/>
 </editor>
-<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="FileUT.as" partName="FileUT.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/framework/base/FileUT.as" title="FileUT.as" tooltip="MapToolSrc/src/framework/base/FileUT.as" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/framework/base/FileUT.as"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3153" selectionTopPixel="1770"/>
+<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapComp.as" partName="MapComp.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/MapComp.as" title="MapComp.as" tooltip="MapToolSrc/src/modules/mapEditor/MapComp.as" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/mapEditor/MapComp.as"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="25616" selectionTopPixel="12634"/>
 </editor>
 <editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="Enum.as" partName="Enum.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/base/Enum.as" title="Enum.as" tooltip="MapToolSrc/src/modules/base/Enum.as" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/base/Enum.as"/>
-<editorState selectionHorizontalPixel="0" selectionLength="14" selectionOffset="618" selectionTopPixel="0"/>
-</editor>
-<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapJsonInfo.as" partName="MapJsonInfo.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/conctoller/MapJsonInfo.as" title="MapJsonInfo.as" tooltip="MapToolSrc/src/modules/mapEditor/conctoller/MapJsonInfo.as" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/mapEditor/conctoller/MapJsonInfo.as"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="262" selectionTopPixel="0"/>
-</editor>
-<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapThingInfo.as" partName="MapThingInfo.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/conctoller/MapThingInfo.as" title="MapThingInfo.as" tooltip="MapToolSrc/src/modules/mapEditor/conctoller/MapThingInfo.as" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/mapEditor/conctoller/MapThingInfo.as"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="494" selectionTopPixel="54"/>
-</editor>
-<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="ObjectPool.as" partName="ObjectPool.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/framework/base/ObjectPool.as" title="ObjectPool.as" tooltip="MapToolSrc/src/framework/base/ObjectPool.as" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/framework/base/ObjectPool.as"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1225" selectionTopPixel="361"/>
-</editor>
-<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapGridSp.as" partName="MapGridSp.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/comp/MapGridSp.as" title="MapGridSp.as" tooltip="MapToolSrc/src/modules/mapEditor/comp/MapGridSp.as" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/mapEditor/comp/MapGridSp.as"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="466" selectionTopPixel="0"/>
+<editorState selectionHorizontalPixel="0" selectionLength="17" selectionOffset="850" selectionTopPixel="0"/>
 </editor>
 </editors>
 <views>
@@ -108,16 +83,16 @@
 <fpeExpanded>
 <fpeElement fpePath="/MapToolSrc"/>
 <fpeElement fpePath="/MapToolSrc/src"/>
+<fpeElement fpePath="/MapToolSrc/src/%typeDefaultPackage"/>
 <fpeElement fpePath="/MapToolSrc/src/com"/>
 <fpeElement fpePath="/MapToolSrc/src/com/greensock"/>
 <fpeElement fpePath="/MapToolSrc/src/framework"/>
-<fpeElement fpePath="/MapToolSrc/src/framework/base"/>
 <fpeElement fpePath="/MapToolSrc/src/modules"/>
 <fpeElement fpePath="/MapToolSrc/src/modules/mapEditor"/>
-<fpeElement fpePath="/MapToolSrc/src/modules/mapEditor/conctoller"/>
+<fpeElement fpePath="/MapToolSrc/bin-debug"/>
 </fpeExpanded>
 <fpeSelection>
-<fpeElement fpePath="/MapToolSrc/src/framework/base/ObjectPool.as"/>
+<fpeElement fpePath="/MapToolSrc"/>
 </fpeSelection>
 <filters>
 <filter element=".flexProperties" isEnabled="true"/>
@@ -141,9 +116,10 @@
 </filters>
 <expanded>
 <element path="/MapToolSrc"/>
+<element path="/MapToolSrc/bin-debug"/>
 </expanded>
 <selection>
-<element path="/MapToolSrc/src/framework/base/ObjectPool.as"/>
+<element path="/MapToolSrc"/>
 </selection>
 </viewState>
 </view>
@@ -164,7 +140,7 @@
 <viewState/>
 </view>
 </views>
-<perspectives activePart="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" activePerspective="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development">
+<perspectives activePart="com.adobe.flexbuilder.packageexplorer" activePerspective="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="com.adobe.flexbuilder.mxml.editor.ui.perspectives.DevelopmentPerspectiveFactory" id="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development" label="Flash"/>
 <alwaysOnActionSet id="com.adobe.flexbuilder.flashbridge.flashproject.actionSet"/>
@@ -367,7 +343,7 @@
 </presentation>
 </folder>
 </info>
-<info part="org.eclipse.ui.editorss" ratio="0.32900432" ratioLeft="228" ratioRight="465" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView"/>
+<info part="org.eclipse.ui.editorss" ratio="0.47743812" ratioLeft="328" ratioRight="359" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView"/>
 <info folder="true" part="org.eclipse.debug.internal.ui.ToolsFolderView" ratio="0.5" ratioLeft="956" ratioRight="956" relationship="2" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">&#x0A;<folder activePageID="org.eclipse.debug.ui.ExpressionView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.debug.ui.VariableView" label="变量"/>
 <page content="org.eclipse.debug.ui.BreakpointView" label="断点"/>
 <page content="org.eclipse.debug.ui.ExpressionView" label="表达式"/>
@@ -384,160 +360,161 @@
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/modules/mapEditor/MapComp.as"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/modules/mapEditor/MapComp.as"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/modules/mapEditor/MapEditorLayer.as"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/modules/base/Enum.as"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as"/>
 </editors>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="11116" y="0"/>
-</item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="11286" y="0"/>
-</item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="11655" y="0"/>
-</item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="11771" y="0"/>
-</item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="11762" y="0"/>
-</item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="13049" y="0"/>
-</item>
-<item historyLabel="MapMgr.as" index="1">
-<position info="not_deleted" x="11789" y="0"/>
-</item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="12888" y="0"/>
-</item>
-<item historyLabel="MapMgr.as" index="1">
-<position info="not_deleted" x="7816" y="11"/>
-</item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="5793" y="0"/>
-</item>
-<item historyLabel="MapMgr.as" index="1">
-<position info="not_deleted" x="1170" y="11"/>
-</item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="5793" y="0"/>
-</item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="4827" y="0"/>
-</item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="5514" y="13"/>
-</item>
-<item historyLabel="MapMgr.as" index="1">
-<position info="not_deleted" x="1170" y="11"/>
-</item>
-<item historyLabel="MapMgr.as" index="1">
-<position info="not_deleted" x="10437" y="0"/>
-</item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="5514" y="13"/>
-</item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="10608" y="0"/>
-</item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="10808" y="7"/>
-</item>
-<item historyLabel="MapEditorLayer.as" index="2">
-<position info="not_deleted" x="17333" y="0"/>
-</item>
-<item historyLabel="MapEditorLayer.as" index="2">
-<position info="not_deleted" x="15220" y="0"/>
-</item>
 <item historyLabel="MapEditorLayer.as" index="2">
 <position info="not_deleted" x="16588" y="14"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="3636" y="14"/>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="5760" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="3659" y="0"/>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="5454" y="17"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="6635" y="16"/>
+<item historyLabel="MapComp.as" index="1">
+<position info="not_deleted" x="28640" y="17"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="6730" y="0"/>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8277" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="1527" y="9"/>
+<item historyLabel="MapMgr.as" index="0">
+<position info="not_deleted" x="6706" y="15"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="2919" y="0"/>
+<item historyLabel="MapComp.as" index="1">
+<position info="not_deleted" x="28640" y="17"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="8179" y="7"/>
+<item historyLabel="MapMgr.as" index="0">
+<position info="not_deleted" x="6706" y="15"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="8458" y="0"/>
+<item historyLabel="MapComp.as" index="1">
+<position info="not_deleted" x="23854" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="9011" y="0"/>
+<item historyLabel="MapMgr.as" index="0">
+<position info="not_deleted" x="7075" y="0"/>
 </item>
-<item historyLabel="MapMgr.as" index="1">
-<position info="not_deleted" x="10907" y="0"/>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8277" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="9011" y="0"/>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8245" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="10703" y="0"/>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="1372" y="13"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="12458" y="6"/>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8209" y="8"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="3827" y="0"/>
+<item historyLabel="MapComp.as" index="1">
+<position info="not_deleted" x="23806" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="2977" y="0"/>
+<item historyLabel="MapMgr.as" index="0">
+<position info="not_deleted" x="7340" y="8"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="6861" y="11"/>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8204" y="13"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="8000" y="0"/>
+<item historyLabel="MapComp.as" index="1">
+<position info="not_deleted" x="25900" y="13"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="9415" y="16"/>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8204" y="13"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="10607" y="0"/>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8196" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="10808" y="7"/>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="15633" y="14"/>
 </item>
-<item historyLabel="MapMgr.as" index="3">
-<position info="not_deleted" x="10907" y="0"/>
+<item historyLabel="MapComp.as" index="1">
+<position info="not_deleted" x="6272" y="14"/>
 </item>
-<item historyLabel="MapMgr.as" index="3">
-<position info="not_deleted" x="1642" y="0"/>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="15633" y="14"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="9745" y="0"/>
+<item historyLabel="Enum.as" index="3">
+<position info="not_deleted" x="287" y="4"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="9698" y="0"/>
+<item historyLabel="Enum.as" index="3">
+<position info="not_deleted" x="850" y="17"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="8000" y="0"/>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8266" y="15"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="9415" y="16"/>
+<item historyLabel="MapMgr.as" index="0">
+<position info="not_deleted" x="7119" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="9696" y="0"/>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8248" y="0"/>
 </item>
-<item active="true" historyLabel="MapComp.as" index="0">
-<position info="not_deleted" x="8887" y="21"/>
+<item historyLabel="MapMgr.as" index="0">
+<position info="not_deleted" x="6983" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8248" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="0">
+<position info="not_deleted" x="6706" y="15"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8246" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="0">
+<position info="not_deleted" x="7005" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8246" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="0">
+<position info="not_deleted" x="6706" y="15"/>
+</item>
+<item historyLabel="MapComp.as" index="1">
+<position info="not_deleted" x="6272" y="14"/>
+</item>
+<item historyLabel="MapComp.as" index="1">
+<position info="not_deleted" x="23888" y="0"/>
+</item>
+<item historyLabel="MapComp.as" index="1">
+<position info="not_deleted" x="25616" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8246" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8124" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="14185" y="19"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="5761" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8575" y="11"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="14350" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="1878" y="17"/>
+</item>
+<item historyLabel="MapMgr.as" index="4">
+<position info="not_deleted" x="6706" y="15"/>
+</item>
+<item historyLabel="MapMgr.as" index="4">
+<position info="not_deleted" x="11802" y="0"/>
+</item>
+<item historyLabel="MapMgr.as" index="4">
+<position info="not_deleted" x="1471" y="11"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="2">
+<position info="not_deleted" x="8700" y="0"/>
+</item>
+<item active="true" historyLabel="MapMgr.as" index="4">
+<position info="not_deleted" x="1471" y="11"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -557,50 +534,50 @@
 </trimLayout>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapGridSp.as" tooltip="MapToolSrc/src/modules/mapEditor/comp/MapGridSp.as">
-<persistable path="/MapToolSrc/src/modules/mapEditor/comp/MapGridSp.as"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="ObjectPool.as" tooltip="MapToolSrc/src/framework/base/ObjectPool.as">
-<persistable path="/MapToolSrc/src/framework/base/ObjectPool.as"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapThingInfo.as" tooltip="MapToolSrc/src/modules/mapEditor/conctoller/MapThingInfo.as">
-<persistable path="/MapToolSrc/src/modules/mapEditor/conctoller/MapThingInfo.as"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapJsonInfo.as" tooltip="MapToolSrc/src/modules/mapEditor/conctoller/MapJsonInfo.as">
-<persistable path="/MapToolSrc/src/modules/mapEditor/conctoller/MapJsonInfo.as"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="GComponent.as" tooltip="MapToolSrc/src/fairygui/GComponent.as">
-<persistable path="/MapToolSrc/src/fairygui/GComponent.as"/>
-</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="Enum.as" tooltip="MapToolSrc/src/modules/base/Enum.as">
 <persistable path="/MapToolSrc/src/modules/base/Enum.as"/>
 </file>
-<file factoryID="com.adobe.flexbuilder.editors.derived.ui.startpage.StartPageEditorInput" id="com.adobe.flexbuilder.ui.StartPage" name="Web 浏览器" tooltip="Flash Builder 欢迎屏幕">
-<persistable iconpath="platform:/plugin/com.adobe.flexbuilder.ui/icons/fb_app_16.png" style="20" tooltip="Flash Builder 欢迎屏幕" url="file:/D:/Flash/Adobe Flash Builder 4.7 (64 Bit)/eclipse/plugins/com.adobe.flexbuilder.ui.nl1_4.7.0.349722/nl/zh/welcome/index.html?firstLaunch=false&amp;edition=stnd&amp;version=470"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="FileUT.as" tooltip="MapToolSrc/src/framework/base/FileUT.as">
-<persistable path="/MapToolSrc/src/framework/base/FileUT.as"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="Texture.as" tooltip="MapToolSrc/src/starling/textures/Texture.as">
-<persistable path="/MapToolSrc/src/starling/textures/Texture.as"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="Starling.as" tooltip="MapToolSrc/src/starling/core/Starling.as">
-<persistable path="/MapToolSrc/src/starling/core/Starling.as"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapTool.as" tooltip="MapToolSrc/src/MapTool.as">
+<persistable path="/MapToolSrc/src/MapTool.as"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="TweenMax.as" tooltip="MapToolSrc/src/com/greensock/TweenMax.as">
 <persistable path="/MapToolSrc/src/com/greensock/TweenMax.as"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="InternalTrace.as" tooltip="MapToolSrc/src/com/common/inltrace/InternalTrace.as">
-<persistable path="/MapToolSrc/src/com/common/inltrace/InternalTrace.as"/>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="GLoader.as" tooltip="D:\Flash\mapTool\Common1\src\fairygui\GLoader.as">
+<persistable uri="file:/D:/Flash/mapTool/Common1/src/fairygui/GLoader.as"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="ArrayUtils.as" tooltip="MapToolSrc/src/com/common/util/ArrayUtils.as">
-<persistable path="/MapToolSrc/src/com/common/util/ArrayUtils.as"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="GLoader.as" tooltip="MapToolSrc/src/fairygui/GLoader.as">
+<persistable path="/MapToolSrc/src/fairygui/GLoader.as"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="StrUtils.as" tooltip="MapToolSrc/src/common/util/StrUtils.as">
-<persistable path="/MapToolSrc/src/common/util/StrUtils.as"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="GObject.as" tooltip="MapToolSrc/src/fairygui/GObject.as">
+<persistable path="/MapToolSrc/src/fairygui/GObject.as"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MsgMgr.as" tooltip="MapToolSrc/src/modules/common/mgr/MsgMgr.as">
-<persistable path="/MapToolSrc/src/modules/common/mgr/MsgMgr.as"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapComp.as" tooltip="MapToolSrc/src/modules/mapEditor/MapComp.as">
+<persistable path="/MapToolSrc/src/modules/mapEditor/MapComp.as"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="Wolf_MapEditor.as" tooltip="D:\Flash\mapTool\Common1\src\Wolf_MapEditor.as">
+<persistable uri="file:/D:/Flash/mapTool/Common1/src/Wolf_MapEditor.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="StringUtils.as" tooltip="MapToolSrc/src/framework/utils/StringUtils.as">
+<persistable path="/MapToolSrc/src/framework/utils/StringUtils.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="ObjectUtils.as" tooltip="MapToolSrc/src/framework/utils/ObjectUtils.as">
+<persistable path="/MapToolSrc/src/framework/utils/ObjectUtils.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="ArrayUtils.as" tooltip="MapToolSrc/src/framework/utils/ArrayUtils.as">
+<persistable path="/MapToolSrc/src/framework/utils/ArrayUtils.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="BaseUT.as" tooltip="MapToolSrc/src/framework/base/BaseUT.as">
+<persistable path="/MapToolSrc/src/framework/base/BaseUT.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="GRoot.as" tooltip="MapToolSrc/src/fairygui/GRoot.as">
+<persistable path="/MapToolSrc/src/fairygui/GRoot.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="GButton.as" tooltip="MapToolSrc/src/fairygui/GButton.as">
+<persistable path="/MapToolSrc/src/fairygui/GButton.as"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="AlignType.as" tooltip="MapToolSrc/src/fairygui/AlignType.as">
+<persistable path="/MapToolSrc/src/fairygui/AlignType.as"/>
 </file>
 </mruList>
 </workbench>

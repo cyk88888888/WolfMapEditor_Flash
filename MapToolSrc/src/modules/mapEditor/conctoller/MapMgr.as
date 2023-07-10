@@ -1,16 +1,20 @@
 package modules.mapEditor.conctoller
 {
 	import com.greensock.TweenMax;
+	
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
+	
 	import fairygui.GButton;
 	import fairygui.GLoader;
 	import fairygui.GTextField;
 	import fairygui.UIPackage;
+	
 	import framework.base.FileUT;
 	import framework.base.Global;
 	import framework.mgr.ModuleMgr;
+	
 	import modules.base.Enum;
 	import modules.base.GameEvent;
 	import modules.common.JuHuaDlg;
@@ -46,7 +50,6 @@ package modules.mapEditor.conctoller
 		public var gridRange:int = 0;//地图格子扩散范围大小
 		public var mapScale:Number = 1;//地图缩放比例
 		public var areaGraphicsSize:Number = 1;//绘制格子的单个Graphics区域大小
-		public var gridTypeDic:Dictionary;//格子数据
 		public var gridDataDic:Dictionary;//格子数据
 		public var mapThingDic:Dictionary;//场景物件信息数据
 		public var curMapThingInfo:MapThingInfo;//当前正在编辑的场景物件
@@ -111,15 +114,20 @@ package modules.mapEditor.conctoller
 		/** 当前是否存在格子数据**/
 		public function hasExitGridData():Boolean{
 			var isExistGrid:Boolean = false;
-			for each(var item:Dictionary in gridTypeDic)
+			for each(var gridTypeDataMap:Dictionary in gridDataDic)
 			{
-				for each (var subItem:String in item)
+				for each(var areaGridDic:Dictionary in gridTypeDataMap)
 				{
-					isExistGrid = true;
-					break;
+					for each (var gridData:String in areaGridDic)
+					{
+						isExistGrid = true;
+						break;
+					}
+					if(isExistGrid) break;
 				}
 				if(isExistGrid) break;
 			}
+			
 			return isExistGrid;
 		}
 		/**
@@ -237,18 +245,19 @@ package modules.mapEditor.conctoller
 			var areaSize: int = areaGraphicsSize;
 			for (var i: int = 0; i < triggerTypes.length; i++) {
 				var typeKey: String = Enum.MapThing + triggerTypes[i] + "_" + mapThingKey;
-				var mapThingGridDic: Dictionary = gridTypeDic[typeKey];
-				if (mapThingGridDic) {
-					for each(var gridKey: String in mapThingGridDic) {
-						var splitGridPosKey: Array = gridKey.split("_");
-						var gridPosX: Number = Number(splitGridPosKey[0]);
-						var gridPosY: Number = Number(splitGridPosKey[1]);
-						var areaKey: String = Math.floor(gridPosX / areaSize) + "_" + Math.floor(gridPosY / areaSize);
-						delete gridDataDic[typeKey][areaKey][gridKey];
-						redrawDic[typeKey + "|" + areaKey] = typeKey + "_" + areaKey;
-						existGrid = true;
+				var gridTypeDataMap: Dictionary = gridDataDic[typeKey];
+				if (gridTypeDataMap) {
+					for each(var areaGridMap: Dictionary in gridTypeDataMap) {
+						for each(var gridKey: String in areaGridMap) {
+							var splitGridPosKey: Array = gridKey.split("_");
+							var gridPosX: Number = Number(splitGridPosKey[0]);
+							var gridPosY: Number = Number(splitGridPosKey[1]);
+							var areaKey: String = Math.floor(gridPosX / areaSize) + "_" + Math.floor(gridPosY / areaSize);
+							delete gridDataDic[typeKey][areaKey][gridKey];
+							redrawDic[typeKey + "|" + areaKey] = typeKey + "_" + areaKey;
+							existGrid = true;
+						}
 					}
-					delete gridTypeDic[typeKey];
 				}
 			}
 			if (existGrid) Global.emmiter.emit(GameEvent.DarwGraphic, [redrawDic]);
@@ -318,28 +327,32 @@ package modules.mapEditor.conctoller
 				
 				mapInfo.totRow = numRows;
 				mapInfo.totCol = numCols;
-				var walkGridDic:Dictionary = gridTypeDic[Enum.Walk];
-				var blockGridDic:Dictionary = gridTypeDic[Enum.Block];
-				var visibleGridDic:Dictionary = gridTypeDic[Enum.Visible];
+				var walkGridDic:Dictionary = gridDataDic[Enum.Walk];
+				var blockGridDic:Dictionary = gridDataDic[Enum.Block];
+				var visibleGridDic:Dictionary = gridDataDic[Enum.Visible];
 				for (var i:int = 0; i < numRows; i++)
 				{
 					var linewalkList:Array = [];//每一行
 					mapInfo.walkList.push(linewalkList);
 					for (var j:int = 0; j < numCols; j++)
 					{
-						if (!walkGridDic && !blockGridDic && !visibleGridDic)
+						var areaKey:String = Math.floor(j / areaGraphicsSize) + "_" + Math.floor(i / areaGraphicsSize);
+						var walkAreaGridDataMap:Dictionary = walkGridDic ? walkGridDic[areaKey] : null;
+						var blockAreaGridDataMap:Dictionary = blockGridDic ? blockGridDic[areaKey] : null;
+						var visibleGridDataMap:Dictionary = visibleGridDic ? visibleGridDic[areaKey] : null;
+						if ((!walkGridDic || !walkAreaGridDataMap) && (!blockGridDic || !blockAreaGridDataMap) && (!visibleGridDic || !visibleGridDataMap))
 						{
 							linewalkList.push(0);
 						}
 						else
 						{
 							var keys:String = j + "_" + i;
-							if(visibleGridDic && visibleGridDic[keys]){//可视墙
+							if(visibleGridDic && visibleGridDataMap && visibleGridDataMap[keys]){//可视墙
 								linewalkList.push(Enum.VisibleType);
-							}else if(blockGridDic && blockGridDic[keys]){//墙壁
+							}else if(blockGridDic && blockGridDic && blockAreaGridDataMap[keys]){//墙壁
 								linewalkList.push(Enum.BlockType);
 							}else{
-								var gridItem:Object = walkGridDic ? walkGridDic[keys] : null;
+								var gridItem:Object = walkGridDic && walkAreaGridDataMap ? walkAreaGridDataMap[keys] : null;
 								linewalkList.push(gridItem != null ? Enum.WalkType : 0);
 							}
 						}
@@ -355,19 +368,20 @@ package modules.mapEditor.conctoller
 				addGridDataByType(Enum.Start);
 				function addGridDataByType(gridType: String):void
 				{
-					var gridDataDic:Dictionary = gridTypeDic[gridType];
-					if (gridDataDic)
+					var gridTypeDataMap:Dictionary = gridDataDic[gridType];
+					if (gridTypeDataMap)
 					{
-						for (var key:String in gridDataDic)
-						{
-							var newList:Array = [];
-							if (gridType == Enum.Block) newList = mapInfo.blockList;
-							else if(gridType == Enum.BlockVerts) newList = mapInfo.blockVertList;
-							else if (gridType == Enum.Water) newList = mapInfo.waterList;
-							else if (gridType == Enum.WaterVerts) newList = mapInfo.waterVertList;
-							else if (gridType == Enum.Start) newList = mapInfo.startList;
-							var splitArr:Array = key.split("_");
-							newList.push(getGridIdxByXY(int(splitArr[0]), int(splitArr[1])));
+						for each(var areaData:Dictionary in gridTypeDataMap){
+							for each(var gridData:String in areaData){
+								var newList:Array = [];
+								if (gridType == Enum.Block) newList = mapInfo.blockList;
+								else if(gridType == Enum.BlockVerts) newList = mapInfo.blockVertList;
+								else if (gridType == Enum.Water) newList = mapInfo.waterList;
+								else if (gridType == Enum.WaterVerts) newList = mapInfo.waterVertList;
+								else if (gridType == Enum.Start) newList = mapInfo.startList;
+								var splitArr:Array = gridData.split("_");
+								newList.push(getGridIdxByXY(int(splitArr[0]), int(splitArr[1])));
+							}
 						}
 					}
 				}
@@ -378,16 +392,18 @@ package modules.mapEditor.conctoller
 						mapThingInfo.area = [];
 						mapThingInfo.unWalkArea = [];
 						mapThingInfo.keyManStandArea = [];
-						for(i=0;i<triggerTypes.length;i++){
-							var mapThingGridDic:Dictionary = gridTypeDic[Enum.MapThing + triggerTypes[i] + "_" + int(mapThingInfo.x) + "_" + int(mapThingInfo.y)];
-							if(mapThingGridDic){
-								for(var key:String in mapThingGridDic){
-									var splitArr:Array = key.split("_");
-									var idx:int = getGridIdxByXY(int(splitArr[0]), int(splitArr[1]));
-									if(triggerTypes[i] == Enum.MapThingType_light) mapThingInfo.area.push(idx);
-									if(triggerTypes[i] == Enum.MapThingTrigger_unWalk) mapThingInfo.unWalkArea.push(idx);
-									if(triggerTypes[i] == Enum.MapThingTrigger_keyManStand) mapThingInfo.keyManStandArea.push(idx);
-									if(triggerTypes[i] == Enum.MapThingTrigger_grass) mapThingInfo.grassArea.push(idx);
+						for(i=0; i < triggerTypes.length; i++){
+							var gridTypeDataMap:Dictionary = gridDataDic[Enum.MapThing + triggerTypes[i] + "_" + int(mapThingInfo.x) + "_" + int(mapThingInfo.y)];
+							if(gridTypeDataMap){
+								for each(var areaData:Dictionary in gridTypeDataMap){
+									for each(var gridData:String in areaData){
+										var splitArr:Array = gridData.split("_");
+										var idx:int = getGridIdxByXY(int(splitArr[0]), int(splitArr[1]));
+										if(triggerTypes[i] == Enum.MapThingType_light) mapThingInfo.area.push(idx);
+										if(triggerTypes[i] == Enum.MapThingTrigger_unWalk) mapThingInfo.unWalkArea.push(idx);
+										if(triggerTypes[i] == Enum.MapThingTrigger_keyManStand) mapThingInfo.keyManStandArea.push(idx);
+										if(triggerTypes[i] == Enum.MapThingTrigger_grass) mapThingInfo.grassArea.push(idx);
+									}
 								}
 							}
 						}
