@@ -214,7 +214,8 @@ package modules.mapEditor
 			_drawMapThingData = {
 				taskId: data.body.taskId, 
 				groupId: data.body.groupId, 
-				type: data.body.type
+				type: data.body.type,
+				groupIdStr: data.body.groupIdStr
 			};
 		}
 		
@@ -240,6 +241,7 @@ package modules.mapEditor
 						taskId: _drawMapThingData ? _drawMapThingData.taskId : 0,
 						groupId: _drawMapThingData ? _drawMapThingData.groupId : 0,
 						type: _drawMapThingData ? _drawMapThingData.type : 0,
+						groupIdStr: _drawMapThingData ? _drawMapThingData.groupIdStr : 0,
 						isByDrag: true
 					});
 				}

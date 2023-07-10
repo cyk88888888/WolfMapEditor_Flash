@@ -726,7 +726,8 @@ package modules.mapEditor
 					url:btn.icon, 
 					taskId:curMapThingInfo.taskId,
 					groupId:curMapThingInfo.groupId, 
-					type:curMapThingInfo.type
+					type:curMapThingInfo.type,
+					groupIdStr:curMapThingInfo.groupIdStr
 				});
 				btn.dispose();
 				mapThingSelectSp.rmSelf();
