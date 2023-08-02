@@ -37,8 +37,7 @@ package modules.mapEditor
 	 */
 	public class MapEditorLayer extends UILayer
 	{
-		protected override function get pkgName():String
-		{
+		protected override function get pkgName():String{
 			return "MapEditor";
 		}
 		
@@ -46,55 +45,56 @@ package modules.mapEditor
 		private var txt_cellSize:GTextInput;
 		private var txt_mapRect:GTextField;
 		private var txt_thingRect:GTextField;
+		private var txt_relationParm:GTextInput;
 		private var txt_gridRange:GTextInput;
 		private var list_tree:GTree;
 		private var _mapThingComp:GButton;
 		private var txt_taskId:GTextInput;
 		private var txt_groupId:GTextInput;
-		private var txt_groupId2:GTextInput;
+		private var txt_groupIds:GTextInput;
+		private var txt_subGroupIds:GTextInput;
 		private var txt_x:GTextInput;
 		private var txt_y:GTextInput;
 		private var txt_anchorX:GTextInput;
 		private var txt_anchorY:GTextInput;
-		private var combo_taskType:GComboBox;
+		private var combo_thingkType:GComboBox;
 		private var combo_triggerType:GComboBox;
+		private var combo_bevelType:GComboBox;
+		private var combo_relationType:GComboBox;
 		private var _curSelectTypeBtn:GButton;
 		private var _isInCopyMapThing:Boolean;//是否点击地图目录场景树（没做这个标识会导致点击后，拖拽物件立即被销毁了）
 		private var _drawMapThingData:Object;//拖拽场景已有的物件的临时数据
+		private var btn_xAdd:GButton;
+		private var btn_xReduce:GButton;
+		private var btn_yAdd:GButton;
+		private var btn_yReduce:GButton;
 		private var btn_walk:GButton;
-		private var btn_block:GButton;
-		private var btn_blockVert:GButton;
-		private var btn_visible:GButton;
-		private var btn_water:GButton;
 		private var btn_waterVert:GButton;
 		private var btn_start:GButton;
-		private var btn_startWall:GButton;
-		private var btn_switchWall:GButton;
 		private var btn_mapThing:GButton;
 		private var txt_mouseGridXY:GTextField;
 		private var grp_mapThingInfo:GGroup;
 		private var grp_bevel:GGroup;
 		
 		protected override function onEnter():void{
+			var mapMgr:MapMgr = MapMgr.inst;
 			txt_cellSize = view.getChild("txt_cellSize").asTextInput;
 			
 			txt_mapRect = view.getChild("txt_mapRect").asTextField;
 			txt_thingRect = view.getChild("txt_thingRect").asTextField;
-			MapMgr.inst.mouseGridTextField = txt_mouseGridXY = view.getChild("txt_mouseGridXY").asTextField;
+			mapMgr.mouseGridTextField = txt_mouseGridXY = view.getChild("txt_mouseGridXY").asTextField;
 			
 			txt_gridRange = view.getChild("txt_gridRange").asTextInput;
-			txt_gridRange.text = MapMgr.inst.gridRange.toString();
+			txt_gridRange.text = mapMgr.gridRange.toString();
 			
+			btn_xAdd = view.getChild("btn_xAdd").asButton;
+			btn_xReduce = view.getChild("btn_xReduce").asButton;
+			btn_yAdd = view.getChild("btn_yAdd").asButton;
+			btn_yReduce = view.getChild("btn_yReduce").asButton;
 			btn_walk = view.getChild("btn_walk").asButton;
-			btn_block = view.getChild("btn_block").asButton;
-			btn_blockVert = view.getChild("btn_blockVert").asButton;
-			btn_water = view.getChild("btn_water").asButton;
 			btn_waterVert = view.getChild("btn_waterVert").asButton;
 			btn_start = view.getChild("btn_start").asButton;
-			btn_startWall = view.getChild("btn_startWall").asButton;
-			btn_switchWall = view.getChild("btn_switchWall").asButton;
 			btn_mapThing = view.getChild("btn_mapThing").asButton;
-			btn_visible = view.getChild("btn_visible").asButton;
 			
 			mapComp = view.getChild("mapComp").asCom;
 			
@@ -107,8 +107,14 @@ package modules.mapEditor
 			txt_groupId = view.getChild("txt_groupId").asTextInput;
 			txt_groupId.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutGroupId);
 			
-			txt_groupId2 = view.getChild("txt_groupId2").asTextInput;
-			txt_groupId2.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutGroupId2);	
+			txt_groupIds = view.getChild("txt_groupIds").asTextInput;
+			txt_groupIds.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutGroupIds);
+			
+			txt_subGroupIds = view.getChild("txt_subGroupIds").asTextInput;
+			txt_subGroupIds.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutSubGroupIds);	
+			
+			txt_relationParm = view.getChild("txt_relationParm").asTextInput;
+			txt_relationParm.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutRelationParm);
 			
 			txt_x = view.getChild("txt_x").asTextInput;
 			txt_x.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutX);
@@ -124,12 +130,18 @@ package modules.mapEditor
 			
 			
 			txt_anchorX.restrict = txt_anchorY.restrict = txt_x.restrict = txt_y.restrict = "0-9 .\\-";
-			combo_taskType = view.getChild("combo_taskType").asComboBox;
-			combo_taskType.addEventListener(StateChangeEvent.CHANGED,onClickTaskType);
+			combo_thingkType = view.getChild("combo_thingkType").asComboBox;
+			combo_thingkType.addEventListener(StateChangeEvent.CHANGED,onClickThingkType);
+			
+			combo_bevelType = view.getChild("combo_bevelType").asComboBox;
+			combo_bevelType.addEventListener(StateChangeEvent.CHANGED,onClickBevelType);
+			
+			combo_relationType = view.getChild("combo_relationType").asComboBox;
+			combo_relationType.addEventListener(StateChangeEvent.CHANGED,onClickRelationType);
 			
 			combo_triggerType = view.getChild("combo_triggerType").asComboBox;
-			combo_triggerType.items =  MapMgr.inst.triggerDesc;
-			combo_triggerType.values = MapMgr.inst.triggerTypes;
+			combo_triggerType.items =  mapMgr.triggerDesc;
+			combo_triggerType.values = mapMgr.triggerTypes;
 			combo_triggerType.selectedIndex = 0;
 			combo_triggerType.addEventListener(StateChangeEvent.CHANGED, onClickTriggerType);
 			
@@ -137,28 +149,30 @@ package modules.mapEditor
 			list_tree.treeNodeRender = renderTreeNode;
 			list_tree.addEventListener(ItemEvent.CLICK, onClickMapTreeItem);
 			
-			updateMapInfo(null);
+			updateMapInfo();
 			onEmitter(GameEvent.UpdateMapInfo, updateMapInfo);
 			onEmitter(GameEvent.ResizeMapSucc, updateMapInfo);
 			onEmitter(GameEvent.DragMapThingStart, onDragMapThingStart);
 			onEmitter(GameEvent.UpdateMapTreeStruct, updateListTree);
 			onEmitter(GameEvent.ImportMapThingJson, updateMapThingPram);
 			onEmitter(GameEvent.ClickMapTing, onClickMapTing);
-			MapMgr.inst.changeMap(true);
+			onEmitter(GameEvent.UpdateMapScale, updateMapScale);
+			mapMgr.changeMap(true);
 			view.addEventListener(MouseEvent.CLICK, onClickView,true);
 			view.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
 		}
 		
 		
 		/**刷新地图场景物件目录**/
-		private function updateListTree(data:Object):void{
+		private function updateListTree():void{
+			var mapMgr:MapMgr = MapMgr.inst;
 			list_tree.rootNode.removeChildren();
-			createNodeRecursive(MapMgr.inst.mapDirectoryStrut, list_tree.rootNode);
+			createNodeRecursive(mapMgr.mapDirectoryStrut, list_tree.rootNode);
 			//递归创建节点
 			function createNodeRecursive(fileArr:Vector.<MapFileTreeNode>, parent:GTreeNode):void{
 				for each(var item:MapFileTreeNode in fileArr){
 					var node: GTreeNode = new GTreeNode(item.isDir);
-					node.data = item.isDir ? item.name : [item.name, BaseUT.checkIsPngOrJpg(item.path) ? item.path : MapMgr.inst.fileIcon];
+					node.data = item.isDir ? item.name : [item.name, BaseUT.checkIsPngOrJpg(item.path) ? item.path : mapMgr.fileIcon];
 					parent.addChild(node);
 					if(item.isDir) createNodeRecursive(item.fileArr, node);
 				}
@@ -166,21 +180,45 @@ package modules.mapEditor
 		}
 		
 		private function updateMapThingPram(data:Object):void{
-			var thingPramInfo:Object = data.body[0];
+			var thingPramInfo:Object = data;
 			var thingTypeList:Array = thingPramInfo.thingTypeList;
-			var taskTypeArr:Array = [];
+			var thingTypeArr:Array = [];
 			var taskDescArr:Array = [];
-			
 			for(var i:int = 0; i< thingTypeList.length; i++){
 				var obj:Object = thingTypeList[i];
-				taskTypeArr.push(obj.type);
+				thingTypeArr.push(obj.type);
 				taskDescArr.push(obj.desc);
 			}
-
-			//物件类型新增比较频繁，所以走配置
-			combo_taskType.items = taskDescArr;
-			combo_taskType.values = taskTypeArr;
-			combo_taskType.selectedIndex = 0;
+			combo_thingkType.items = taskDescArr;
+			combo_thingkType.values = thingTypeArr;
+			combo_thingkType.selectedIndex = 0;
+			
+			
+			var bevelTypeList:Array = thingPramInfo.bevelTypeList;
+			var bevelTypeArr:Array = [];
+			var bevelDescArr:Array = [];
+			for(i = 0; i< bevelTypeList.length; i++){
+				var obj1:Object = bevelTypeList[i];
+				bevelTypeArr.push(obj1.type);
+				bevelDescArr.push(obj1.desc);
+			}
+			combo_bevelType.items = bevelDescArr;
+			combo_bevelType.values = bevelTypeArr;
+			combo_bevelType.selectedIndex = 0;
+			
+			
+			var relationTypeList:Array = thingPramInfo.relationTypeList;
+			var relationTypeArr:Array = [];
+			var relationDescArr:Array = [];
+			for(i = 0; i< relationTypeList.length; i++){
+				var obj2:Object = relationTypeList[i];
+				relationTypeArr.push(obj2.type);
+				relationDescArr.push(obj2.desc);
+			}
+			combo_relationType.items = relationDescArr;
+			combo_relationType.values = relationTypeArr;
+			combo_relationType.selectedIndex = 0;
+			
 		}
 		
 		private function renderTreeNode(node: GTreeNode,obj :GComponent):void{
@@ -195,9 +233,10 @@ package modules.mapEditor
 			}
 		}
 		
-		private function updateMapInfo(data:Object=null):void{
-			txt_mapRect.text = MapMgr.inst.mapWidth + ", " + MapMgr.inst.mapHeight;
-			txt_cellSize.text = MapMgr.inst.cellSize.toString();
+		private function updateMapInfo():void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			txt_mapRect.text = mapMgr.mapWidth + ", " + mapMgr.mapHeight;
+			txt_cellSize.text = mapMgr.cellSize.toString();
 		}
 		
 		private function onClickMapTreeItem(evt:ItemEvent):void{
@@ -210,23 +249,28 @@ package modules.mapEditor
 		
 		/**开始拖拽场景已有的物件**/
 		private function onDragMapThingStart(data:Object):void{
-			newDragMapThing(data.body.url);
+			newDragMapThing(data.url);
 			_drawMapThingData = {
-				taskId: data.body.taskId, 
-				groupId: data.body.groupId, 
-				type: data.body.type,
-				groupIdStr: data.body.groupIdStr
+				taskId: data.taskId, 
+				grpId: data.grpId, 
+				type: data.type,
+				relationType: data.relationType,
+				bevelType: data.bevelType,
+				grpIdStr: data.grpIdStr,
+				subGrpIdStr: data.subGrpIdStr,
+				relationParm: data.relationParm
 			};
 		}
 		
 		private function newDragMapThing(icon:String):void{
+			var mapMgr:MapMgr = MapMgr.inst;
 			disposeDragMapThing();
-			emit(GameEvent.ChangeGridType, [Enum.MapThing]);
+			emit(GameEvent.ChangeGridType, Enum.MapThing);
 			changeGridType(Enum.MapThing, btn_mapThing);
-			_mapThingComp = MapMgr.inst.getMapThingComp(icon);
+			_mapThingComp = mapMgr.getMapThingComp(icon);
 			_mapThingComp.x = Global.stage.mouseX;
 			_mapThingComp.y = Global.stage.mouseY;
-			_mapThingComp.setScale(MapMgr.inst.mapScale, MapMgr.inst.mapScale);
+			_mapThingComp.setScale(mapMgr.mapScale, mapMgr.mapScale);
 			SceneMgr.inst.curScene.layer.addChild(_mapThingComp);
 			_mapThingComp.touchable = false;
 		
@@ -239,9 +283,13 @@ package modules.mapEditor
 					emit(GameEvent.DragMapThingDown,{
 						url: _mapThingComp.icon,
 						taskId: _drawMapThingData ? _drawMapThingData.taskId : 0,
-						groupId: _drawMapThingData ? _drawMapThingData.groupId : 0,
+						grpId: _drawMapThingData ? _drawMapThingData.grpId : 0,
 						type: _drawMapThingData ? _drawMapThingData.type : 0,
-						groupIdStr: _drawMapThingData ? _drawMapThingData.groupIdStr : 0,
+						relationType: _drawMapThingData ? _drawMapThingData.relationType : 0,
+						bevelType: _drawMapThingData ? _drawMapThingData.bevelType : 0,
+						grpIdStr: _drawMapThingData ? _drawMapThingData.grpIdStr : 0,
+						subGrpIdStr: _drawMapThingData ? _drawMapThingData.subGrpIdStr : 0,
+						relationParm: _drawMapThingData ? _drawMapThingData.relationParm : 0,
 						isByDrag: true
 					});
 				}
@@ -262,39 +310,55 @@ package modules.mapEditor
 			var curMapThingInfo:MapThingInfo = mapMgr.curMapThingInfo;
 			var isBelve:Boolean = curMapThingInfo.type == Enum.MapThingType_bevel;//是否为斜角顶点
 			if(isBelve){
-				txt_groupId2.text = curMapThingInfo.groupIdStr ? curMapThingInfo.groupIdStr : "";
+				txt_groupIds.text = curMapThingInfo.grpIdStr ? curMapThingInfo.grpIdStr : "";
+				txt_subGroupIds.text = curMapThingInfo.subGrpIdStr ? curMapThingInfo.subGrpIdStr : "";
+				combo_bevelType.selectedIndex = combo_bevelType.values.indexOf(curMapThingInfo.bevelType);
 			}else{
 				txt_taskId.text = curMapThingInfo.taskId+"";
-				txt_groupId.text = curMapThingInfo.groupId+"";
+				txt_groupId.text = curMapThingInfo.grpId+"";
 				txt_x.text = curMapThingInfo.x+"";
 				txt_y.text = curMapThingInfo.y+"";
 				txt_anchorX.text = curMapThingInfo.anchorX+"";
 				txt_anchorY.text = curMapThingInfo.anchorY+"";
 				txt_thingRect.text = curMapThingInfo.width+","+curMapThingInfo.height;
-				combo_taskType.selectedIndex = curMapThingInfo.type - 1;
+				txt_relationParm.text = curMapThingInfo.relationParm ? curMapThingInfo.relationParm : "";
+				combo_thingkType.selectedIndex = combo_thingkType.values.indexOf(curMapThingInfo.type);
+				combo_relationType.selectedIndex = combo_relationType.values.indexOf(curMapThingInfo.relationType);
 			}
 		
 			grp_mapThingInfo.visible = !isBelve;
 			grp_bevel.visible = isBelve;
 		}
 		
-		private function onFocusOutTaskId(event:Event):void
-		{
-			if(MapMgr.inst.curMapThingInfo) MapMgr.inst.curMapThingInfo.taskId = int(txt_taskId.text);	
+		private function updateMapScale():void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			if(_mapThingComp) _mapThingComp.setScale(mapMgr.mapScale, mapMgr.mapScale);
 		}
 		
-		private function onFocusOutGroupId(event:Event):void
-		{
-			if(MapMgr.inst.curMapThingInfo) MapMgr.inst.curMapThingInfo.groupId = int(txt_groupId.text);	
+		private function onFocusOutTaskId(event:Event):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.taskId = int(txt_taskId.text);	
 		}
 		
-		private function onFocusOutGroupId2(event:Event):void
-		{
-			if(MapMgr.inst.curMapThingInfo) MapMgr.inst.curMapThingInfo.groupIdStr = txt_groupId2.text;	
+		private function onFocusOutGroupId(event:Event):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.grpId = int(txt_groupId.text);	
+		}
+		
+		private function onFocusOutGroupIds(event:Event):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.grpIdStr = txt_groupIds.text;	
 			
 		}
-		private function onFocusOutX(event:Event):void
-		{
+		private function onFocusOutSubGroupIds(event:Event):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.subGrpIdStr = txt_subGroupIds.text;	
+		}
+		private function onFocusOutRelationParm(event:Event):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.relationParm = txt_relationParm.text;	
+		}
+		private function onFocusOutX(event:Event):void{
 			var mapMgr:MapMgr = MapMgr.inst;
 			if(mapMgr.curMapThingInfo){
 				var oldX:Number = mapMgr.curMapThingInfo.x,oldY:Number = mapMgr.curMapThingInfo.y;
@@ -307,8 +371,7 @@ package modules.mapEditor
 			}
 		}
 		
-		private function onFocusOutY(event:Event):void
-		{
+		private function onFocusOutY(event:Event):void{
 			var mapMgr:MapMgr = MapMgr.inst;
 			if(mapMgr.curMapThingInfo) {
 				var oldX:Number = mapMgr.curMapThingInfo.x,oldY:Number = mapMgr.curMapThingInfo.y;
@@ -321,8 +384,7 @@ package modules.mapEditor
 			}
 		}
 		
-		private function onFocusOutAnchorX(event:Event):void
-		{
+		private function onFocusOutAnchorX(event:Event):void{
 			var mapMgr:MapMgr = MapMgr.inst;
 			if(mapMgr.curMapThingInfo){
 				var mapThingComp:GButton = mapMgr.getMapThingCompByXY(mapMgr.curMapThingInfo.x,mapMgr.curMapThingInfo.y);
@@ -339,8 +401,7 @@ package modules.mapEditor
 			}
 		}
 		
-		private function onFocusOutAnchorY(event:Event):void
-		{
+		private function onFocusOutAnchorY(event:Event):void{
 			var mapMgr:MapMgr = MapMgr.inst;
 			if(mapMgr.curMapThingInfo){
 				var mapThingComp:GButton = mapMgr.getMapThingCompByXY(mapMgr.curMapThingInfo.x,mapMgr.curMapThingInfo.y);
@@ -357,18 +418,28 @@ package modules.mapEditor
 			}
 		}
 		
-		private function onClickTaskType(data:Object):void
-		{
-			var type:int = combo_taskType.values[combo_taskType.selectedIndex];
-			if(MapMgr.inst.curMapThingInfo) MapMgr.inst.curMapThingInfo.type = type;	
+		private function onClickThingkType(data:Object):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			var type:int = combo_thingkType.values[combo_thingkType.selectedIndex];
+			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.type = type;	
 		}
 		
-		private function onClickTriggerType(data:Object):void
-		{
+		private function onClickTriggerType(data:Object):void{
 			var type:int = combo_triggerType.values[combo_triggerType.selectedIndex];
 			MapMgr.inst.curMapThingTriggerType = type;
 		}
 		
+		private function onClickBevelType(data:Object):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			var bevelType:int = combo_bevelType.values[combo_bevelType.selectedIndex];
+			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.bevelType = bevelType;	
+		}
+		
+		private function onClickRelationType(data:Object):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			var type:int = combo_relationType.values[combo_relationType.selectedIndex];
+			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.relationType = type;		
+		}
 		
 		private function disposeDragMapThing():void{
 			if(_mapThingComp){
@@ -379,22 +450,23 @@ package modules.mapEditor
 			_drawMapThingData = null;
 		}
 		
+		
+		public function _tap_btn_xAdd(evt:GTouchEvent):void{
+		}
+		
+		public function _tap_btn_xReduce(evt:GTouchEvent):void{
+		}
+		
+		public function _tap_btn_yAdd(evt:GTouchEvent):void{
+		}
+		
+		public function _tap_btn_yReduce(evt:GTouchEvent):void{
+		}
+		
 		public function _tap_btn_walk(evt:GTouchEvent):void{
 			changeGridType(Enum.Walk, btn_walk);
 		}
-		public function _tap_btn_block(evt:GTouchEvent):void{
-			changeGridType(Enum.Block, btn_block);
-		}
-		public function _tap_btn_visible(evt:GTouchEvent):void{
-			changeGridType(Enum.Visible, btn_visible);
-		}
 		
-		public function _tap_btn_blockVert(evt:GTouchEvent):void{
-			changeGridType(Enum.BlockVerts, btn_blockVert);
-		}
-		public function _tap_btn_water(evt:GTouchEvent):void{
-			changeGridType(Enum.Water,btn_water);
-		}
 		public function _tap_btn_waterVert(evt:GTouchEvent):void{
 			changeGridType(Enum.WaterVerts,btn_waterVert);
 		}
@@ -404,16 +476,10 @@ package modules.mapEditor
 		public function _tap_btn_start(evt:GTouchEvent):void{
 			changeGridType(Enum.Start,btn_start);
 		}
-		public function _tap_btn_startWall(evt:GTouchEvent):void{
-			changeGridType(Enum.StartWall,btn_startWall);
-		}
-		public function _tap_btn_switchWall(evt:GTouchEvent):void{
-			changeGridType(Enum.SwitchWall,btn_switchWall);
-		}
 		/**切换操作类型**/
 		private function changeGridType(type:String, btn:GButton):void{
 			if(_curSelectTypeBtn == btn) return;
-			emit(GameEvent.ChangeGridType, [type]);
+			emit(GameEvent.ChangeGridType, type);
 			if(_curSelectTypeBtn) _curSelectTypeBtn.selected = false;
 			_curSelectTypeBtn = btn;
 			_curSelectTypeBtn.selected = true;
@@ -422,7 +488,7 @@ package modules.mapEditor
 			grp_mapThingInfo.visible = grp_bevel.visible = false;
 		}
 		public function _tap_btn_resizeGrid(evt:GTouchEvent):void{
-			emit(GameEvent.ResizeGrid, [txt_cellSize.text]);
+			emit(GameEvent.ResizeGrid, int(txt_cellSize.text));
 		}
 		public function _tap_btn_gridRange(evt:GTouchEvent):void{
 			MapMgr.inst.gridRange = int(txt_gridRange.text);

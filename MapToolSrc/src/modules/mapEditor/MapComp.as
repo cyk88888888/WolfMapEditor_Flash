@@ -1,6 +1,7 @@
 package modules.mapEditor
 {
 	import com.greensock.TweenMax;
+	
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -8,15 +9,18 @@ package modules.mapEditor
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
+	
 	import fairygui.GButton;
 	import fairygui.GComponent;
 	import fairygui.GGraph;
 	import fairygui.GLoader;
 	import fairygui.event.GTouchEvent;
+	
 	import framework.base.BaseUT;
 	import framework.base.Global;
 	import framework.mgr.ModuleMgr;
 	import framework.ui.UIComp;
+	
 	import modules.base.Enum;
 	import modules.base.GameEvent;
 	import modules.common.JuHuaDlg;
@@ -26,7 +30,7 @@ package modules.mapEditor
 	import modules.mapEditor.conctoller.MapMgr;
 	import modules.mapEditor.conctoller.MapThingInfo;
 	import modules.mapEditor.joystick.JoystickLayer;
-
+	
 	/**
 	 * 地图编辑组件 
 	 * @author cyk
@@ -122,7 +126,7 @@ package modules.mapEditor
 			center.setXY((mapWidth - center.width) / 2, (mapHeight - center.height) / 2);
 			
 			lineShape.graphics.clear();
-			lineShape.graphics.lineStyle(1,0x000000);
+			lineShape.graphics.lineStyle(1,0x9E9E9E);
 			
 			//画横线
 			for(var i:int = 0; i < numRows; i++){
@@ -155,9 +159,8 @@ package modules.mapEditor
 		}
 		
 		/** 格子大小变化**/
-		private function onResizeGrid(data:Object): void
+		private function onResizeGrid(cellSize:int): void
 		{
-			var cellSize:int = data.body[0];
 			if (cellSize == mapMgr.cellSize)
 			{
 				MsgMgr.ShowMsg("格子大小没有变化！！！");
@@ -178,9 +181,9 @@ package modules.mapEditor
 			}
 		}
 		
-		private function onChangeGridType(data:Object): void
+		private function onChangeGridType(data:String): void
 		{
-			var gridType:String = data.body[0];
+			var gridType:String = data;
 			_gridType = gridType;
 			if(_gridType!=Enum.MapThing){
 				mapThingSelectSp.rmSelf();
@@ -231,7 +234,7 @@ package modules.mapEditor
 			}
 			addOrRmRangeGrid(Global.stage.mouseX, Global.stage.mouseY);
 		}
-
+		
 		/**获取当前鼠标下的格子信息 [格子所在的列, 格子所在的行, 绘制颜色格子的坐标X, 绘制颜色格子的坐标Y, gridKey]**/
 		private function getGridInfoByMousePos(): Array {
 			var localPos: Point = grp_map.globalToLocal(Global.stage.mouseX, Global.stage.mouseY);
@@ -300,11 +303,7 @@ package modules.mapEditor
 			var graphic: MapGridSp = getGraphics(graphickey);
 			var gridX: int = gridPosX * _cellSize;//绘制颜色格子的坐标X
 			var gridY: int = gridPosY * _cellSize;//绘制颜色格子的坐标Y
-			if(gridType == Enum.BlockVerts){
-				graphic.drawCircle(gridX + _cellSize/2, gridY +_cellSize/2, _cellSize/2, color);
-			}else{
-				graphic.drawRect(gridX + 0.5, gridY + 0.5, _cellSize, _cellSize, color);
-			}
+			graphic.drawRect(gridX + 0.5, gridY + 0.5, _cellSize, _cellSize, color);
 		}
 		
 		/**
@@ -329,7 +328,7 @@ package modules.mapEditor
 				_redrawDic[gridSubType + "|" + areaKey] = gridSubType + "_" + areaKey;
 			}
 		}
-
+		
 		/**
 		 * 移除格子删除数据后，重新绘制感兴趣区域的所有格子
 		 */
@@ -349,16 +348,12 @@ package modules.mapEditor
 						var splitGridPosKey: Array = gridKey.split("_");
 						var gridX: Number = Number(splitGridPosKey[0]) * _cellSize;
 						var gridY: Number = Number(splitGridPosKey[1]) * _cellSize;
-						if (gridType == Enum.BlockVerts) {
-							graphic.drawCircle(gridX + _cellSize / 2, gridY + _cellSize / 2, _cellSize / 2, color);
-						} else {
-							graphic.drawRect(gridX + 0.5, gridY + 0.5, _cellSize, _cellSize, color);
-						}
+						graphic.drawRect(gridX + 0.5, gridY + 0.5, _cellSize, _cellSize, color);
 					}
 				}
 			}
 		}
-
+		
 		private function getGraphics(key: String): MapGridSp {
 			if (!_graphicsDic[key]) {
 				var gridSp: MapGridSp = new MapGridSp();
@@ -367,18 +362,16 @@ package modules.mapEditor
 			}
 			return _graphicsDic[key];
 		}
-
-		private function onDarwGraphic(data: Object): void {
-			var body: Object = data.body;
-			var redrawDic:Dictionary = body[0];
+		
+		private function onDarwGraphic(redrawDic:Dictionary): void {
 			_redrawDic = redrawDic;
 			drawGraphics();
 		}
-
+		
 		/**导入地图json数据**/
 		private function onImportMapJson(data: Object): void {
 			var juahua: JuHuaDlg = ModuleMgr.inst.showLayer(JuHuaDlg) as JuHuaDlg;
-			var mapInfo: Object = data.body[0];
+			var mapInfo: Object = data;
 			_cellSize = mapInfo.cellSize;
 			importFloorBg(function (): void {
 				init();
@@ -393,21 +386,14 @@ package modules.mapEditor
 							if (lineList[j] == Enum.WalkType)//可行走
 							{
 								gridType = Enum.Walk;
-							} else if (lineList[j] == Enum.BlockType) {//墙壁
-								gridType = Enum.Block;
-							} else {
-								gridType = Enum.Visible;
-							}
+							} 
 							addGrid(gridType, gridPosX, gridPosY);
 						}
-
+						
 					}
 				}
-
+				
 				/** 设置障碍物节点**/
-				addGridDataByType(Enum.Block, mapInfo.blockList);
-				addGridDataByType(Enum.BlockVerts, mapInfo.blockVertList);
-				addGridDataByType(Enum.Water, mapInfo.waterList);
 				addGridDataByType(Enum.WaterVerts, mapInfo.waterVertList);
 				/** 设置起始点**/
 				addGridDataByType(Enum.Start, mapInfo.startList);
@@ -422,46 +408,56 @@ package modules.mapEditor
 						if (mapThingData.unWalkArea) addGridDataByType(Enum.MapThing2, mapThingData.unWalkArea);
 						if (mapThingData.keyManStandArea) addGridDataByType(Enum.MapThing3, mapThingData.keyManStandArea);
 						if (mapThingData.grassArea) addGridDataByType(Enum.MapThing4, mapThingData.grassArea);
-
-						onDragMapThingDown({
-							body: {
-								isImportJson: true,
-								url: BaseUT.checkIsPngOrJpg(mapThingData.thingName) ? mapMgr.mapThingRootUrl + "\\" + mapThingData.thingName : mapMgr.fileIcon,
-								x: mapThingData.x,
-								y: mapThingData.y,
-								anchorX: mapThingData.anchorX,
-								anchorY: mapThingData.anchorY,
-								taskId: mapThingData.taskId,
-								groupId: mapThingData.groupId,
-								type: mapThingData.type,
-								isByDrag: false
-							}
-						});
-					}
-				}
-
-				if (mapInfo.borderList) {
-					for each(var mapThingData2: Object in mapInfo.borderList) {//mapThingData2 -> MapThingInfo
-						var groupIdList: Array = mapThingData2.groupIdList || [];
-						var groupIdStr: String = "";
-						for (var ii: int = 0; ii < groupIdList.length; ii++) {
-							groupIdStr += groupIdList[ii] + (ii == groupIdList.length - 1 ? "" : ",");
+						var relationParms: Array = mapThingData.relationParm || [];
+						var relationParm: String = "";
+						for (var n: int = 0; n < relationParms.length; n++) {
+							relationParm += relationParms[n] + (n == relationParms.length - 1 ? "" : ",");
 						}
 						onDragMapThingDown({
-							body: {
-								isImportJson: true,
-								url: BaseUT.checkIsPngOrJpg(mapMgr.bavelResStr) ? mapMgr.mapThingRootUrl + "\\" + mapMgr.bavelResStr : mapMgr.fileIcon,
-								x: mapThingData2.x,
-								y: mapThingData2.y,
-								anchorX: mapThingData2.anchorX,
-								anchorY: mapThingData2.anchorY,
-								groupIdStr: groupIdStr,
-								isByDrag: true
-							}
+							isImportJson: true,
+							url: BaseUT.checkIsPngOrJpg(mapThingData.thingName) ? mapMgr.mapThingRootUrl + "\\" + mapThingData.thingName : mapMgr.fileIcon,
+							x: mapThingData.x,
+							y: mapThingData.y,
+							anchorX: mapThingData.anchorX,
+							anchorY: mapThingData.anchorY,
+							taskId: mapThingData.taskId,
+							grpId: mapThingData.grpId,
+							type: mapThingData.type,
+							relationType: mapThingData.relationType,
+							relationParm: mapThingData.relationParm,
+							isByDrag: false
 						});
 					}
 				}
-
+				
+				if (mapInfo.borderList) {
+					for each(var mapThingData2: Object in mapInfo.borderList) {//mapThingData2 -> MapThingInfo
+						var grpIds: Array = mapThingData2.grpIds || [];
+						var grpIdStr: String = "";
+						for (var ii: int = 0; ii < grpIds.length; ii++) {
+							grpIdStr += grpIds[ii] + (ii == grpIds.length - 1 ? "" : ",");
+						}
+						
+						var subGrpIds: Array = mapThingData2.subGrpIds || [];
+						var subGrpIdStr: String = "";
+						for (ii = 0; ii < subGrpIds.length; ii++) {
+							subGrpIdStr += subGrpIds[ii] + (ii == subGrpIds.length - 1 ? "" : ",");
+						}
+						onDragMapThingDown({
+							isImportJson: true,
+							url: BaseUT.checkIsPngOrJpg(mapMgr.bavelResStr) ? mapMgr.mapThingRootUrl + "\\" + mapMgr.bavelResStr : mapMgr.fileIcon,
+							x: mapThingData2.x,
+							y: mapThingData2.y,
+							anchorX: mapThingData2.anchorX,
+							anchorY: mapThingData2.anchorY,
+							bevelType: mapThingData2.bevelType,
+							grpIdStr: grpIdStr,
+							subGrpIdStr: subGrpIdStr,
+							isByDrag: true
+						});
+					}
+				}
+				
 				function addGridDataByType(gridType: String, gridList: Array): void {
 					for each (var item: Object in gridList) {
 						var gridPosX: int//所在格子位置x
@@ -474,7 +470,7 @@ package modules.mapEditor
 							gridPosX = xy[0];
 							gridPosY = xy[1];
 						}
-
+						
 						addGrid(gridType, gridPosX, gridPosY);
 					}
 				}
@@ -527,17 +523,17 @@ package modules.mapEditor
 			}
 		}
 		
-		private function onCheckShowGrid(data:Object):void
+		private function onCheckShowGrid():void
 		{
 			lineContainer.visible = !lineContainer.visible;
 		}
 		
-		private function onCheckShowPath(data:Object):void
+		private function onCheckShowPath():void
 		{
 			gridContainer.visible = !gridContainer.visible;
 		}
 		
-		private function onToCenter(data:Object):void
+		private function onToCenter():void
 		{
 			var toX:Number = -center.x * curScale + view.viewWidth / 2 - center.width / 2 * curScale;
 			var toY:Number = -center.y * curScale + view.viewHeight / 2 - center.height / 2 * curScale - offY * curScale;
@@ -565,6 +561,7 @@ package modules.mapEditor
 			var toY:Number = grp_map.y + moveDelta.y;
 			grp_map.setXY(toX, toY);
 			checkLimitPos();
+			emit(GameEvent.UpdateMapScale);
 		}
 		
 		private function checkLimitPos():void{
@@ -584,7 +581,7 @@ package modules.mapEditor
 			return mapMgr.mapHeight * curScale;
 		}
 		
-		private function onToOriginalScale(data:Object = null):void
+		private function onToOriginalScale():void
 		{
 			if(curScale == 1) return;
 			var mousePos:Point = new Point(this.x + view.viewWidth / 2, this.y + view.viewHeight/2);
@@ -599,7 +596,7 @@ package modules.mapEditor
 			if(mapMgr.mouseGridTextField) mapMgr.mouseGridTextField.text = gridXY.y + ", " + gridXY.x; 
 		}
 		
-		private function onClearAllData(data:Object):void
+		private function onClearAllData():void
 		{
 			var existData:Boolean = mapMgr.hasExitGridData();
 			MsgMgr.ShowMsg("数据已全部清除！！！");
@@ -607,51 +604,62 @@ package modules.mapEditor
 		}
 		
 		private function onChangeMapThingXY(data:Object):void{
-			var body:Object = data.body;
-			if(mapThingSelectSp.isShow) mapThingSelectSp.drawRectLine(body.x - body.width/2, body.y - body.height/2, body.width, body.height);
+			if(mapThingSelectSp.isShow) mapThingSelectSp.drawRectLine(data.x - data.width/2, data.y - data.height/2, data.width, data.height);
 		}
 		
 		/** 场景物件拖拽放下时**/
 		private function onDragMapThingDown(data:Object):void
 		{
-			var body:Object = data.body;
-			var url:String = body.url;
-			var isImportJson:Boolean = body.isImportJson;//是否为导入json进来
+			var url:String = data.url;
+			var isImportJson:Boolean = data.isImportJson;//是否为导入json进来
 			var localPos:Point = grp_map.globalToLocal(Global.stage.mouseX, Global.stage.mouseY);
-			var mapThingX:Number = isImportJson ? body.x : localPos.x;//场景物件坐标X
-			var mapThingY:Number = isImportJson ? body.y : localPos.y - offY;//场景物件坐标Y
-			var anchorX:Number = body.anchorX == undefined ? 0.5 : body.anchorX;
-			var anchorY:Number = body.anchorY == undefined ? 0.5 : body.anchorY;
+			var mapThingX:Number = isImportJson ? data.x : localPos.x;//场景物件坐标X
+			var mapThingY:Number = isImportJson ? data.y : localPos.y - offY;//场景物件坐标Y
+			var anchorX:Number = data.anchorX == undefined ? 0.5 : data.anchorX;
+			var anchorY:Number = data.anchorY == undefined ? 0.5 : data.anchorY;
 			if (mapThingX < 0 || mapThingY < 0 ||mapThingX >= mapMgr.mapWidth || mapThingY >= mapMgr.mapHeight) return;//超出边界
 			if(!mapMgr.mapThingDic) mapMgr.mapThingDic = new Dictionary();
 			var splitUrl:Array = url.split(mapMgr.mapThingRootUrl + "\\");
 			var elementName:String = splitUrl[splitUrl.length - 1];
 			var mapThingInfo:MapThingInfo = new MapThingInfo();
 			var mapThingComp:GButton = mapMgr.getMapThingComp(url,anchorX,anchorY,imgLoaded);
+			if(data.taskId) mapThingInfo.taskId = data.taskId;
+			if(data.grpId) mapThingInfo.grpId = data.grpId;
+			if(data.grpIdStr) mapThingInfo.grpIdStr = data.grpIdStr;
+			if(data.subGrpIdStr) mapThingInfo.subGrpIdStr = data.subGrpIdStr;
+			if(data.relationParm) mapThingInfo.relationParm = data.relationParm;
+			if(data.bevelType) mapThingInfo.bevelType = data.bevelType;
+			if(data.type) mapThingInfo.type = data.type;
+			if(data.relationType) mapThingInfo.relationType = data.relationType;
 			var isBelve:Boolean = elementName.indexOf(mapMgr.bavelResStr) > -1;//是否为斜角顶点
-			if(isBelve && !isImportJson){
-				var gridInfo:Array = getGridInfoByMousePos();
-				var gridPosX:int = gridInfo[0];//格子所在的列
-				var gridPosY:int =  gridInfo[1];//格子所在的行
-				var pointArr:Array = [
-					[gridPosX * _cellSize, gridPosY * _cellSize],
-					[gridPosX * _cellSize + _cellSize, gridPosY * _cellSize],
-					[gridPosX * _cellSize + _cellSize, gridPosY * _cellSize + _cellSize],
-					[gridPosX * _cellSize, gridPosY * _cellSize + _cellSize],
-				];
-				var minDist: Number;//最小距离
-				var distArr:Array = [];
-				distArr.push(BaseUT.distance(int(mapThingX),int(mapThingY),pointArr[0][0],pointArr[0][1]));
-				distArr.push(BaseUT.distance(int(mapThingX),int(mapThingY),pointArr[1][0],pointArr[1][1]));
-				distArr.push(BaseUT.distance(int(mapThingX),int(mapThingY),pointArr[2][0],pointArr[2][1]));
-				distArr.push(BaseUT.distance(int(mapThingX),int(mapThingY),pointArr[3][0],pointArr[3][1]));
-				for(var i:int = 0;i < distArr.length; i++){
-					if(!minDist) minDist = distArr[i];
-					else if(distArr[i] < minDist) minDist = distArr[i];
+			if(isBelve){
+				if(!isImportJson){
+					var gridInfo:Array = getGridInfoByMousePos();
+					var gridPosX:int = gridInfo[0];//格子所在的列
+					var gridPosY:int =  gridInfo[1];//格子所在的行
+					var pointArr:Array = [
+						[gridPosX * _cellSize, gridPosY * _cellSize],
+						[gridPosX * _cellSize + _cellSize, gridPosY * _cellSize],
+						[gridPosX * _cellSize + _cellSize, gridPosY * _cellSize + _cellSize],
+						[gridPosX * _cellSize, gridPosY * _cellSize + _cellSize],
+					];
+					var minDist: Number;//最小距离
+					var distArr:Array = [];
+					distArr.push(BaseUT.distance(int(mapThingX),int(mapThingY),pointArr[0][0],pointArr[0][1]));
+					distArr.push(BaseUT.distance(int(mapThingX),int(mapThingY),pointArr[1][0],pointArr[1][1]));
+					distArr.push(BaseUT.distance(int(mapThingX),int(mapThingY),pointArr[2][0],pointArr[2][1]));
+					distArr.push(BaseUT.distance(int(mapThingX),int(mapThingY),pointArr[3][0],pointArr[3][1]));
+					for(var i:int = 0;i < distArr.length; i++){
+						if(!minDist) minDist = distArr[i];
+						else if(distArr[i] < minDist) minDist = distArr[i];
+					}
+					var minIndex: int = distArr.indexOf(minDist);
+					mapThingX = pointArr[minIndex][0];
+					mapThingY = pointArr[minIndex][1];
 				}
-				var minIndex: int = distArr.indexOf(minDist);
-				mapThingX = pointArr[minIndex][0];
-				mapThingY = pointArr[minIndex][1];
+				if(data.isByDrag){
+					mapThingInfo.type = Enum.MapThingType_bevel;
+				}
 			}
 			mapThingComp.x = mapThingInfo.x = mapThingX;
 			mapThingComp.y = mapThingInfo.y = mapThingY;
@@ -663,13 +671,6 @@ package modules.mapEditor
 			mapThingContainer.addChild(mapThingComp);
 			mapMgr.mapThingDic[mapThingComp.name] = [mapThingInfo, mapThingComp];
 			mapThingSelectSp.rmSelf();
-			if(body.taskId) mapThingInfo.taskId = body.taskId;
-			if(body.groupId) mapThingInfo.groupId = body.groupId;
-			if(body.groupIdStr) mapThingInfo.groupIdStr = body.groupIdStr;
-			if(body.isByDrag){
-				if(isBelve) mapThingInfo.type = Enum.MapThingType_bevel;
-			}
-			if(body.type) mapThingInfo.type = body.type;
 			if(!isImportJson){
 				_lastSelectMapThingComp = mapThingComp;
 				mapMgr.curMapThingInfo = mapThingInfo;
@@ -713,38 +714,36 @@ package modules.mapEditor
 				var curMapThingInfo:MapThingInfo = mapMgr.mapThingDic[btn.name][0];
 				if(!curMapThingInfo) return;
 				var btnPos:Point = new Point(int(btn.x), int(btn.y));
-				if(_isCtrlDown){//删除场景物件
-					if(mapThingSelectSp.curX == btnPos.x && mapThingSelectSp.curY == btnPos.y) mapThingSelectSp.rmSelf();
-					btn.dispose();
+				if(!_isCtrlDown){//重新拖拽物件
+					emit(GameEvent.DragMapThingStart,{
+						url:btn.icon, 
+						taskId:curMapThingInfo.taskId,
+						grpId:curMapThingInfo.grpId, 
+						type:curMapThingInfo.type,
+						relationType:curMapThingInfo.relationType,
+						bevelType: curMapThingInfo.bevelType,
+						grpIdStr: curMapThingInfo.grpIdStr,
+						subGrpIdStr: curMapThingInfo.subGrpIdStr,
+						relationParm: curMapThingInfo.relationParm
+					});
+				}
+				if(mapMgr.curMapThingInfo && mapMgr.curMapThingInfo.x == btnPos.x && mapMgr.curMapThingInfo.y == btnPos.y){
 					mapThingSelectSp.rmSelf();
 					mapMgr.curMapThingInfo = null;
-					mapMgr.rmMapThingGrid(btnPos.x + "_" + btnPos.y);
-					delete mapMgr.mapThingDic[btn.name];
-					return;
 				}
-				emit(GameEvent.DragMapThingStart,{
-					url:btn.icon, 
-					taskId:curMapThingInfo.taskId,
-					groupId:curMapThingInfo.groupId, 
-					type:curMapThingInfo.type,
-					groupIdStr:curMapThingInfo.groupIdStr
-				});
 				btn.dispose();
-				mapThingSelectSp.rmSelf();
-				mapMgr.curMapThingInfo = null;
-				mapMgr.rmMapThingGrid(int(btn.x) + "_" + int(btn.y));
+				mapMgr.rmMapThingGrid(btnPos.x + "_" + btnPos.y);
 				delete mapMgr.mapThingDic[btn.name];
 			})
-			
 		}
 		
-		private function onCloseDemo(data:Object):void
+		private function onCloseDemo():void
 		{
 			pet.visible = false;
 			view.removeEventListener(Event.ENTER_FRAME, onUpdate);
 		}
 		
-		private function onRunDemo(data:Object):void
+		private function onRunDemo():void
 		{
 			var gridTypeDataMap:Dictionary = mapMgr.gridDataDic[Enum.Walk];
 			if (!gridTypeDataMap)

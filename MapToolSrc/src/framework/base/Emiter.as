@@ -1,58 +1,73 @@
 package framework.base
 {
-	import com.simpvmc.Notification;
-	import com.simpvmc.NotifierBase;
-	
 	import flash.utils.Dictionary;
-
-	/**
-	 * 消息发射器 
-	 * @author CYK
-	 * 
-	 */	
-	public class Emiter extends NotifierBase
+	
+	public class Emiter 
 	{
+		
 		private var _msgHandler:Dictionary = new Dictionary();
-
-		public function Emiter()
+		
+		
+		public function emit(event:String, ... _args):void
 		{
-		}
-		
-		protected function registerN():void {
-			
-		}
-		
-		public function emit(event:String,data:Object = null):void{
-			NotifierBase.globalNotify(event,data);
-		}
-		
-		public function onEmitter(ntfyName:String, proc:Function):void {
-			if(!_msgHandler[ntfyName]){
-				_msgHandler[ntfyName] = [];
-			}
-			_msgHandler[ntfyName].push(proc);
-			stage4ntfy.addEventListener(/*Notification.MvC_ + */ntfyName, onMvCMessage);
-		}
-		
-		public function un(ntfName:String):void {
-			delete _msgHandler[ntfName];
-			stage4ntfy.removeEventListener(/*Notification.MvC_ + */ntfName, onMvCMessage);
-		}
-		
-		public function unAll():void {
-			for (var ntfName:String in _msgHandler) {
-				delete _msgHandler[ntfName];
-				stage4ntfy.removeEventListener(/*Notification.MvC_ + */ntfName, onMvCMessage);
-			}
-		}
-		
-		public function onMvCMessage(ntfy:Notification):void {
-			var msgHandlers:Array = _msgHandler[ntfy.name];
-			if (msgHandlers != null) {
-				for(var i: int= 0;i<msgHandlers.length;i++){
-					msgHandlers[i](ntfy);
+			var _local_4:int;
+			var _local_3:* = null;
+			var _local_5:Array = _msgHandler[event];
+			if (!_local_5)
+			{
+				return;
+			};
+			_local_4 = 0;
+			while (_local_4 < _local_5.length)
+			{
+				_local_3 = _local_5[_local_4];
+				if (_local_3.callBack.length > 0)
+				{
+					_local_3.callBack.apply(_local_3.ctx, _args);
 				}
-			}
+				else
+				{
+					_local_3.callBack.apply(_local_3.ctx);
+				};
+				_local_4++;
+			};
 		}
+		
+		public function on(event:String, callBack:Function, ctx:*):void{
+			if (!_msgHandler[event]){
+				_msgHandler[event] = [];
+			};
+			_msgHandler[event].push({"callBack":callBack,"ctx":ctx});
+		}
+		
+		public function off(event:String, callBack:Function, ctx:*):void
+		{
+			var _local_6:int;
+			var _local_5:* = null;
+			var _local_7:Array = _msgHandler[event];
+			if (!_local_7)
+			{
+				return;
+			};
+			var _local_4:int = -1;
+			_local_6 = 0;
+			while (_local_6 < _local_7.length)
+			{
+				_local_5 = _local_7[_local_6];
+				if (((_local_5.callBack == callBack) && (_local_5.ctx == ctx)))
+				{
+					_local_4 = _local_6;
+					break;
+				};
+				_local_6++;
+			};
+			if (_local_4 < 0)
+			{
+				return;
+			};
+			_local_7.splice(_local_4, 1);
+		}
+		
+		
 	}
-}
+}//package framework.base

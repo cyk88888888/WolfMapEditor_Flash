@@ -101,19 +101,20 @@ package framework.ui
 			Global.emmiter.emit(event,data);
 		}
 		
-		protected function onEmitter(ntfyName:String, proc:Function):void {
-			_msgHandler[ntfyName] = proc;
-			Global.emmiter.onEmitter(ntfyName,proc);
+		protected function onEmitter(ntfyName:String, callBack:Function):void {
+			_msgHandler[ntfyName] = callBack;
+			Global.emmiter.on(ntfyName,callBack,this);
 		}
 		
 		protected function unEmitter(ntfName:String):void {
-			delete _msgHandler[ntfName];
-			Global.emmiter.un(ntfName);
+			if(_msgHandler[ntfName]){
+				Global.emmiter.off(ntfName, _msgHandler[ntfName], this);
+				delete _msgHandler[ntfName]
+			}
 		}
 		
 		private function unAll():void {
 			for (var ntfName:String in _msgHandler) {
-				delete _msgHandler[ntfName];
 				unEmitter(ntfName);
 			}
 		}

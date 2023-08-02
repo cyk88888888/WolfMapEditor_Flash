@@ -37,6 +37,7 @@
     <component id="n4uv22" name="ComboBox.xml" path="/components/" exported="true"/>
     <component id="n4uv23" name="ComboBoxItem.xml" path="/components/" exported="true"/>
     <component id="n4uv24" name="ComboBoxPopup.xml" path="/components/" exported="true"/>
+    <component id="pl6m26" name="Btn_Arrow.xml" path="/components/" exported="true"/>
   </resources>
   <publish name=""/>
 </packageDescription>

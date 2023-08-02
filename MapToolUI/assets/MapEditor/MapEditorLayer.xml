@@ -5,94 +5,104 @@
       <relation target="" sidePair="width-width,height-height"/>
     </graph>
     <component id="n1_g4oc" name="mapComp" src="nx961d" fileName="components/MapComp.xml" xy="0,0" size="1200,1001"/>
-    <component id="n3_g4oc" name="btn_walk" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,9" size="120,36" group="n41_vtkz" scale="0.8,0.8">
-      <Button title="设置可行走"/>
+    <component id="n3_g4oc" name="btn_walk" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,9" size="96,29" group="n41_vtkz">
+      <Button title="设置可行走" titleFontSize="18"/>
     </component>
-    <component id="n2_g4oc" name="btn_block" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,43" size="120,36" group="n41_vtkz" scale="0.8,0.8" visible="false">
-      <Button title="设置障碍物"/>
+    <component id="n36_vtkz" name="btn_start" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1416,9" size="96,29" group="n41_vtkz">
+      <Button title="设置起始点" titleFontSize="18"/>
     </component>
-    <component id="n4_g4oc" name="btn_blockVert" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,45" size="164,36" group="n41_vtkz" scale="0.8,0.8">
-      <Button title="设置可视墙顶点"/>
+    <component id="n92_qig8" name="btn_waterVert" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1312,9" size="96,29" group="n41_vtkz">
+      <Button title="设置落水点" titleFontSize="18"/>
     </component>
-    <component id="n19_d7z4" name="btn_water" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,118" size="120,36" group="n41_vtkz" scale="0.8,0.8" visible="false">
-      <Button title="设置水域"/>
+    <component id="n46_vtkz" name="btn_mapThing" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,45" size="115,29" group="n41_vtkz">
+      <Button title="设置场景物件" titleFontSize="18"/>
     </component>
-    <component id="n36_vtkz" name="btn_start" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,152" size="120,36" group="n41_vtkz" scale="0.8,0.8">
-      <Button title="设置起始点"/>
+    <component id="n30_bfx2" name="btn_clearAll" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1581,9" size="115,29" group="n41_vtkz">
+      <Button title="清除全部数据" titleFontSize="18"/>
     </component>
-    <component id="n30_bfx2" name="btn_clearAll" src="pzzla" fileName="components/CommonButton1.xml" pkg="g2zhtj9b" xy="1428,9" size="165,36" group="n41_vtkz" scale="0.8,0.8">
-      <Button title="清除全部数据"/>
-    </component>
-    <component id="n92_qig8" name="btn_waterVert" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1208,117" size="120,36" group="n41_vtkz" scale="0.8,0.8">
-      <Button title="设置落水点"/>
-    </component>
-    <component id="n98_gke3" name="btn_visible" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,82" size="149,36" group="n41_vtkz" scale="0.8,0.8">
-      <Button title="设置可视墙"/>
-    </component>
-    <component id="n106_eq6j" name="btn_startWall" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1210,44" size="164,36" group="n41_vtkz" scale="0.8,0.8" visible="false">
-      <Button title="设置起始墙"/>
-    </component>
-    <component id="n46_vtkz" name="btn_mapThing" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1207,187" size="160,36" group="n41_vtkz" scale="0.8,0.8">
-      <Button title="设置场景物件"/>
-    </component>
-    <component id="n107_eq6j" name="btn_switchWall" src="vtkz1u" fileName="components/SelectButton1.xml" pkg="g2zhtj9b" xy="1358,44" size="164,36" group="n41_vtkz" scale="0.8,0.8" visible="false">
-      <Button title="设置开关墙"/>
-    </component>
-    <group id="n41_vtkz" name="grp_gripType" xy="1207,9" size="386,214"/>
-    <graph id="n45_vtkz" name="n45" xy="1207,225" size="266,533" group="n47_vtkz" type="rect" fillColor="#ffccffff">
+    <group id="n41_vtkz" name="grp_gripType" xy="1207,9" size="489,65"/>
+    <graph id="n45_vtkz" name="n45" xy="1207,80" size="266,678" group="n47_vtkz" type="rect" fillColor="#ffccffff">
       <relation target="" sidePair="width-width,height-height"/>
     </graph>
-    <list id="n44_vtkz" name="list_tree" xy="1210,229" size="259,525" group="n47_vtkz" overflow="scroll" scrollBarFlags="128" defaultItem="ui://g2zhtj9bpmk31" treeView="true" indent="15" clickToExpand="1"/>
-    <text id="n57_vtkz" name="n57" xy="1482,231" size="67,24" group="n59_vtkz" fontSize="16" color="#ffffff" autoSize="none" text="taskId："/>
-    <graph id="n56_vtkz" name="n56" xy="1542,228" size="71,33" group="n59_vtkz" type="rect"/>
-    <text id="n58_vtkz" name="txt_taskId" xy="1547,232" size="61,24" group="n59_vtkz" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="2"/>
-    <group id="n59_vtkz" name="n59" xy="1482,228" size="131,33" group="n117_nlz9"/>
-    <text id="n113_v21r" name="n113" xy="1482,272" size="81,24" group="n116_v21r" fontSize="16" color="#ffffff" autoSize="none" text="groupId："/>
-    <graph id="n114_v21r" name="n114" xy="1557,269" size="71,33" group="n116_v21r" type="rect"/>
-    <text id="n115_v21r" name="txt_groupId" xy="1562,273" size="61,24" group="n116_v21r" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="2"/>
-    <group id="n116_v21r" name="n116" xy="1482,269" size="146,33" group="n117_nlz9"/>
-    <text id="n102_eq6j" name="n102" xy="1482,311" size="84,34" group="n105_eq6j" fontSize="16" color="#ffffff" text="物件类型："/>
-    <component id="n108_n4uv" name="combo_taskType" src="n4uv22" fileName="components/ComboBox.xml" pkg="g2zhtj9b" xy="1565,313" size="100,30" group="n105_eq6j">
+    <list id="n44_vtkz" name="list_tree" xy="1210,84" size="259,670" group="n47_vtkz" overflow="scroll" scrollBarFlags="128" defaultItem="ui://g2zhtj9bpmk31" treeView="true" indent="15" clickToExpand="1"/>
+    <text id="n102_eq6j" name="n102" xy="1482,86" size="84,24" group="n105_eq6j" fontSize="16" color="#ffffff" text="物件类型："/>
+    <component id="n108_n4uv" name="combo_thingkType" src="n4uv22" fileName="components/ComboBox.xml" pkg="g2zhtj9b" xy="1565,87" size="100,22" group="n105_eq6j">
       <ComboBox visibleItemCount="10" autoClearItems="true">
         <item title="任务" value="1"/>
         <item title="起始围栏" value="2"/>
       </ComboBox>
     </component>
-    <group id="n105_eq6j" name="n105" xy="1482,311" size="183,34" group="n117_nlz9"/>
-    <text id="n110_uxy4" name="n110" xy="1482,349" size="84,34" group="n112_uxy4" fontSize="16" color="#ffffff" text="触发类型："/>
-    <component id="n111_uxy4" name="combo_triggerType" src="n4uv22" fileName="components/ComboBox.xml" pkg="g2zhtj9b" xy="1567,350" size="100,30" group="n112_uxy4">
+    <group id="n105_eq6j" name="n105" xy="1482,86" size="183,24" group="n117_nlz9"/>
+    <text id="n110_uxy4" name="n110" xy="1482,111" size="84,24" group="n112_uxy4" fontSize="16" color="#ffffff" text="触发类型："/>
+    <component id="n111_uxy4" name="combo_triggerType" src="n4uv22" fileName="components/ComboBox.xml" pkg="g2zhtj9b" xy="1565,111" size="100,22" group="n112_uxy4">
       <ComboBox visibleItemCount="10" autoClearItems="true">
         <item title="发亮" value="1"/>
         <item title="其他标识" value="2"/>
       </ComboBox>
     </component>
-    <group id="n112_uxy4" name="n112" xy="1482,349" size="185,34" group="n117_nlz9"/>
-    <text id="n133_vmus" name="n133" xy="1482,388" size="28,24" group="n136_vmus" fontSize="16" color="#ffffff" autoSize="none" text="x："/>
-    <graph id="n134_vmus" name="n134" xy="1512,385" size="71,33" group="n136_vmus" type="rect"/>
-    <text id="n135_vmus" name="txt_x" xy="1517,389" size="61,24" group="n136_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="4"/>
-    <group id="n136_vmus" name="n136" xy="1482,385" size="101,33" group="n117_nlz9"/>
-    <text id="n137_vmus" name="n137" xy="1589,388" size="29,24" group="n140_vmus" fontSize="16" color="#ffffff" autoSize="none" text="y："/>
-    <graph id="n138_vmus" name="n138" xy="1619,385" size="71,33" group="n140_vmus" type="rect"/>
-    <text id="n139_vmus" name="txt_y" xy="1624,389" size="61,24" group="n140_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="4"/>
-    <group id="n140_vmus" name="n140" xy="1589,385" size="101,33" group="n117_nlz9"/>
-    <text id="n141_vmus" name="n141" xy="1482,425" size="84,24" group="n144_vmus" fontSize="16" color="#ffffff" autoSize="none" text="anchorX："/>
-    <graph id="n142_vmus" name="n142" xy="1561,422" size="71,33" group="n144_vmus" type="rect"/>
-    <text id="n143_vmus" name="txt_anchorX" xy="1566,426" size="61,24" group="n144_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0.5" maxLength="8" restrict="[0-9]" keyboardType="2"/>
-    <group id="n144_vmus" name="n144" xy="1482,422" size="150,33" group="n117_nlz9"/>
-    <text id="n145_vmus" name="n145" xy="1482,460" size="83,24" group="n148_vmus" fontSize="16" color="#ffffff" autoSize="none" text="anchorY："/>
-    <graph id="n146_vmus" name="n146" xy="1561,457" size="71,33" group="n148_vmus" type="rect"/>
-    <text id="n147_vmus" name="txt_anchorY" xy="1566,461" size="61,24" group="n148_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0.5" maxLength="8" restrict="[0-9]" keyboardType="2"/>
-    <group id="n148_vmus" name="n148" xy="1482,457" size="150,33" group="n117_nlz9"/>
-    <text id="n150_p30h" name="n150" xy="1482,501" size="84,24" group="n153_p30h" fontSize="16" color="#ffffff" autoSize="none" text="物件宽高："/>
-    <text id="n154_p30h" name="txt_thingRect" xy="1563,501" size="96,24" group="n153_p30h" fontSize="16" autoSize="none" text="4000, 4000"/>
-    <group id="n153_p30h" name="n153" xy="1482,501" size="177,24" group="n117_nlz9"/>
-    <group id="n117_nlz9" name="grp_mapThingInfo" xy="1482,228" size="208,297" group="n47_vtkz" visible="false" advanced="true"/>
-    <text id="n128_nlz9" name="n128" xy="1480,231" size="81,34" group="n131_nlz9" fontSize="16" color="#ffffff" text="groupId："/>
-    <graph id="n129_nlz9" name="n129" xy="1555,228" size="71,41" group="n131_nlz9" type="rect"/>
-    <text id="n130_nlz9" name="txt_groupId2" xy="1560,232" size="61,34" group="n131_nlz9" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="10" keyboardType="2"/>
-    <group id="n131_nlz9" name="n131" xy="1480,228" size="146,41" group="n132_nlz9"/>
-    <group id="n132_nlz9" name="grp_bevel" xy="1480,228" size="146,41" group="n47_vtkz" visible="false" advanced="true"/>
-    <group id="n47_vtkz" name="grp_mapThing" xy="1207,225" size="483,533"/>
+    <group id="n112_uxy4" name="n112" xy="1482,111" size="183,24" group="n117_nlz9"/>
+    <text id="n164_dq1h" name="n164" xy="1482,135" size="84,24" group="n166_dq1h" fontSize="16" color="#ffffff" text="关联类型："/>
+    <component id="n165_dq1h" name="combo_relationType" src="n4uv22" fileName="components/ComboBox.xml" pkg="g2zhtj9b" xy="1565,135" size="100,22" group="n166_dq1h">
+      <ComboBox visibleItemCount="10" autoClearItems="true">
+        <item title="发亮" value="1"/>
+        <item title="其他标识" value="2"/>
+      </ComboBox>
+    </component>
+    <group id="n166_dq1h" name="n166" xy="1482,135" size="183,24" group="n117_nlz9"/>
+    <text id="n167_dq1h" name="n167" xy="1482,165" size="84,24" group="n170_dq1h" fontSize="16" color="#ffffff" text="关联参数："/>
+    <graph id="n168_dq1h" name="n168" xy="1565,160" size="101,33" group="n170_dq1h" type="rect"/>
+    <text id="n169_dq1h" name="txt_relationParm" xy="1569,164" size="93,24" group="n170_dq1h" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="10" keyboardType="2"/>
+    <group id="n170_dq1h" name="n170" xy="1482,160" size="184,33" group="n117_nlz9"/>
+    <text id="n57_vtkz" name="n57" xy="1505,198" size="67,24" group="n59_vtkz" fontSize="16" color="#ffffff" autoSize="none" text="taskId："/>
+    <graph id="n56_vtkz" name="n56" xy="1565,195" size="101,33" group="n59_vtkz" type="rect"/>
+    <text id="n58_vtkz" name="txt_taskId" xy="1569,199" size="93,24" group="n59_vtkz" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="2"/>
+    <group id="n59_vtkz" name="n59" xy="1505,195" size="161,33" group="n117_nlz9"/>
+    <text id="n113_v21r" name="n113" xy="1511,233" size="61,24" group="n116_v21r" fontSize="16" color="#ffffff" autoSize="none" text="grpId："/>
+    <graph id="n114_v21r" name="n114" xy="1565,230" size="101,33" group="n116_v21r" type="rect"/>
+    <text id="n115_v21r" name="txt_groupId" xy="1569,234" size="93,24" group="n116_v21r" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="2"/>
+    <group id="n116_v21r" name="n116" xy="1511,230" size="155,33" group="n117_nlz9"/>
+    <component id="n172_dq1h" name="btn_xReduce" src="pl6m26" fileName="components/Btn_Arrow.xml" pkg="g2zhtj9b" xy="1509,270" size="20,20" group="n136_vmus" scale="-1,1"/>
+    <component id="n171_dq1h" name="btn_xAdd" src="pl6m26" fileName="components/Btn_Arrow.xml" pkg="g2zhtj9b" xy="1511,270" size="20,20" group="n136_vmus"/>
+    <text id="n133_vmus" name="n133" xy="1535,268" size="28,24" group="n136_vmus" fontSize="16" color="#ffffff" autoSize="none" text="x："/>
+    <graph id="n134_vmus" name="n134" xy="1565,265" size="101,33" group="n136_vmus" type="rect"/>
+    <text id="n135_vmus" name="txt_x" xy="1569,269" size="93,24" group="n136_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="4"/>
+    <group id="n136_vmus" name="n136" xy="1509,265" size="157,33" group="n117_nlz9"/>
+    <component id="n173_dq1h" name="btn_yReduce" src="pl6m26" fileName="components/Btn_Arrow.xml" pkg="g2zhtj9b" xy="1509,306" size="20,20" group="n140_vmus" scale="-1,1"/>
+    <component id="n174_dq1h" name="btn_yAdd" src="pl6m26" fileName="components/Btn_Arrow.xml" pkg="g2zhtj9b" xy="1511,306" size="20,20" group="n140_vmus"/>
+    <text id="n137_vmus" name="n137" xy="1535,304" size="29,24" group="n140_vmus" fontSize="16" color="#ffffff" autoSize="none" text="y："/>
+    <graph id="n138_vmus" name="n138" xy="1565,301" size="101,33" group="n140_vmus" type="rect"/>
+    <text id="n139_vmus" name="txt_y" xy="1569,305" size="93,24" group="n140_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="8" restrict="[0-9]" keyboardType="4"/>
+    <group id="n140_vmus" name="n140" xy="1509,301" size="157,33" group="n117_nlz9"/>
+    <text id="n141_vmus" name="n141" xy="1489,340" size="84,24" group="n144_vmus" fontSize="16" color="#ffffff" autoSize="none" text="anchorX："/>
+    <graph id="n142_vmus" name="n142" xy="1565,337" size="101,33" group="n144_vmus" type="rect"/>
+    <text id="n143_vmus" name="txt_anchorX" xy="1569,341" size="93,24" group="n144_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0.5" maxLength="8" restrict="[0-9]" keyboardType="2"/>
+    <group id="n144_vmus" name="n144" xy="1489,337" size="177,33" group="n117_nlz9"/>
+    <text id="n145_vmus" name="n145" xy="1489,376" size="83,24" group="n148_vmus" fontSize="16" color="#ffffff" autoSize="none" text="anchorY："/>
+    <graph id="n146_vmus" name="n146" xy="1565,373" size="101,33" group="n148_vmus" type="rect"/>
+    <text id="n147_vmus" name="txt_anchorY" xy="1569,377" size="93,24" group="n148_vmus" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0.5" maxLength="8" restrict="[0-9]" keyboardType="2"/>
+    <group id="n148_vmus" name="n148" xy="1489,373" size="177,33" group="n117_nlz9"/>
+    <text id="n150_p30h" name="n150" xy="1485,410" size="84,24" group="n153_p30h" fontSize="16" color="#ffffff" autoSize="none" text="物件宽高："/>
+    <text id="n154_p30h" name="txt_thingRect" xy="1566,410" size="96,24" group="n153_p30h" fontSize="16" autoSize="none" text="4000, 4000"/>
+    <group id="n153_p30h" name="n153" xy="1485,410" size="177,24" group="n117_nlz9"/>
+    <group id="n117_nlz9" name="grp_mapThingInfo" xy="1482,86" size="184,348" group="n47_vtkz" visible="false" advanced="true"/>
+    <text id="n155_dq1h" name="n155" xy="1480,86" size="84,24" group="n158_dq1h" fontSize="16" color="#ffffff" text="顶点类型："/>
+    <component id="n159_dq1h" name="combo_bevelType" src="n4uv22" fileName="components/ComboBox.xml" pkg="g2zhtj9b" xy="1557,87" size="100,22" group="n158_dq1h">
+      <ComboBox visibleItemCount="10" autoClearItems="true">
+        <item title="任务" value="1"/>
+        <item title="起始围栏" value="2"/>
+      </ComboBox>
+    </component>
+    <group id="n158_dq1h" name="n158" xy="1480,86" size="177,24" group="n132_nlz9"/>
+    <text id="n128_nlz9" name="n128" xy="1480,120" size="69,24" group="n131_nlz9" fontSize="16" color="#ffffff" text="grpIds："/>
+    <graph id="n129_nlz9" name="n129" xy="1574,115" size="98,33" group="n131_nlz9" type="rect"/>
+    <text id="n130_nlz9" name="txt_groupIds" xy="1579,119" size="89,24" group="n131_nlz9" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="10" keyboardType="2"/>
+    <group id="n131_nlz9" name="n131" xy="1480,115" size="192,33" group="n132_nlz9"/>
+    <text id="n160_dq1h" name="n160" xy="1480,158" size="99,24" group="n163_dq1h" fontSize="16" color="#ffffff" text="subGrpIds："/>
+    <graph id="n161_dq1h" name="n161" xy="1574,153" size="98,33" group="n163_dq1h" type="rect"/>
+    <text id="n162_dq1h" name="txt_subGroupIds" xy="1579,157" size="89,24" group="n163_dq1h" fontSize="16" autoSize="none" singleLine="true" text="" input="true" prompt="0" maxLength="10" keyboardType="2"/>
+    <group id="n163_dq1h" name="n163" xy="1480,153" size="192,33" group="n132_nlz9"/>
+    <group id="n132_nlz9" name="grp_bevel" xy="1480,86" size="192,100" group="n47_vtkz" visible="false" advanced="true"/>
+    <group id="n47_vtkz" name="grp_mapThing" xy="1207,80" size="465,678"/>
     <graph id="n9_g4oc" name="n9" xy="1316,830" size="70,34" group="n40_vtkz" type="rect"/>
     <text id="n90_qig8" name="txt_mapRect" xy="1289,795" size="96,24" group="n40_vtkz" fontSize="16" autoSize="none" text="4000, 4000"/>
     <text id="n7_g4oc" name="n7" xy="1207,835" size="116,24" group="n40_vtkz" fontSize="16" color="#ffffff" text="设置格子大小："/>

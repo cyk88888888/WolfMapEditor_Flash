@@ -11,14 +11,8 @@ package modules.base
 		public static const Msg_MsgBox:String = "Msg_MsgBox";
 		public static const None:String = "GridType_None";
 		public static const Walk:String = "GridType_walk";
-		public static const Block:String = "GridType_block";
-		public static const Visible:String = "GridType_visible";
-		public static const BlockVerts:String = "GridType_blockVerts";
-		public static const Water:String = "GridType_water";
-		public static const WaterVerts:String = "GridType_WaterVerts";
+		public static const WaterVerts:String = "GridType_WaterVerts";//落水点
 		public static const Start:String = "GridType_start";
-		public static const StartWall:String = "GridType_startWall";
-		public static const SwitchWall:String = "GridType_switchWall";
 		public static const MapThing:String = "GridType_MapThing";
 		public static const MapThing1:String = "GridType_MapThing" + MapThingType_light;
 		public static const MapThing2:String = "GridType_MapThing" + MapThingTrigger_unWalk;
@@ -26,8 +20,6 @@ package modules.base
 		public static const MapThing4:String = "GridType_MapThing" + MapThingTrigger_grass;
 		
 		public static const WalkType:int = 1;//可行走
-		public static const BlockType:int = 2;//墙
-		public static const VisibleType:int = 3;//可视墙
 		
 		
 		public static const MapThingType_task:int = 1;//场景物件 - 任务
@@ -37,8 +29,10 @@ package modules.base
 		public static const MapThingType_grass:int = 5;//场景物件 - 草丛
 		public static const MapThingType_tree:int = 6;//场景物件 - 树
 		public static const MapThingType_beeNest:int = 7;//场景物件 - 蜂窝
-		
+		public static const MapThingType_dungeon:int = 8;//场景物件 - 地牢
+		public static const MapThingType_dungeonSwitch:int = 9;//场景物件 - 地牢开关
 		public static const MapThingType_bevel:int = 999;//场景物件 - 斜角顶点
+		
 		
 		public static const MapThingType_light:int = 1;//场景物件触发类型 - 发亮
 		public static const MapThingTrigger_unWalk:int = 2;//场景物件触发类型 - 不可行走范围点列表

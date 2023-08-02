@@ -135,17 +135,18 @@ package framework.ui
 		
 		protected function onEmitter(ntfyName:String, proc:Function):void {
 			_msgHandler[ntfyName] = proc;
-			Global.emmiter.onEmitter(ntfyName,proc);
+			Global.emmiter.on(ntfyName,proc,this);
 		}
 		
 		protected function unEmitter(ntfName:String):void {
-			delete _msgHandler[ntfName];
-			Global.emmiter.un(ntfName);
+			if(_msgHandler[ntfName]){
+				Global.emmiter.off(ntfName, _msgHandler[ntfName], this);
+				delete _msgHandler[ntfName]
+			}
 		}
 		
 		private function unAll():void {
 			for (var ntfName:String in _msgHandler) {
-				delete _msgHandler[ntfName];
 				unEmitter(ntfName);
 			}
 		}
