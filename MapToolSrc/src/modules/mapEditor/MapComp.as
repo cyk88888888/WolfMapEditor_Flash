@@ -126,7 +126,7 @@ package modules.mapEditor
 			center.setXY((mapWidth - center.width) / 2, (mapHeight - center.height) / 2);
 			
 			lineShape.graphics.clear();
-			lineShape.graphics.lineStyle(1,0x9E9E9E);
+			lineShape.graphics.lineStyle(1,0x000000);
 			
 			//画横线
 			for(var i:int = 0; i < numRows; i++){
@@ -285,7 +285,7 @@ package modules.mapEditor
 			var colorType:String = gridType;
 			if(gridType.indexOf(Enum.MapThing) > -1){//场景物件格子有归属关系，这里特殊处理，方便物件删除时，把格子一起删除
 				var mapThingInfo:MapThingInfo = mapMgr.curMapThingInfo;
-				if(mapThingInfo.type == Enum.MapThingType_bevel) return;//顶点格子不需要绘制颜色格子
+				if(!mapThingInfo || mapThingInfo.type == Enum.MapThingType_bevel) return;//顶点格子不需要绘制颜色格子
 				var mapThingKey:String = int(mapThingInfo.x)+"_" + int(mapThingInfo.y);
 				gridSubType = gridType == Enum.MapThing ? gridType + mapMgr.curMapThingTriggerType +"_"+ mapThingKey : gridType +"_"+ mapThingKey;
 				colorType = gridType == Enum.MapThing ? gridType + mapMgr.curMapThingTriggerType : gridType;
@@ -393,7 +393,8 @@ package modules.mapEditor
 					}
 				}
 				
-				/** 设置障碍物节点**/
+				/** 设置水域和落水点**/
+				addGridDataByType(Enum.Water, mapInfo.waterList);
 				addGridDataByType(Enum.WaterVerts, mapInfo.waterVertList);
 				/** 设置起始点**/
 				addGridDataByType(Enum.Start, mapInfo.startList);
@@ -408,10 +409,17 @@ package modules.mapEditor
 						if (mapThingData.unWalkArea) addGridDataByType(Enum.MapThing2, mapThingData.unWalkArea);
 						if (mapThingData.keyManStandArea) addGridDataByType(Enum.MapThing3, mapThingData.keyManStandArea);
 						if (mapThingData.grassArea) addGridDataByType(Enum.MapThing4, mapThingData.grassArea);
-						var relationParms: Array = mapThingData.relationParm || [];
 						var relationParm: String = "";
-						for (var n: int = 0; n < relationParms.length; n++) {
-							relationParm += relationParms[n] + (n == relationParms.length - 1 ? "" : ",");
+						if(mapThingData.relationParm){
+							var objArr:Array = [];
+							for(var key:String in mapThingData.relationParm){
+								objArr.push([key,Number(mapThingData.relationParm[key])]);
+								
+							}
+							var len:int = objArr.length;
+							for(var jj:int = 0;jj<len;jj++){
+								relationParm += objArr[jj][0]+":"+objArr[jj][1] + (jj != len-1 ? "," : "");
+							}
 						}
 						onDragMapThingDown({
 							isImportJson: true,
@@ -424,7 +432,7 @@ package modules.mapEditor
 							grpId: mapThingData.grpId,
 							type: mapThingData.type,
 							relationType: mapThingData.relationType,
-							relationParm: mapThingData.relationParm,
+							relationParm: relationParm,
 							isByDrag: false
 						});
 					}
@@ -564,7 +572,7 @@ package modules.mapEditor
 			emit(GameEvent.UpdateMapScale);
 		}
 		
-		private function checkLimitPos():void{
+		public function checkLimitPos():void{
 			var maxScrollX:Number = stageWidth - view.viewWidth;
 			var maxScrollY:Number = stageHeight - view.viewHeight;
 			if(grp_map.x > 0) grp_map.x = 0;
@@ -727,7 +735,7 @@ package modules.mapEditor
 						relationParm: curMapThingInfo.relationParm
 					});
 				}
-				if(mapMgr.curMapThingInfo && mapMgr.curMapThingInfo.x == btnPos.x && mapMgr.curMapThingInfo.y == btnPos.y){
+				if(mapMgr.curMapThingInfo && mapMgr.curMapThingInfo.x == btn.x && mapMgr.curMapThingInfo.y == btn.y){
 					mapThingSelectSp.rmSelf();
 					mapMgr.curMapThingInfo = null;
 				}

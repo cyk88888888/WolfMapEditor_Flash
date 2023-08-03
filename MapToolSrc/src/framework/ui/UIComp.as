@@ -26,7 +26,7 @@ package framework.ui
 		public var hasDestory:Boolean = false;
 		private var needCreateView:Boolean = true;
 		private var childCompDic: Dictionary;
-		private var _msgHandler:Object = {};
+		private var _msgHandler:Dictionary = new Dictionary();
 		private var _objTapMap:Dictionary;
 		public function UIComp()
 		{
@@ -129,19 +129,23 @@ package framework.ui
 			return 	BaseUT.getClassNameByObj(this);
 		}
 		
+		public function getScript(itemName: String):*{
+			return childCompDic[itemName];
+		}
+		
 		protected function emit(event:String,data:Object = null):void{
-			Global.emmiter.emit(event,data);
+			Global.emmiter.emit(event, data);
 		}
 		
-		protected function onEmitter(ntfyName:String, proc:Function):void {
-			_msgHandler[ntfyName] = proc;
-			Global.emmiter.on(ntfyName,proc,this);
+		protected function onEmitter(event:String, callBack:Function):void {
+			_msgHandler[event] = callBack;
+			Global.emmiter.on(event, callBack, this);
 		}
 		
-		protected function unEmitter(ntfName:String):void {
-			if(_msgHandler[ntfName]){
-				Global.emmiter.off(ntfName, _msgHandler[ntfName], this);
-				delete _msgHandler[ntfName]
+		protected function unEmitter(event:String):void {
+			if(_msgHandler[event]){
+				Global.emmiter.off(event, _msgHandler[event], this);
+				delete _msgHandler[event];
 			}
 		}
 		

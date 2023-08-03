@@ -1,6 +1,7 @@
 package framework.ui
 {
 	import flash.events.Event;
+	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 	
 	import fairygui.GComponent;
@@ -10,6 +11,7 @@ package framework.ui
 	import framework.base.Global;
 	import framework.mgr.SceneMgr;
 	import framework.mgr.SubLayerMgr;
+
 	/**
 	 * 场景基类
 	 * @author cyk
@@ -25,7 +27,7 @@ package framework.ui
 		protected var mainClassLayer: Class;
 		private var _isFirstEnter:Boolean = true;
 		protected var _moduleParam: *;
-		private var _msgHandler:Object = {};
+		private var _msgHandler:Dictionary = new Dictionary();
 		public function UIScene()
 		{
 			subLayerMgr = new SubLayerMgr();
@@ -101,15 +103,15 @@ package framework.ui
 			Global.emmiter.emit(event,data);
 		}
 		
-		protected function onEmitter(ntfyName:String, callBack:Function):void {
-			_msgHandler[ntfyName] = callBack;
-			Global.emmiter.on(ntfyName,callBack,this);
+		protected function onEmitter(event:String, callBack:Function):void {
+			_msgHandler[event] = callBack;
+			Global.emmiter.on(event, callBack, this);
 		}
 		
-		protected function unEmitter(ntfName:String):void {
-			if(_msgHandler[ntfName]){
-				Global.emmiter.off(ntfName, _msgHandler[ntfName], this);
-				delete _msgHandler[ntfName]
+		protected function unEmitter(event:String):void {
+			if(_msgHandler[event]){
+				Global.emmiter.off(event, _msgHandler[event], this);
+				delete _msgHandler[event];
 			}
 		}
 		

@@ -77,6 +77,9 @@ package modules.mapEditor.conctoller
 				case Enum.Start:
 					color = 0xFFFF00;//黄
 					break;
+				case Enum.Water:
+					color = 0x00FFFF;//蓝
+					break;
 				case Enum.MapThing1:
 					color = 0x0000FF;//深蓝
 					break;
@@ -331,7 +334,8 @@ package modules.mapEditor.conctoller
 					}
 				}
 				
-				/** 设置障碍物**/
+				/** 设置水域和落水点**/
+				addGridDataByType(Enum.Water);
 				addGridDataByType(Enum.WaterVerts);
 				/** 设置起始点**/
 				addGridDataByType(Enum.Start);
@@ -344,6 +348,7 @@ package modules.mapEditor.conctoller
 							for each(var gridData:String in areaData){
 								var newList:Array = [];
 								if (gridType == Enum.WaterVerts) newList = mapInfo.waterVertList;
+								else if (gridType == Enum.Water) newList = mapInfo.waterList;
 								else if (gridType == Enum.Start) newList = mapInfo.startList;
 								var splitArr:Array = gridData.split("_");
 								newList.push(getGridIdxByXY(int(splitArr[0]), int(splitArr[1])));
@@ -405,13 +410,17 @@ package modules.mapEditor.conctoller
 							if(mapThingInfo.bevelType) borderData.bevelType = mapThingInfo.bevelType
 							mapInfo.borderList.push(borderData);
 						}else{
-							var splitRelationParmStr:Array = mapThingInfo.relationParm && mapThingInfo.relationParm.length > 0 ? mapThingInfo.relationParm.split(",") : [];
-							var relationParms: Array = [];
-							for(var n:int = 0;n <splitRelationParmStr.length;n++){
-								relationParms.push(Number(splitRelationParmStr[n]));
+							if(mapThingInfo.relationParm && mapThingInfo.relationParm.length > 0) {
+								var relationParmStr:Array = mapThingInfo.relationParm.split(",");
+								var relationParm:Object = new Object();
+								for(var n:int = 0;n <relationParmStr.length;n++){
+									var splitParm:Array = relationParmStr[n].split(":");
+									for(var m:int = 0;m <splitParm.length;m++){
+										relationParm[splitParm[0]] = splitParm[1];
+									}
+								}
+								mapThingData.relationParm = relationParm;
 							}
-							
-							if(relationParms.length > 0) mapThingData.relationParm = relationParms;
 							mapInfo.mapThingList.push(mapThingData);
 						}
 					}

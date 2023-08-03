@@ -1,73 +1,51 @@
-package framework.base
-{
+package framework.base {
+	
 	import flash.utils.Dictionary;
 	
-	public class Emiter 
-	{
+	/**
+	 * 消息发射器
+	 * @author CYK
+	 *
+	 */
+	public class Emiter {
+		private var _msgHandler: Dictionary = new Dictionary();
 		
-		private var _msgHandler:Dictionary = new Dictionary();
+		public function Emiter() {
+		}
 		
-		
-		public function emit(event:String, ... _args):void
-		{
-			var _local_4:int;
-			var _local_3:* = null;
-			var _local_5:Array = _msgHandler[event];
-			if (!_local_5)
-			{
-				return;
-			};
-			_local_4 = 0;
-			while (_local_4 < _local_5.length)
-			{
-				_local_3 = _local_5[_local_4];
-				if (_local_3.callBack.length > 0)
-				{
-					_local_3.callBack.apply(_local_3.ctx, _args);
+		public function emit(event: String, ...args): void {
+			var handlers: Array = _msgHandler[event];
+			if (!handlers) return;
+			for (var i: int = 0; i < handlers.length; i++) {
+				var handler: Object = handlers[i];
+				if(handler.callBack.length > 0){
+					handler.callBack.apply(handler.ctx, args);
+				}else{
+					handler.callBack.apply(handler.ctx);
 				}
-				else
-				{
-					_local_3.callBack.apply(_local_3.ctx);
-				};
-				_local_4++;
-			};
+			}
 		}
 		
-		public function on(event:String, callBack:Function, ctx:*):void{
-			if (!_msgHandler[event]){
+		public function on(event: String, callBack: Function, ctx: *): void {
+			if (!_msgHandler[event]) {
 				_msgHandler[event] = [];
-			};
-			_msgHandler[event].push({"callBack":callBack,"ctx":ctx});
+			}
+			_msgHandler[event].push({callBack: callBack, ctx: ctx});
 		}
 		
-		public function off(event:String, callBack:Function, ctx:*):void
-		{
-			var _local_6:int;
-			var _local_5:* = null;
-			var _local_7:Array = _msgHandler[event];
-			if (!_local_7)
-			{
-				return;
-			};
-			var _local_4:int = -1;
-			_local_6 = 0;
-			while (_local_6 < _local_7.length)
-			{
-				_local_5 = _local_7[_local_6];
-				if (((_local_5.callBack == callBack) && (_local_5.ctx == ctx)))
-				{
-					_local_4 = _local_6;
+		public function off(event: String, callBack: Function, ctx: *): void {
+			var handlers: Array = _msgHandler[event];
+			if (!handlers) return;
+			var index: int = -1;
+			for (var i: int = 0; i < handlers.length; i++) {
+				var handler: Object = handlers[i];
+				if (handler.callBack == callBack && handler.ctx == ctx) {
+					index = i;
 					break;
-				};
-				_local_6++;
-			};
-			if (_local_4 < 0)
-			{
-				return;
-			};
-			_local_7.splice(_local_4, 1);
+				}
+			}
+			if (index < 0) return;
+			handlers.splice(index, 1);
 		}
-		
-		
 	}
-}//package framework.base
+}

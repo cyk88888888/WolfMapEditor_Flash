@@ -3,7 +3,6 @@ package modules.mapEditor
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.MouseEvent;
-	
 	import fairygui.GButton;
 	import fairygui.GComboBox;
 	import fairygui.GComponent;
@@ -15,13 +14,11 @@ package modules.mapEditor
 	import fairygui.event.GTouchEvent;
 	import fairygui.event.ItemEvent;
 	import fairygui.event.StateChangeEvent;
-	
 	import framework.base.BaseUT;
 	import framework.base.Global;
 	import framework.mgr.ModuleMgr;
 	import framework.mgr.SceneMgr;
 	import framework.ui.UILayer;
-	
 	import modules.base.Enum;
 	import modules.base.GameEvent;
 	import modules.common.mgr.MsgMgr;
@@ -29,7 +26,6 @@ package modules.mapEditor
 	import modules.mapEditor.conctoller.MapMgr;
 	import modules.mapEditor.conctoller.MapThingInfo;
 	import modules.mapEditor.joystick.JoystickLayer;
-
 	/**
 	 * 地图编辑器主界面
 	 * @author cyk
@@ -44,7 +40,8 @@ package modules.mapEditor
 		private var mapComp:GComponent;
 		private var txt_cellSize:GTextInput;
 		private var txt_mapRect:GTextField;
-		private var txt_thingRect:GTextField;
+		private var txt_thingSize:GTextField;
+		private var txt_thingName:GTextField;
 		private var txt_relationParm:GTextInput;
 		private var txt_gridRange:GTextInput;
 		private var list_tree:GTree;
@@ -64,6 +61,7 @@ package modules.mapEditor
 		private var _curSelectTypeBtn:GButton;
 		private var _isInCopyMapThing:Boolean;//是否点击地图目录场景树（没做这个标识会导致点击后，拖拽物件立即被销毁了）
 		private var _drawMapThingData:Object;//拖拽场景已有的物件的临时数据
+		private var btn_water:GButton;
 		private var btn_xAdd:GButton;
 		private var btn_xReduce:GButton;
 		private var btn_yAdd:GButton;
@@ -81,7 +79,8 @@ package modules.mapEditor
 			txt_cellSize = view.getChild("txt_cellSize").asTextInput;
 			
 			txt_mapRect = view.getChild("txt_mapRect").asTextField;
-			txt_thingRect = view.getChild("txt_thingRect").asTextField;
+			txt_thingSize = view.getChild("txt_thingSize").asTextField;
+			txt_thingName = view.getChild("txt_thingName").asTextField;
 			mapMgr.mouseGridTextField = txt_mouseGridXY = view.getChild("txt_mouseGridXY").asTextField;
 			
 			txt_gridRange = view.getChild("txt_gridRange").asTextInput;
@@ -95,12 +94,11 @@ package modules.mapEditor
 			btn_waterVert = view.getChild("btn_waterVert").asButton;
 			btn_start = view.getChild("btn_start").asButton;
 			btn_mapThing = view.getChild("btn_mapThing").asButton;
-			
+			btn_water = view.getChild("btn_water").asButton;
 			mapComp = view.getChild("mapComp").asCom;
 			
 			grp_mapThingInfo = view.getChild("grp_mapThingInfo").asGroup;
 			grp_bevel = view.getChild("grp_bevel").asGroup;
-			
 			txt_taskId = view.getChild("txt_taskId").asTextInput;
 			txt_taskId.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutTaskId);
 			
@@ -150,6 +148,7 @@ package modules.mapEditor
 			list_tree.addEventListener(ItemEvent.CLICK, onClickMapTreeItem);
 			
 			updateMapInfo();
+			Global.stage.addEventListener(Event.RESIZE, onStageResize);
 			onEmitter(GameEvent.UpdateMapInfo, updateMapInfo);
 			onEmitter(GameEvent.ResizeMapSucc, updateMapInfo);
 			onEmitter(GameEvent.DragMapThingStart, onDragMapThingStart);
@@ -162,6 +161,12 @@ package modules.mapEditor
 			view.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
 		}
 		
+		protected function onStageResize(event:Event):void{
+			view.width = view.viewWidth = Global.stage.stageWidth;
+			view.height = view.viewHeight = Global.stage.stageHeight;
+			var script:* = getScript(mapComp.name) as MapComp;
+			script.checkLimitPos();
+		}		
 		
 		/**刷新地图场景物件目录**/
 		private function updateListTree():void{
@@ -320,7 +325,8 @@ package modules.mapEditor
 				txt_y.text = curMapThingInfo.y+"";
 				txt_anchorX.text = curMapThingInfo.anchorX+"";
 				txt_anchorY.text = curMapThingInfo.anchorY+"";
-				txt_thingRect.text = curMapThingInfo.width+","+curMapThingInfo.height;
+				txt_thingSize.text = curMapThingInfo.width+","+curMapThingInfo.height;
+				txt_thingName.text = curMapThingInfo.thingName;
 				txt_relationParm.text = curMapThingInfo.relationParm ? curMapThingInfo.relationParm : "";
 				combo_thingkType.selectedIndex = combo_thingkType.values.indexOf(curMapThingInfo.type);
 				combo_relationType.selectedIndex = combo_relationType.values.indexOf(curMapThingInfo.relationType);
@@ -452,19 +458,27 @@ package modules.mapEditor
 		
 		
 		public function _tap_btn_xAdd(evt:GTouchEvent):void{
+			MsgMgr.ShowMsg("功能开发中!!!");
 		}
 		
 		public function _tap_btn_xReduce(evt:GTouchEvent):void{
+			MsgMgr.ShowMsg("功能开发中!!!");
 		}
 		
 		public function _tap_btn_yAdd(evt:GTouchEvent):void{
+			MsgMgr.ShowMsg("功能开发中!!!");
 		}
 		
 		public function _tap_btn_yReduce(evt:GTouchEvent):void{
+			MsgMgr.ShowMsg("功能开发中!!!");
 		}
 		
 		public function _tap_btn_walk(evt:GTouchEvent):void{
 			changeGridType(Enum.Walk, btn_walk);
+		}
+		
+		public function _tap_btn_water(evt:GTouchEvent):void{
+			changeGridType(Enum.Water,btn_water);
 		}
 		
 		public function _tap_btn_waterVert(evt:GTouchEvent):void{
