@@ -14,6 +14,7 @@ package modules.base
 		public static const Water:String = "GridType_Water";//水域
 		public static const WaterVerts:String = "GridType_WaterVerts";//落水点
 		public static const Start:String = "GridType_start";
+		public static const Trap:String = "GridType_Trap";
 		public static const MapThing:String = "GridType_MapThing";
 		public static const MapThing1:String = "GridType_MapThing" + MapThingType_light;
 		public static const MapThing2:String = "GridType_MapThing" + MapThingTrigger_unWalk;

@@ -77,6 +77,9 @@ package modules.mapEditor.conctoller
 				case Enum.Start:
 					color = 0xFFFF00;//黄
 					break;
+				case Enum.Trap:
+					color = 0xFF0000;//红
+					break;
 				case Enum.Water:
 					color = 0x00FFFF;//蓝
 					break;
@@ -334,11 +337,10 @@ package modules.mapEditor.conctoller
 					}
 				}
 				
-				/** 设置水域和落水点**/
 				addGridDataByType(Enum.Water);
 				addGridDataByType(Enum.WaterVerts);
-				/** 设置起始点**/
 				addGridDataByType(Enum.Start);
+				addGridDataByType(Enum.Trap);
 				function addGridDataByType(gridType: String):void
 				{
 					var gridTypeDataMap:Dictionary = gridDataDic[gridType];
@@ -350,6 +352,7 @@ package modules.mapEditor.conctoller
 								if (gridType == Enum.WaterVerts) newList = mapInfo.waterVertList;
 								else if (gridType == Enum.Water) newList = mapInfo.waterList;
 								else if (gridType == Enum.Start) newList = mapInfo.startList;
+								else if (gridType == Enum.Trap) newList = mapInfo.trapList;
 								var splitArr:Array = gridData.split("_");
 								newList.push(getGridIdxByXY(int(splitArr[0]), int(splitArr[1])));
 							}
@@ -410,17 +413,31 @@ package modules.mapEditor.conctoller
 							if(mapThingInfo.bevelType) borderData.bevelType = mapThingInfo.bevelType
 							mapInfo.borderList.push(borderData);
 						}else{
+							var n: int, m:int, splitParm: Array;
 							if(mapThingInfo.relationParm && mapThingInfo.relationParm.length > 0) {
 								var relationParmStr:Array = mapThingInfo.relationParm.split(",");
 								var relationParm:Object = new Object();
-								for(var n:int = 0;n <relationParmStr.length;n++){
-									var splitParm:Array = relationParmStr[n].split(":");
-									for(var m:int = 0;m <splitParm.length;m++){
+								for(n = 0;n <relationParmStr.length;n++){
+									splitParm = relationParmStr[n].split(":");
+									for(m = 0;m <splitParm.length;m++){
 										relationParm[splitParm[0]] = splitParm[1];
 									}
 								}
 								mapThingData.relationParm = relationParm;
 							}
+							
+							if(mapThingInfo.extData && mapThingInfo.extData.length > 0) {
+								var extDataStr:Array = mapThingInfo.extData.split(",");
+								var extData:Object = new Object();
+								for(n = 0;n <extDataStr.length;n++){
+									splitParm = extDataStr[n].split(":");
+									for(m = 0;m <splitParm.length;m++){
+										extData[splitParm[0]] = splitParm[1];
+									}
+								}
+								mapThingData.extData = extData;
+							}
+							
 							mapInfo.mapThingList.push(mapThingData);
 						}
 					}

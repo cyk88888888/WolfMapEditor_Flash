@@ -17,7 +17,9 @@
     <text id="n4" name="title" xy="2,2" size="78,16" fontSize="12" color="#ffcc00" autoSize="none" text="">
       <relation target="" sidePair="width-width,height-height"/>
     </text>
-    <image id="n5" name="n5" src="n4uv21" fileName="images/b7(2)_png.png" xy="83,2"/>
+    <image id="n5" name="n5" src="n4uv21" fileName="images/b7(2)_png.png" xy="83,2">
+      <relation target="" sidePair="right-right"/>
+    </image>
   </displayList>
   <ComboBox dropdown="ui://g2zhtj9bn4uv24"/>
 </component>

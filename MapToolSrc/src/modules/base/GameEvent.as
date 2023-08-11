@@ -34,6 +34,7 @@ package modules.base
 		public static const UpdateMapTreeStruct:String  = next;//更新地图目录节点
 		public static const CheckShowGrid:String  = next;//显隐网格
 		public static const CheckShowPath:String  = next;//显隐路点
+		public static const CheckShowMapThing:String  = next;//显隐场景物件
 		public static const DarwGraphic:String  = next;//绘制指定区域的所有格子
 		public static const UpdateMapScale:String  = next;//地图缩放变更
 	}

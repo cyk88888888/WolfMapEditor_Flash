@@ -11,6 +11,7 @@ package modules.mapEditor.conctoller
 		public var waterList:Array;//水域格子列表
 		public var waterVertList:Array;//落水点列表
 		public var startList:Array;//起始点列表
+		public var trapList:Array;//陷阱点列表
 		public var mapThingList:Array;//场景物件信息列表MapThingInfo
 		public var borderList: Array;//边界顶点列表 => [{x:1, y:1, grpIds:[1,2], subGrpIds:[1,2]},{x:2, y2, grpIds:[1], subGrpIds:[1,2]}]
 		public function MapJsonInfo()
@@ -18,6 +19,7 @@ package modules.mapEditor.conctoller
 			walkList = [];
 			waterList = [];
 			waterVertList = [];
+			trapList = [];
 			startList = [];
 			mapThingList = [];
 			borderList = [];

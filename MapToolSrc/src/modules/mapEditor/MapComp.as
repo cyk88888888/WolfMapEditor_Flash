@@ -99,6 +99,7 @@ package modules.mapEditor
 			onEmitter(GameEvent.ImportMapJson, onImportMapJson);
 			onEmitter(GameEvent.CheckShowGrid, onCheckShowGrid);
 			onEmitter(GameEvent.CheckShowPath, onCheckShowPath);
+			onEmitter(GameEvent.CheckShowMapThing, onCheckShowMapThing);
 			onEmitter(GameEvent.ChangeGridType, onChangeGridType);
 			onEmitter(GameEvent.ResizeGrid, onResizeGrid);
 			onEmitter(GameEvent.RunDemo, onRunDemo);
@@ -124,7 +125,7 @@ package modules.mapEditor
 			removeAllGrid();
 			removeAllMapThing();
 			center.setXY((mapWidth - center.width) / 2, (mapHeight - center.height) / 2);
-			
+			lineShape.alpha = 0.5;
 			lineShape.graphics.clear();
 			lineShape.graphics.lineStyle(1,0x000000);
 			
@@ -228,11 +229,7 @@ package modules.mapEditor
 				MsgMgr.ShowMsg("请先选择操作类型!!!");
 				return;
 			}
-			if (_isCtrlDown) {//Ctrl键按下状态，只减不加
-				addOrRmRangeGrid(Global.stage.mouseX, Global.stage.mouseY, false);
-				return;
-			}
-			addOrRmRangeGrid(Global.stage.mouseX, Global.stage.mouseY);
+			addOrRmRangeGrid(Global.stage.mouseX, Global.stage.mouseY, !_isCtrlDown);
 		}
 		
 		/**获取当前鼠标下的格子信息 [格子所在的列, 格子所在的行, 绘制颜色格子的坐标X, 绘制颜色格子的坐标Y, gridKey]**/
@@ -396,8 +393,8 @@ package modules.mapEditor
 				/** 设置水域和落水点**/
 				addGridDataByType(Enum.Water, mapInfo.waterList);
 				addGridDataByType(Enum.WaterVerts, mapInfo.waterVertList);
-				/** 设置起始点**/
 				addGridDataByType(Enum.Start, mapInfo.startList);
+				addGridDataByType(Enum.Trap, mapInfo.trapList);
 				/** 设置场景物件触发区域和场景物件**/
 				if (mapInfo.mapThingList) {
 					for each(var mapThingData: Object in mapInfo.mapThingList) {//mapThingData -> MapThingInfo
@@ -409,18 +406,8 @@ package modules.mapEditor
 						if (mapThingData.unWalkArea) addGridDataByType(Enum.MapThing2, mapThingData.unWalkArea);
 						if (mapThingData.keyManStandArea) addGridDataByType(Enum.MapThing3, mapThingData.keyManStandArea);
 						if (mapThingData.grassArea) addGridDataByType(Enum.MapThing4, mapThingData.grassArea);
-						var relationParm: String = "";
-						if(mapThingData.relationParm){
-							var objArr:Array = [];
-							for(var key:String in mapThingData.relationParm){
-								objArr.push([key,Number(mapThingData.relationParm[key])]);
-								
-							}
-							var len:int = objArr.length;
-							for(var jj:int = 0;jj<len;jj++){
-								relationParm += objArr[jj][0]+":"+objArr[jj][1] + (jj != len-1 ? "," : "");
-							}
-						}
+						var relationParm: String = parseData(mapThingData.relationParm);
+						var extData:String = parseData(mapThingData.extData);
 						onDragMapThingDown({
 							isImportJson: true,
 							url: BaseUT.checkIsPngOrJpg(mapThingData.thingName) ? mapMgr.mapThingRootUrl + "\\" + mapThingData.thingName : mapMgr.fileIcon,
@@ -433,6 +420,7 @@ package modules.mapEditor
 							type: mapThingData.type,
 							relationType: mapThingData.relationType,
 							relationParm: relationParm,
+							extData: extData,
 							isByDrag: false
 						});
 					}
@@ -464,6 +452,22 @@ package modules.mapEditor
 							isByDrag: true
 						});
 					}
+				}
+				
+				function parseData(data: Object): String{
+					var dataStr: String = "";
+					if(data){
+						var objArr:Array = [];
+						for(var key:String in data){
+							objArr.push([key,Number(data[key])]);
+							
+						}
+						var len:int = objArr.length;
+						for(var jj:int = 0;jj<len;jj++){
+							dataStr += objArr[jj][0]+":"+objArr[jj][1] + (jj != len-1 ? "," : "");
+						}
+					}
+					return dataStr;
 				}
 				
 				function addGridDataByType(gridType: String, gridList: Array): void {
@@ -536,9 +540,12 @@ package modules.mapEditor
 			lineContainer.visible = !lineContainer.visible;
 		}
 		
-		private function onCheckShowPath():void
-		{
+		private function onCheckShowPath():void{
 			gridContainer.visible = !gridContainer.visible;
+		}
+		
+		private function onCheckShowMapThing():void{
+			mapThingContainer.visible = !mapThingContainer.visible;
 		}
 		
 		private function onToCenter():void
@@ -636,6 +643,7 @@ package modules.mapEditor
 			if(data.grpIdStr) mapThingInfo.grpIdStr = data.grpIdStr;
 			if(data.subGrpIdStr) mapThingInfo.subGrpIdStr = data.subGrpIdStr;
 			if(data.relationParm) mapThingInfo.relationParm = data.relationParm;
+			if(data.extData) mapThingInfo.extData = data.extData;
 			if(data.bevelType) mapThingInfo.bevelType = data.bevelType;
 			if(data.type) mapThingInfo.type = data.type;
 			if(data.relationType) mapThingInfo.relationType = data.relationType;
@@ -699,7 +707,6 @@ package modules.mapEditor
 			mapThingComp.addClickListener(function(evt:GTouchEvent):void{
 				if (_gridType != Enum.MapThing || _isPressSpace) return;
 				var btn:GButton = evt.currentTarget as GButton;
-				mapMgr.curMapThingInfo = mapMgr.mapThingDic[btn.name][0];
 				if(_isCtrlDown) return;
 				if(_lastSelectMapThingComp != btn) {//这样做是为了再切换选中不同场景物件时，不会选中后就马上绘制触发区域格子
 					mapThingSelectSp.rmSelf();
@@ -712,6 +719,7 @@ package modules.mapEditor
 						mapThingContainer.displayListContainer.addChild(mapThingSelectSp);
 					}
 				});
+				mapMgr.curMapThingInfo = mapMgr.mapThingDic[btn.name][0];
 				emit(GameEvent.ClickMapTing);
 			});
 			
@@ -732,7 +740,8 @@ package modules.mapEditor
 						bevelType: curMapThingInfo.bevelType,
 						grpIdStr: curMapThingInfo.grpIdStr,
 						subGrpIdStr: curMapThingInfo.subGrpIdStr,
-						relationParm: curMapThingInfo.relationParm
+						relationParm: curMapThingInfo.relationParm,
+						extData: curMapThingInfo.extData
 					});
 				}
 				if(mapMgr.curMapThingInfo && mapMgr.curMapThingInfo.x == btn.x && mapMgr.curMapThingInfo.y == btn.y){

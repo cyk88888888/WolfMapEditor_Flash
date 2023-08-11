@@ -3,6 +3,7 @@ package modules.mapEditor
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.MouseEvent;
+	
 	import fairygui.GButton;
 	import fairygui.GComboBox;
 	import fairygui.GComponent;
@@ -14,11 +15,14 @@ package modules.mapEditor
 	import fairygui.event.GTouchEvent;
 	import fairygui.event.ItemEvent;
 	import fairygui.event.StateChangeEvent;
+	import fairygui.utils.GTimers;
+	
 	import framework.base.BaseUT;
 	import framework.base.Global;
 	import framework.mgr.ModuleMgr;
 	import framework.mgr.SceneMgr;
 	import framework.ui.UILayer;
+	
 	import modules.base.Enum;
 	import modules.base.GameEvent;
 	import modules.common.mgr.MsgMgr;
@@ -26,6 +30,7 @@ package modules.mapEditor
 	import modules.mapEditor.conctoller.MapMgr;
 	import modules.mapEditor.conctoller.MapThingInfo;
 	import modules.mapEditor.joystick.JoystickLayer;
+
 	/**
 	 * 地图编辑器主界面
 	 * @author cyk
@@ -43,6 +48,7 @@ package modules.mapEditor
 		private var txt_thingSize:GTextField;
 		private var txt_thingName:GTextField;
 		private var txt_relationParm:GTextInput;
+		private var txt_thingExtData:GTextInput;
 		private var txt_gridRange:GTextInput;
 		private var list_tree:GTree;
 		private var _mapThingComp:GButton;
@@ -69,6 +75,7 @@ package modules.mapEditor
 		private var btn_walk:GButton;
 		private var btn_waterVert:GButton;
 		private var btn_start:GButton;
+		private var btn_trap:GButton;
 		private var btn_mapThing:GButton;
 		private var txt_mouseGridXY:GTextField;
 		private var grp_mapThingInfo:GGroup;
@@ -93,6 +100,7 @@ package modules.mapEditor
 			btn_walk = view.getChild("btn_walk").asButton;
 			btn_waterVert = view.getChild("btn_waterVert").asButton;
 			btn_start = view.getChild("btn_start").asButton;
+			btn_trap = view.getChild("btn_trap").asButton;
 			btn_mapThing = view.getChild("btn_mapThing").asButton;
 			btn_water = view.getChild("btn_water").asButton;
 			mapComp = view.getChild("mapComp").asCom;
@@ -114,6 +122,9 @@ package modules.mapEditor
 			txt_relationParm = view.getChild("txt_relationParm").asTextInput;
 			txt_relationParm.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutRelationParm);
 			
+			txt_thingExtData = view.getChild("txt_thingExtData").asTextInput;
+			txt_thingExtData.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutThingExtData);
+			
 			txt_x = view.getChild("txt_x").asTextInput;
 			txt_x.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutX);
 			
@@ -125,7 +136,6 @@ package modules.mapEditor
 			
 			txt_anchorY = view.getChild("txt_anchorY").asTextInput;
 			txt_anchorY.addEventListener(FocusEvent.FOCUS_OUT, onFocusOutAnchorY);
-			
 			
 			txt_anchorX.restrict = txt_anchorY.restrict = txt_x.restrict = txt_y.restrict = "0-9 .\\-";
 			combo_thingkType = view.getChild("combo_thingkType").asComboBox;
@@ -159,6 +169,15 @@ package modules.mapEditor
 			mapMgr.changeMap(true);
 			view.addEventListener(MouseEvent.CLICK, onClickView,true);
 			view.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+			
+			btn_xAdd.addEventListener(GTouchEvent.BEGIN, addX);
+			btn_xAdd.addEventListener(GTouchEvent.END, stopAddX);
+			btn_xReduce.addEventListener(GTouchEvent.BEGIN, reduceX);
+			btn_xReduce.addEventListener(GTouchEvent.END, stopReduceX);
+			btn_yAdd.addEventListener(GTouchEvent.BEGIN, addY);
+			btn_yAdd.addEventListener(GTouchEvent.END, stopAddY);
+			btn_yReduce.addEventListener(GTouchEvent.BEGIN, reduceY);
+			btn_yReduce.addEventListener(GTouchEvent.END, stopReduceY);
 		}
 		
 		protected function onStageResize(event:Event):void{
@@ -263,7 +282,8 @@ package modules.mapEditor
 				bevelType: data.bevelType,
 				grpIdStr: data.grpIdStr,
 				subGrpIdStr: data.subGrpIdStr,
-				relationParm: data.relationParm
+				relationParm: data.relationParm,
+				extData: data.extData
 			};
 		}
 		
@@ -294,7 +314,8 @@ package modules.mapEditor
 						bevelType: _drawMapThingData ? _drawMapThingData.bevelType : 0,
 						grpIdStr: _drawMapThingData ? _drawMapThingData.grpIdStr : 0,
 						subGrpIdStr: _drawMapThingData ? _drawMapThingData.subGrpIdStr : 0,
-						relationParm: _drawMapThingData ? _drawMapThingData.relationParm : 0,
+						relationParm: _drawMapThingData ? _drawMapThingData.relationParm : "",
+						extData: _drawMapThingData ? _drawMapThingData.extData : "",
 						isByDrag: true
 					});
 				}
@@ -328,6 +349,7 @@ package modules.mapEditor
 				txt_thingSize.text = curMapThingInfo.width+","+curMapThingInfo.height;
 				txt_thingName.text = curMapThingInfo.thingName;
 				txt_relationParm.text = curMapThingInfo.relationParm ? curMapThingInfo.relationParm : "";
+				txt_thingExtData.text = curMapThingInfo.extData ? curMapThingInfo.extData : "";
 				combo_thingkType.selectedIndex = combo_thingkType.values.indexOf(curMapThingInfo.type);
 				combo_relationType.selectedIndex = combo_relationType.values.indexOf(curMapThingInfo.relationType);
 			}
@@ -364,63 +386,171 @@ package modules.mapEditor
 			var mapMgr:MapMgr = MapMgr.inst;
 			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.relationParm = txt_relationParm.text;	
 		}
+		
+		private function onFocusOutThingExtData(event:Event):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.extData = txt_thingExtData.text;	
+		}
+		
 		private function onFocusOutX(event:Event):void{
 			var mapMgr:MapMgr = MapMgr.inst;
-			if(mapMgr.curMapThingInfo){
-				var oldX:Number = mapMgr.curMapThingInfo.x,oldY:Number = mapMgr.curMapThingInfo.y;
-				var mapThingComp:GButton = mapMgr.getMapThingCompByXY(oldX,oldY);
-				delete mapMgr.mapThingDic[mapThingComp.name];
-				mapThingComp.x = mapMgr.curMapThingInfo.x = Number(txt_x.text);
-				mapThingComp.name = int(mapThingComp.x) + "_" + int(mapThingComp.y);
-				mapMgr.mapThingDic[mapThingComp.name] = [mapMgr.curMapThingInfo, mapThingComp];
-				emit(GameEvent.ChangeMapThingXY, {x:mapThingComp.x, y:mapThingComp.y, width: mapThingComp.width, height: mapThingComp.height});
+			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+			if(curMapThingInfo){
+				setMapThingPos(Number(txt_x.text), curMapThingInfo.y);
 			}
 		}
 		
 		private function onFocusOutY(event:Event):void{
 			var mapMgr:MapMgr = MapMgr.inst;
-			if(mapMgr.curMapThingInfo) {
-				var oldX:Number = mapMgr.curMapThingInfo.x,oldY:Number = mapMgr.curMapThingInfo.y;
+			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+			if(curMapThingInfo){
+				setMapThingPos(curMapThingInfo.x, Number(txt_y.text));
+			}
+		}
+		
+		private function onFocusOutAnchorX(event:Event):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+			if(curMapThingInfo){
+				setMapThingAnchor(Number(txt_anchorX.text), curMapThingInfo.anchorY);
+			}
+		}
+		
+		private function onFocusOutAnchorY(event:Event):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+			if(curMapThingInfo){
+				setMapThingAnchor(curMapThingInfo.anchorX, Number(txt_anchorY.text));
+			}
+		}
+		
+		private function addX(evt:GTouchEvent):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+			if(curMapThingInfo){
+				setMapThingPos(curMapThingInfo.x + 1, curMapThingInfo.y);
+				GTimers.inst.callDelay(200, delayAddX);	
+			}
+		}
+		private function stopAddX(evt:GTouchEvent):void{
+			GTimers.inst.remove(delayAddX);	
+			GTimers.inst.remove(intervalAddX);
+		}
+		
+		private function delayAddX():void{
+			GTimers.inst.add(50, 0, intervalAddX);	
+		}
+		
+		private function intervalAddX():void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+			if(curMapThingInfo){
+				setMapThingPos(curMapThingInfo.x + 1, curMapThingInfo.y);
+			}
+		}
+		
+		private function reduceX(evt:GTouchEvent):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+			if(curMapThingInfo){
+				setMapThingPos(curMapThingInfo.x - 1, curMapThingInfo.y);
+				GTimers.inst.callDelay(200, delayReduceX);
+			}
+		}
+		
+		private function stopReduceX(evt:GTouchEvent):void{
+			GTimers.inst.remove(delayReduceX);	
+			GTimers.inst.remove(intervalReduceX);
+		}
+		
+		private function delayReduceX():void{
+			GTimers.inst.add(50, 0, intervalReduceX);	
+		}
+		
+		private function intervalReduceX():void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+			if(curMapThingInfo){
+				setMapThingPos(curMapThingInfo.x - 1, curMapThingInfo.y);
+			}
+		}
+		
+		private function addY(evt:GTouchEvent):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+			if(curMapThingInfo){
+				setMapThingPos(curMapThingInfo.x, curMapThingInfo.y+1);
+				GTimers.inst.callDelay(200, delayAddY);
+			}
+		}
+		
+		private function stopAddY(evt:GTouchEvent):void{
+			GTimers.inst.remove(delayAddY);	
+			GTimers.inst.remove(intervalAddY);
+		}
+		
+		private function delayAddY():void{
+			GTimers.inst.add(50, 0, intervalAddY);	
+		}
+		
+		private function intervalAddY():void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+			if(curMapThingInfo){
+				setMapThingPos(curMapThingInfo.x, curMapThingInfo.y+1);
+			}
+		}
+		
+		private function reduceY(evt:GTouchEvent):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+			if(curMapThingInfo){
+				setMapThingPos(curMapThingInfo.x, curMapThingInfo.y-1);
+				GTimers.inst.callDelay(200, delayReduceY);
+			}
+		}
+		private function stopReduceY(evt:GTouchEvent):void{
+			GTimers.inst.remove(delayReduceY);	
+			GTimers.inst.remove(intervalReduceY);
+		}
+		
+		private function delayReduceY():void{
+			GTimers.inst.add(50, 0, intervalReduceY);	
+		}
+		
+		private function intervalReduceY():void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+			if(curMapThingInfo){
+				setMapThingPos(curMapThingInfo.x, curMapThingInfo.y-1);
+			}
+		}
+		
+		private function setMapThingPos(newX: Number, newY:Number):void{
+			var mapMgr:MapMgr = MapMgr.inst;
+			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+			if(curMapThingInfo) {
+				var oldX: Number = curMapThingInfo.x, oldY:Number = curMapThingInfo.y;
 				var mapThingComp:GButton = mapMgr.getMapThingCompByXY(oldX,oldY);
 				delete mapMgr.mapThingDic[mapThingComp.name];
-				mapThingComp.y = mapMgr.curMapThingInfo.y = Number(txt_y.text);	
+				txt_x.text = newX + "";
+				txt_y.text = newY + "";
+				mapThingComp.x = curMapThingInfo.x = newX;
+				mapThingComp.y = curMapThingInfo.y = newY;
 				mapThingComp.name = int(mapThingComp.x) + "_" + int(mapThingComp.y);
 				mapMgr.mapThingDic[mapThingComp.name] = [mapMgr.curMapThingInfo, mapThingComp];
 				emit(GameEvent.ChangeMapThingXY, {x:mapThingComp.x, y:mapThingComp.y, width: mapThingComp.width, height: mapThingComp.height});
 			}
 		}
 		
-		private function onFocusOutAnchorX(event:Event):void{
+		private function setMapThingAnchor(newAnchorX: Number, newAnchorY:Number):void{
 			var mapMgr:MapMgr = MapMgr.inst;
-			if(mapMgr.curMapThingInfo){
-				var mapThingComp:GButton = mapMgr.getMapThingCompByXY(mapMgr.curMapThingInfo.x,mapMgr.curMapThingInfo.y);
-				delete mapMgr.mapThingDic[mapThingComp.name];
-				mapMgr.curMapThingInfo.anchorX = Number(txt_anchorX.text);
-				var anchorX:Number = mapMgr.curMapThingInfo.anchorX,anchorY:Number = mapMgr.curMapThingInfo.anchorY;
-				mapThingComp.setPivot(anchorX,anchorY,true);
-				txt_x.text = mapThingComp.x+"";
-				txt_y.text = mapThingComp.y+"";
-				mapMgr.curMapThingInfo.x = mapThingComp.x;
-				mapMgr.curMapThingInfo.y = mapThingComp.y;
-				mapThingComp.name = mapThingComp.x + "_" + mapThingComp.y;
-				mapMgr.mapThingDic[mapThingComp.name] = [mapMgr.curMapThingInfo, mapThingComp];
-			}
-		}
-		
-		private function onFocusOutAnchorY(event:Event):void{
-			var mapMgr:MapMgr = MapMgr.inst;
-			if(mapMgr.curMapThingInfo){
-				var mapThingComp:GButton = mapMgr.getMapThingCompByXY(mapMgr.curMapThingInfo.x,mapMgr.curMapThingInfo.y);
-				delete mapMgr.mapThingDic[mapThingComp.name];
-				mapMgr.curMapThingInfo.anchorY = Number(txt_anchorY.text);
-				var anchorX:Number = mapMgr.curMapThingInfo.anchorX,anchorY:Number = mapMgr.curMapThingInfo.anchorY;
-				mapThingComp.setPivot(anchorX,anchorY,true);
-				txt_x.text = mapThingComp.x+"";
-				txt_y.text = mapThingComp.y+"";
-				mapMgr.curMapThingInfo.x = mapThingComp.x;
-				mapMgr.curMapThingInfo.y = mapThingComp.y;
-				mapThingComp.name = mapThingComp.x + "_" + mapThingComp.y;
-				mapMgr.mapThingDic[mapThingComp.name] = [mapMgr.curMapThingInfo, mapThingComp];
+			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+			if(curMapThingInfo) {
+				var mapThingComp:GButton = mapMgr.getMapThingCompByXY(curMapThingInfo.x,curMapThingInfo.y);
+				curMapThingInfo.anchorX = newAnchorX;
+				curMapThingInfo.anchorY = newAnchorY;
+				mapThingComp.setPivot(newAnchorX,newAnchorY,true);
 			}
 		}
 		
@@ -456,23 +586,6 @@ package modules.mapEditor
 			_drawMapThingData = null;
 		}
 		
-		
-		public function _tap_btn_xAdd(evt:GTouchEvent):void{
-			MsgMgr.ShowMsg("功能开发中!!!");
-		}
-		
-		public function _tap_btn_xReduce(evt:GTouchEvent):void{
-			MsgMgr.ShowMsg("功能开发中!!!");
-		}
-		
-		public function _tap_btn_yAdd(evt:GTouchEvent):void{
-			MsgMgr.ShowMsg("功能开发中!!!");
-		}
-		
-		public function _tap_btn_yReduce(evt:GTouchEvent):void{
-			MsgMgr.ShowMsg("功能开发中!!!");
-		}
-		
 		public function _tap_btn_walk(evt:GTouchEvent):void{
 			changeGridType(Enum.Walk, btn_walk);
 		}
@@ -490,6 +603,10 @@ package modules.mapEditor
 		public function _tap_btn_start(evt:GTouchEvent):void{
 			changeGridType(Enum.Start,btn_start);
 		}
+		public function _tap_btn_trap(evt:GTouchEvent):void{
+			changeGridType(Enum.Trap,btn_trap);
+		}
+		
 		/**切换操作类型**/
 		private function changeGridType(type:String, btn:GButton):void{
 			if(_curSelectTypeBtn == btn) return;
@@ -539,6 +656,11 @@ package modules.mapEditor
 		public function _tap_btn_showPath(evt:GTouchEvent):void{
 			emit(GameEvent.CheckShowPath);
 		}
+		
+		public function _tap_btn_showMapThing(evt:GTouchEvent):void{
+			emit(GameEvent.CheckShowMapThing);
+		}
+		
 		
 	}
 }

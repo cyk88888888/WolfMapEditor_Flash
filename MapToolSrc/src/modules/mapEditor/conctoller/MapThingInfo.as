@@ -17,6 +17,7 @@ package modules.mapEditor.conctoller
 		public var bevelType:int;//顶点类型
 		public var relationType:int;//关联类型
 		public var relationParm:String;//关联参数(1,2)
+		public var extData: String;//拓展数据
 		public var area:Array;//物件触发范围点列表
 		public var unWalkArea:Array;//不可行走范围点列表
 		public var keyManStandArea:Array;//关键人物站立范围点列表(引导模式下，传送机器人用)
@@ -31,6 +32,7 @@ package modules.mapEditor.conctoller
 			grpIdStr = "";
 			subGrpIdStr = "";
 			relationParm = "",
+			extData = "",
 			type = 0;
 			bevelType = 0;
 			relationType = 0;
