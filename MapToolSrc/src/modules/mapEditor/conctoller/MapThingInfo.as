@@ -22,6 +22,7 @@ package modules.mapEditor.conctoller
 		public var unWalkArea:Array;//不可行走范围点列表
 		public var keyManStandArea:Array;//关键人物站立范围点列表(引导模式下，传送机器人用)
 		public var grassArea:Array;//草丛范围点列表
+		public var walkArea:Array;//物件上可行走点列表
 		public function MapThingInfo(){
 			x = 0;
 			y = 0;
@@ -40,6 +41,7 @@ package modules.mapEditor.conctoller
 			unWalkArea = [];
 			keyManStandArea = [];
 			grassArea = [];
+			walkArea = [];
 		}
 	}
 }

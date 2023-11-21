@@ -8,6 +8,8 @@ package modules.mapEditor
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.ui.Mouse;
+	import flash.ui.MouseCursor;
 	import flash.utils.Dictionary;
 	
 	import fairygui.GButton;
@@ -26,11 +28,13 @@ package modules.mapEditor
 	import modules.common.JuHuaDlg;
 	import modules.common.mgr.MsgMgr;
 	import modules.mapEditor.comp.MapGridSp;
+	import modules.mapEditor.comp.MapRemindSp;
 	import modules.mapEditor.comp.MapThingSelectSp;
 	import modules.mapEditor.conctoller.MapMgr;
+	import modules.mapEditor.conctoller.MapThingDisplay;
 	import modules.mapEditor.conctoller.MapThingInfo;
 	import modules.mapEditor.joystick.JoystickLayer;
-	
+
 	/**
 	 * 地图编辑组件 
 	 * @author cyk
@@ -45,6 +49,7 @@ package modules.mapEditor
 		private var lineContainer:GComponent;
 		private var gridContainer:GComponent;
 		private var mapThingContainer: GComponent;
+		private var bevelContainer: GComponent;
 		private var remindContainer:GComponent;
 		private var grp_floor:GComponent;
 		private var pet:GLoader;
@@ -57,6 +62,7 @@ package modules.mapEditor
 		private var _isCtrlDown:Boolean;//ctrl键是否处于按下状态
 		private var speed:int = 5;//角色移动速度
 		private var mapThingSelectSp: MapThingSelectSp;//场景物件选中框
+		private var mapRemindSp: MapRemindSp;//场景物件提示选中框
 		private var _isLeftDown:Boolean;
 		private var curScale:Number = 1;
 		private var _lastSelectMapThingComp:GButton;//上一次选中的场景物件
@@ -72,6 +78,7 @@ package modules.mapEditor
 			grp_container = grp_map.getChild("grp_container").asCom;
 			remindContainer = grp_container.getChild("remindContainer").asCom;
 			mapThingContainer = grp_container.getChild("mapThingContainer").asCom;
+			bevelContainer = grp_container.getChild("bevelContainer").asCom;
 			lineContainer = grp_container.getChild("lineContainer").asCom;
 			gridContainer = grp_container.getChild("gridContainer").asCom;
 			grp_floor = grp_map.getChild("grp_floor").asCom;
@@ -79,6 +86,10 @@ package modules.mapEditor
 			center = grp_container.getChild("center").asGraph;
 			mapThingSelectSp = new MapThingSelectSp();
 			mapThingSelectSp.mouseChildren = mapThingSelectSp.mouseEnabled = false;
+			
+			mapRemindSp = new MapRemindSp();
+			mapRemindSp.mouseChildren = mapRemindSp.mouseEnabled = false;
+			
 			view.addEventListener(MouseEvent.CLICK, onClick);
 			view.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 			view.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
@@ -98,7 +109,6 @@ package modules.mapEditor
 		protected override function onEnter():void{
 			onEmitter(GameEvent.ImportMapJson, onImportMapJson);
 			onEmitter(GameEvent.CheckShowGrid, onCheckShowGrid);
-			onEmitter(GameEvent.CheckShowPath, onCheckShowPath);
 			onEmitter(GameEvent.CheckShowMapThing, onCheckShowMapThing);
 			onEmitter(GameEvent.ChangeGridType, onChangeGridType);
 			onEmitter(GameEvent.ResizeGrid, onResizeGrid);
@@ -107,9 +117,13 @@ package modules.mapEditor
 			onEmitter(GameEvent.ToCenter, onToCenter);
 			onEmitter(GameEvent.ToOriginalScale, onToOriginalScale);
 			onEmitter(GameEvent.ClearAllData, onClearAllData);
-			onEmitter(GameEvent.DragMapThingDown,onDragMapThingDown);
-			onEmitter(GameEvent.ChangeMapThingXY,onChangeMapThingXY);
-			onEmitter(GameEvent.DarwGraphic,onDarwGraphic);
+			onEmitter(GameEvent.DragMapThingDown, onDragMapThingDown);
+			onEmitter(GameEvent.ChangeMapThingXY, onChangeMapThingXY);
+			onEmitter(GameEvent.CheckShowPath, onCheckShowPath);
+			onEmitter(GameEvent.ChangeMapThingTriggerType, onChangeMapThingTriggerType);
+			onEmitter(GameEvent.DarwGraphic, onDarwGraphic);
+			onEmitter(GameEvent.ClickDisplayItem, onClickDisplayItem);
+			onEmitter(GameEvent.MapThingVisibleChg, checkOneGridGraphicVsb);
 			mapMgr = MapMgr.inst;
 		}
 		
@@ -154,9 +168,11 @@ package modules.mapEditor
 		/** 清除所有场景物件**/
 		private function removeAllMapThing():void{
 			mapThingContainer.removeChildren();
+			bevelContainer.removeChildren();
 			mapThingSelectSp.rmSelf();
 			mapMgr.curMapThingInfo = null;
 			mapMgr.mapThingDic = new Dictionary();
+			mapMgr.mapThingArr = new Vector.<MapThingDisplay>();
 		}
 		
 		/** 格子大小变化**/
@@ -251,9 +267,10 @@ package modules.mapEditor
 			var gridPosY: int = curCenterGridInfo[1];//格子所在的行
 			var gridRange: int = mapMgr.gridRange;
 			_redrawDic = new Dictionary();
+			var gridType: String = _gridType == Enum.MapThing ? Enum.MapThing + mapMgr.curMapThingTriggerType : _gridType;
 			if (gridRange == 0) {
-				if (isAdd) addGrid(_gridType, gridPosX, gridPosY);
-				else rmGrid(_gridType, gridPosX, gridPosY);
+				if (isAdd) addGrid(gridType, gridPosX, gridPosY);
+				else rmGrid(gridType, gridPosX, gridPosY);
 			} else {
 				var startCol: int = Math.max(0, gridPosX - gridRange);
 				var endCol: int = Math.min(mapMgr.numCols - 1, gridPosX + gridRange);
@@ -261,8 +278,8 @@ package modules.mapEditor
 				var endRow: int = Math.min(mapMgr.numRows - 1, gridPosY + gridRange);
 				for (var i: int = startCol; i <= endCol; i++) {
 					for (var j: int = startRow; j <= endRow; j++) {
-						if (isAdd) addGrid(_gridType, i, j);
-						else rmGrid(_gridType, i, j);
+						if (isAdd) addGrid(gridType, i, j);
+						else rmGrid(gridType, i, j);
 					}
 				}
 			}
@@ -273,19 +290,22 @@ package modules.mapEditor
 		 * @param gridType 格子类型
 		 * @param gridPosX 格子所在的列
 		 * @param gridPosY 格子所在的行
-		 * @param gridX 绘制颜色格子的坐标X
-		 * @param gridY 绘制颜色格子的坐标Y
 		 */		
 		private function addGrid(gridType:String, gridPosX:int,gridPosY:int):void
 		{	
 			var gridSubType:String = gridType;
 			var colorType:String = gridType;
-			if(gridType.indexOf(Enum.MapThing) > -1){//场景物件格子有归属关系，这里特殊处理，方便物件删除时，把格子一起删除
+			var isMapThing: Boolean = gridType.indexOf(Enum.MapThing) > -1;
+			if(isMapThing){//场景物件格子有归属关系，这里特殊处理，方便物件删除时，把格子一起删除
 				var mapThingInfo:MapThingInfo = mapMgr.curMapThingInfo;
 				if(!mapThingInfo || mapThingInfo.type == Enum.MapThingType_bevel) return;//顶点格子不需要绘制颜色格子
+				var mapThingComp:GButton = mapMgr.getMapThingCompByXY(mapThingInfo.x,mapThingInfo.y);
+				if(mapThingComp && (!mapThingComp.touchable || !mapThingComp.visible)) return;//不可点击||不可见状态下，不可以绘制格子
 				var mapThingKey:String = int(mapThingInfo.x)+"_" + int(mapThingInfo.y);
-				gridSubType = gridType == Enum.MapThing ? gridType + mapMgr.curMapThingTriggerType +"_"+ mapThingKey : gridType +"_"+ mapThingKey;
-				colorType = gridType == Enum.MapThing ? gridType + mapMgr.curMapThingTriggerType : gridType;
+				if(gridType == Enum.MapThing){
+					gridType;
+				}
+				gridSubType = gridType +"_"+ mapThingKey;
 			}
 			var gridKey:String = gridPosX + "_" + gridPosY;
 			var areaSize: int = mapMgr.areaGraphicsSize;
@@ -293,11 +313,14 @@ package modules.mapEditor
 			var gridDataDic: Dictionary = mapMgr.gridDataDic;
 			if(!gridDataDic[gridSubType]) gridDataDic[gridSubType] = new Dictionary();
 			if(!gridDataDic[gridSubType][areaKey]) gridDataDic[gridSubType][areaKey] = new Dictionary();
-			if(gridDataDic[gridSubType][areaKey][gridKey]) return;
+			if(gridDataDic[gridSubType][areaKey][gridKey]) return;//该行列已绘制格子
 			gridDataDic[gridSubType][areaKey][gridKey] = gridKey;
 			var color:Number = _colorTypeDic[gridSubType] = mapMgr.getColorByType(colorType);
 			var graphickey:String = gridSubType + "_" + areaKey;
 			var graphic: MapGridSp = getGraphics(graphickey);
+			if(isMapThing){
+				graphic.visible = gridType == Enum.MapThing + mapMgr.curMapThingTriggerType;
+			}
 			var gridX: int = gridPosX * _cellSize;//绘制颜色格子的坐标X
 			var gridY: int = gridPosY * _cellSize;//绘制颜色格子的坐标Y
 			graphic.drawRect(gridX + 0.5, gridY + 0.5, _cellSize, _cellSize, color);
@@ -313,8 +336,10 @@ package modules.mapEditor
 			var gridSubType: String = gridType;
 			if (gridType.indexOf(Enum.MapThing) > -1) {//场景物件格子有归属关系，这里特殊处理，方便物件删除时，把格子一起删除
 				var mapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
+				var mapThingComp:GButton = mapMgr.getMapThingCompByXY(mapThingInfo.x,mapThingInfo.y);
+				if(mapThingComp && (!mapThingComp.touchable || !mapThingComp.visible)) return;//不可点击||不可见状态下，不可以绘制格子
 				var mapThingKey: String = int(mapThingInfo.x) + "_" + int(mapThingInfo.y);
-				gridSubType = gridType + mapMgr.curMapThingTriggerType + "_" + mapThingKey;
+				gridSubType = gridType + "_" + mapThingKey;
 			}
 			var gridKey: String = gridPosX + "_" + gridPosY;
 			var areaSize: int = mapMgr.areaGraphicsSize;
@@ -406,6 +431,7 @@ package modules.mapEditor
 						if (mapThingData.unWalkArea) addGridDataByType(Enum.MapThing2, mapThingData.unWalkArea);
 						if (mapThingData.keyManStandArea) addGridDataByType(Enum.MapThing3, mapThingData.keyManStandArea);
 						if (mapThingData.grassArea) addGridDataByType(Enum.MapThing4, mapThingData.grassArea);
+						if (mapThingData.walkArea) addGridDataByType(Enum.MapThing5, mapThingData.walkArea);
 						var relationParm: String = parseData(mapThingData.relationParm);
 						var extData:String = parseData(mapThingData.extData);
 						onDragMapThingDown({
@@ -425,6 +451,7 @@ package modules.mapEditor
 						});
 					}
 				}
+				
 				
 				if (mapInfo.borderList) {
 					for each(var mapThingData2: Object in mapInfo.borderList) {//mapThingData2 -> MapThingInfo
@@ -453,6 +480,8 @@ package modules.mapEditor
 						});
 					}
 				}
+				
+				emit(GameEvent.ImportMapTingComplete);
 				
 				function parseData(data: Object): String{
 					var dataStr: String = "";
@@ -546,6 +575,7 @@ package modules.mapEditor
 		
 		private function onCheckShowMapThing():void{
 			mapThingContainer.visible = !mapThingContainer.visible;
+			bevelContainer.visible = !bevelContainer.visible;
 		}
 		
 		private function onToCenter():void
@@ -608,7 +638,7 @@ package modules.mapEditor
 			var localPos:Point = grp_map.globalToLocal(Global.stage.mouseX, Global.stage.mouseY);
 			if (localPos.y <= offY) return;//点击的是顶部预留的区域
 			var gridXY: Point = mapMgr.pos2GridXY(localPos.x, localPos.y - 100);
-			if(mapMgr.mouseGridTextField) mapMgr.mouseGridTextField.text = gridXY.y + ", " + gridXY.x; 
+			if(mapMgr.mouseGridTextField) mapMgr.mouseGridTextField.text = gridXY.y + ", " + gridXY.x + "\n" + "x: " + (gridXY.x * mapMgr.cellSize) + ", y: " + (gridXY.y * mapMgr.cellSize); 
 		}
 		
 		private function onClearAllData():void
@@ -622,6 +652,56 @@ package modules.mapEditor
 			if(mapThingSelectSp.isShow) mapThingSelectSp.drawRectLine(data.x - data.width/2, data.y - data.height/2, data.width, data.height);
 		}
 		
+		private function onChangeMapThingTriggerType(data:Object):void{
+			var oldType: int = data.oldType;
+			var type: int = data.type;
+			var areaSize: int = mapMgr.areaGraphicsSize;
+			var mapThingDic:Dictionary = mapMgr.mapThingDic;
+			var gridDataDic: Dictionary = mapMgr.gridDataDic;
+			//先把上一次的触发类型格子隐藏
+			checkAllGridGraphicVsb({type: oldType, isShow: false});
+			
+			//再显示当前触发类型的格子
+			checkAllGridGraphicVsb({type: type, isShow: true});
+		}
+		
+		private function checkAllGridGraphicVsb(data: Object): void{
+			var type: int = data.type;
+			var isShow: Boolean = data.isShow;
+			var areaSize: int = mapMgr.areaGraphicsSize;
+			var mapThingDic:Dictionary = mapMgr.mapThingDic;
+			var gridDataDic: Dictionary = mapMgr.gridDataDic;
+			for each(var item:Array in mapThingDic){
+				var mapThingInfo: MapThingInfo = item[0];
+				var mapThingKey: String = int(mapThingInfo.x) +"_"+ int(mapThingInfo.y);
+				data["mapThingKey"] = mapThingKey;
+				checkOneGridGraphicVsb(data);
+			}
+		}
+		
+		private function checkOneGridGraphicVsb(data: Object): void{
+			var type: int = data.type;
+			var isShow: Boolean = data.isShow;
+			var areaSize: int = mapMgr.areaGraphicsSize;
+			var gridDataDic: Dictionary = mapMgr.gridDataDic;
+			var mapThingKey: String = data.mapThingKey;
+			var typeKey: String = Enum.MapThing + type + "_" + mapThingKey;
+			var gridTypeDataMap: Dictionary = gridDataDic[typeKey];
+			if (gridTypeDataMap) {
+				for each(var areaGridMap: Dictionary in gridTypeDataMap) {
+					for each(var gridKey: String in areaGridMap) {
+						var splitGridPosKey: Array = gridKey.split("_");
+						var gridPosX: Number = Number(splitGridPosKey[0]);
+						var gridPosY: Number = Number(splitGridPosKey[1]);
+						var areaKey: String = Math.floor(gridPosX / areaSize) + "_" + Math.floor(gridPosY / areaSize);
+						var graphicKey:String = typeKey + "_" + areaKey;
+						var graphic: MapGridSp = getGraphics(graphicKey);
+						graphic.visible = isShow;
+					}
+				}
+			}
+		}
+		
 		/** 场景物件拖拽放下时**/
 		private function onDragMapThingDown(data:Object):void
 		{
@@ -633,7 +713,7 @@ package modules.mapEditor
 			var anchorX:Number = data.anchorX == undefined ? 0.5 : data.anchorX;
 			var anchorY:Number = data.anchorY == undefined ? 0.5 : data.anchorY;
 			if (mapThingX < 0 || mapThingY < 0 ||mapThingX >= mapMgr.mapWidth || mapThingY >= mapMgr.mapHeight) return;//超出边界
-			if(!mapMgr.mapThingDic) mapMgr.mapThingDic = new Dictionary();
+			
 			var splitUrl:Array = url.split(mapMgr.mapThingRootUrl + "\\");
 			var elementName:String = splitUrl[splitUrl.length - 1];
 			var mapThingInfo:MapThingInfo = new MapThingInfo();
@@ -676,7 +756,11 @@ package modules.mapEditor
 				if(data.isByDrag){
 					mapThingInfo.type = Enum.MapThingType_bevel;
 				}
+				bevelContainer.addChild(mapThingComp);
+			}else{
+				mapThingContainer.addChild(mapThingComp);
 			}
+			
 			mapThingComp.x = mapThingInfo.x = mapThingX;
 			mapThingComp.y = mapThingInfo.y = mapThingY;
 			mapThingComp.setPivot(anchorX, anchorY, true);
@@ -684,8 +768,16 @@ package modules.mapEditor
 			mapThingInfo.thingName = elementName;
 			mapThingInfo.anchorX = anchorX;
 			mapThingInfo.anchorY = anchorY;
-			mapThingContainer.addChild(mapThingComp);
+		
 			mapMgr.mapThingDic[mapThingComp.name] = [mapThingInfo, mapThingComp];
+			if(!isBelve){
+				var mapThingDisplay: MapThingDisplay = new MapThingDisplay();
+				mapThingDisplay.mapThing = mapThingComp;
+				mapThingDisplay.data = mapThingInfo;
+				mapThingDisplay.name = mapThingComp.name;
+				mapMgr.mapThingArr.push(mapThingDisplay);
+			}
+		
 			mapThingSelectSp.rmSelf();
 			if(!isImportJson){
 				_lastSelectMapThingComp = mapThingComp;
@@ -695,32 +787,21 @@ package modules.mapEditor
 				mapThingInfo.width = mapThingComp.width;
 				mapThingInfo.height = mapThingComp.height;
 				if(!isImportJson){
-					emit(GameEvent.ClickMapTing);
+					if(!isBelve) emit(GameEvent.AddMapThing, mapThingComp);
+					emit(GameEvent.ClickMapTing, mapThingComp);
 					//物件选中框
 					TweenMax.delayedCall(0.1, function():void{
 						mapThingSelectSp.drawRectLine(mapThingX - mapThingComp.width/2, mapThingY - mapThingComp.height/2, mapThingComp.width, mapThingComp.height);
-						mapThingContainer.displayListContainer.addChild(mapThingSelectSp);
+						grp_container.displayListContainer.addChild(mapThingSelectSp);
 					});
 				}
 			}
 			/** 点击选中场景物件**/
 			mapThingComp.addClickListener(function(evt:GTouchEvent):void{
 				if (_gridType != Enum.MapThing || _isPressSpace) return;
-				var btn:GButton = evt.currentTarget as GButton;
 				if(_isCtrlDown) return;
-				if(_lastSelectMapThingComp != btn) {//这样做是为了再切换选中不同场景物件时，不会选中后就马上绘制触发区域格子
-					mapThingSelectSp.rmSelf();
-					_lastSelectMapThingComp = btn;
-				}
-				TweenMax.delayedCall(0.1,function():void{//延迟0.1秒，这样做是为了在切换选中不同场景物件时，不会选中后就马上绘制触发区域格子
-					//物件选中框
-					mapThingSelectSp.drawRectLine(btn.x-btn.width/2, btn.y-btn.height/2, btn.width, btn.height);
-					if(!mapThingSelectSp.parent || !mapThingSelectSp.parent.contains(mapThingSelectSp)){
-						mapThingContainer.displayListContainer.addChild(mapThingSelectSp);
-					}
-				});
-				mapMgr.curMapThingInfo = mapMgr.mapThingDic[btn.name][0];
-				emit(GameEvent.ClickMapTing);
+				var btn:GButton = evt.currentTarget as GButton;
+				onClickMapthing({btn: btn, data: mapMgr.mapThingDic[btn.name][0]});
 			});
 			
 			/**点击右键重新拖拽物件、按住ctrl+鼠标右键删除场景物件**/ 
@@ -748,10 +829,47 @@ package modules.mapEditor
 					mapThingSelectSp.rmSelf();
 					mapMgr.curMapThingInfo = null;
 				}
+				var rmIndex:Number = btn.parent.getChildIndex(btn);
 				btn.dispose();
 				mapMgr.rmMapThingGrid(btnPos.x + "_" + btnPos.y);
 				delete mapMgr.mapThingDic[btn.name];
+				if(rmIndex > -1) {
+					mapMgr.mapThingArr.splice(rmIndex, 1);
+					emit(GameEvent.RemoveMapThing, rmIndex);
+				}
 			})
+		}
+		
+		private function onClickMapthing(obj: Object):void{
+			var btn:GButton = obj.btn;
+			var data: MapThingInfo = obj.data;
+			if(_lastSelectMapThingComp != btn) {//这样做是为了再切换选中不同场景物件时，不会选中后就马上绘制触发区域格子
+				mapThingSelectSp.rmSelf();
+				_lastSelectMapThingComp = btn;
+			}
+			TweenMax.delayedCall(0.1,function(): void{//延迟0.1秒，这样做是为了在切换选中不同场景物件时，不会选中后就马上绘制触发区域格子
+				//物件选中框
+				mapThingSelectSp.drawRectLine(btn.x-btn.width/2, btn.y-btn.height/2, btn.width, btn.height);
+				if(obj.playTween) {
+					mapRemindSp.drawRect(btn.x-btn.width/2, btn.y-btn.height/2, btn.width, btn.height);
+					grp_container.displayListContainer.addChild(mapRemindSp);
+				}
+				if(!mapThingSelectSp.parent || !mapThingSelectSp.parent.contains(mapThingSelectSp)){
+					grp_container.displayListContainer.addChild(mapThingSelectSp);
+				}
+			});
+			mapMgr.curMapThingInfo = data;
+			emit(GameEvent.ClickMapTing, btn);
+		}
+		
+		private function onClickDisplayItem(obj: Object):void{
+			obj["playTween"] = true;
+			onClickMapthing(obj);
+			var btn:GButton = obj.btn;
+			var toX:Number = -btn.x * curScale + view.viewWidth / 2
+			var toY:Number = -btn.y * curScale + view.viewHeight / 2 - offY * curScale;
+			grp_map.setXY(toX, toY);
+			checkLimitPos();
 		}
 		
 		private function onCloseDemo():void
@@ -826,7 +944,14 @@ package modules.mapEditor
 			if(event.keyCode == 17){
 				_isCtrlDown = false;
 			}else if(event.keyCode == 32){
-				_isPressSpace = false;
+				if(_isPressSpace){
+					_isPressSpace = false;
+					Mouse.cursor = MouseCursor.AUTO;
+					Mouse.hide();
+					TweenMax.delayedCall(0.01,function():void{
+						Mouse.show();
+					});
+				}
 			}
 		}
 		
@@ -836,7 +961,15 @@ package modules.mapEditor
 			if(event.keyCode == 17){
 				_isCtrlDown = true;
 			}else if(event.keyCode == 32){
-				_isPressSpace = true;
+				if(!_isPressSpace){
+					_isPressSpace = true;
+					Mouse.cursor = MouseCursor.HAND;
+					//这里一定得先hide(),再show()，不然鼠标样式不会马上生效，得等移动鼠标后才会生效，延迟0.01s再show()是为了切换样式时更丝滑
+					Mouse.hide();
+					TweenMax.delayedCall(0.01,function():void{
+						Mouse.show();
+					});
+				}
 			}
 		}
 		

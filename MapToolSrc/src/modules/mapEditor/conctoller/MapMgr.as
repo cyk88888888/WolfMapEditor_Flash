@@ -49,18 +49,25 @@ package modules.mapEditor.conctoller
 		public var cellSize:int = 40;//格子大小
 		public var gridRange:int = 0;//地图格子扩散范围大小
 		public var mapScale:Number = 1;//地图缩放比例
-		public var areaGraphicsSize:Number = 1;//绘制格子的单个Graphics区域大小
+		public var areaGraphicsSize:Number;//绘制格子的单个Graphics区域大小
 		public var gridDataDic:Dictionary;//格子数据
 		public var mapThingDic:Dictionary;//场景物件信息数据
+		public var mapThingArr:Vector.<MapThingDisplay>;//场景物件列表
 		public var curMapThingInfo:MapThingInfo;//当前正在编辑的场景物件
 		public var curMapThingTriggerType:int = Enum.MapThingType_light;//当前场景物件的触发类型
-		public var triggerDesc:Array = ["触发发亮","不可行走","犯人周围站立点","草丛范围点"]
-		public var triggerTypes:Array = [Enum.MapThingType_light, Enum.MapThingTrigger_unWalk, Enum.MapThingTrigger_keyManStand, Enum.MapThingTrigger_grass];
+		public var triggerDesc:Array = ["触发发亮","不可行走","犯人周围站立点","草丛范围点","可行走"];
+		public var triggerTypes:Array = [Enum.MapThingType_light, Enum.MapThingTrigger_unWalk, Enum.MapThingTrigger_keyManStand, Enum.MapThingTrigger_grass, Enum.MapThingTrigger_walk];
 		public var mapDirectoryStrut:Vector.<MapFileTreeNode>;//当前地图操作目录的结构
 		public var mapFloorArr:Array;
 		public var joystick:JoystickLayer;//摇杆
 		public var mapRootUrl:String;//当前地图的根目录地址
 		public var mapThingRootUrl:String;//当前地图物件的根目录地址
+		
+		public function MapMgr(){
+			mapThingDic = new Dictionary();
+			mapThingArr = new Vector.<MapThingDisplay>();
+		}
+		
 		public var mouseGridTextField:GTextField;
 		/**根据格子类型获取颜色**/
 		public function getColorByType(type:String):Number
@@ -84,16 +91,11 @@ package modules.mapEditor.conctoller
 					color = 0x00FFFF;//蓝
 					break;
 				case Enum.MapThing1:
-					color = 0x0000FF;//深蓝
-					break;
 				case Enum.MapThing2:
-					color = 0x330000;//褐色
-					break;
 				case Enum.MapThing3:
-					color = 0xCB00FF;//深紫
-					break;
 				case Enum.MapThing4:
-					color = 0x00FFFF;//浅蓝
+				case Enum.MapThing5:
+					color = 0x0000FF;//深蓝
 					break;
 			}
 			return color;
@@ -222,7 +224,7 @@ package modules.mapEditor.conctoller
 		//通过xy获取场景已有的物件
 		public function getMapThingCompByXY(x:Number,y:Number): GButton{
 			var mapThingInfo:Array = mapThingDic[int(x)+"_"+int(y)];
-			var mapThingComp:GButton = mapThingInfo[1];
+			var mapThingComp:GButton = mapThingInfo ? mapThingInfo[1] : null;
 			return mapThingComp;
 		}
 
@@ -375,6 +377,7 @@ package modules.mapEditor.conctoller
 						mapThingData.unWalkArea = [];
 						mapThingData.keyManStandArea = [];
 						mapThingData.grassArea = [];
+						mapThingData.walkArea = [];
 						if(mapThingInfo.type) mapThingData.type = mapThingInfo.type;
 						if(mapThingInfo.relationType) mapThingData.relationType = mapThingInfo.relationType;
 						if(mapThingInfo.taskId) mapThingData.taskId = mapThingInfo.taskId;
@@ -390,6 +393,7 @@ package modules.mapEditor.conctoller
 										if(triggerTypes[i] == Enum.MapThingTrigger_unWalk) mapThingData.unWalkArea.push(idx);
 										if(triggerTypes[i] == Enum.MapThingTrigger_keyManStand) mapThingData.keyManStandArea.push(idx);
 										if(triggerTypes[i] == Enum.MapThingTrigger_grass) mapThingData.grassArea.push(idx);
+										if(triggerTypes[i] == Enum.MapThingTrigger_walk) mapThingData.walkArea.push(idx);
 									}
 								}
 							}

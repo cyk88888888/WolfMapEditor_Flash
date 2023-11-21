@@ -6,7 +6,7 @@
     <image id="mcdlg" name="black.png" path="/imgs/" exported="true" scale="9grid" scale9grid="7,8,5,3"/>
     <image id="g4oc2" name="green.png" path="/imgs/" exported="true" scale="9grid" scale9grid="4,4,8,8"/>
     <image id="g4oc3" name="red.png" path="/imgs/" exported="true" scale="9grid" scale9grid="4,4,8,8"/>
-    <component id="d7z41f" name="MapIR.xml" path="/components/"/>
+    <component id="d7z41f" name="DisplayIR.xml" path="/components/" exported="true"/>
     <image id="d7z41i" name="blue.png" path="/imgs/" exported="true"/>
     <image id="d7z41k" name="redCircle.png" path="/imgs/" exported="true"/>
     <component id="9szr1l" name="MapCompContainer.xml" path="/components/" exported="true"/>
@@ -22,6 +22,14 @@
     <component id="ggar1v" name="GrpMap.xml" path="/components/" exported="true"/>
     <component id="eq6j20" name="ComboBoxType_item.xml" path="/"/>
     <component id="eq6j21" name="ComboBoxType_popup.xml" path="/"/>
+    <image id="vea422" name="layer_visible.png" path="/imgs/"/>
+    <image id="vea423" name="layer_locked.png" path="/imgs/"/>
+    <component id="vea424" name="Btn_visible.xml" path="/components/" exported="true"/>
+    <image id="vea425" name="suo2.png" path="/imgs/"/>
+    <image id="vea426" name="suo1.png" path="/imgs/"/>
+    <component id="vea428" name="ComVisible.xml" path="/components/" exported="true"/>
+    <component id="vea42a" name="ComLock.xml" path="/components/" exported="true"/>
+    <component id="vea42b" name="ComUnLock.xml" path="/components/" exported="true"/>
   </resources>
   <publish name=""/>
 </packageDescription>

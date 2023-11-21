@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="200,40" extention="Button">
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver" selected="0"/>
+  <displayList>
+    <graph id="n22_vea4" name="n22" xy="0,0" size="200,40" type="rect" lineSize="0" fillColor="#330066cc">
+      <gearDisplay controller="button" pages="2"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </graph>
+    <graph id="n19_vea4" name="selectBg" xy="0,0" size="200,40" type="rect" lineSize="0" fillColor="#7a0066cc">
+      <gearDisplay controller="button" pages="1,3"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </graph>
+    <loader id="n20_vea4" name="icon" xy="2,0" size="40,40" align="center" vAlign="middle" fill="scale"/>
+    <text id="n16_d7z4" name="title" xy="42,5" size="84,29" fontSize="20" color="#ffffff" text="物件名称"/>
+    <component id="n17_vea4" name="compVisible" src="vea428" fileName="components/ComVisible.xml" xy="162,11">
+      <gearDisplay controller="button" pages="1,2,3"/>
+      <relation target="" sidePair="right-right"/>
+    </component>
+    <component id="n26_vea4" name="compUnLock" src="vea42b" fileName="components/ComUnLock.xml" xy="183,10">
+      <relation target="" sidePair="right-right"/>
+    </component>
+    <component id="n24_vea4" name="compLock" src="vea42a" fileName="components/ComLock.xml" xy="183,10">
+      <relation target="" sidePair="right-right"/>
+    </component>
+  </displayList>
+  <Button mode="Radio"/>
+</component>

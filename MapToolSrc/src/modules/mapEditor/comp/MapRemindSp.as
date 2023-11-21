@@ -23,15 +23,17 @@ package modules.mapEditor.comp
 		 * 
 		 */		
 		public function drawRect(_x:Number,_y:Number,wid:Number,hei:Number):void{
-			graphics.beginFill(0xFF0000, 0.8);
+			graphics.clear();
+			graphics.beginFill(0xFF0000);
 			graphics.drawRect(_x, _y, wid, hei);
 			graphics.endFill();
+			TweenMax.killTweensOf(this);
 			this.alpha = 0;
 			doAlphaTween();
 		}
 		
 		private function  doAlphaTween():void{
-			TweenMax.to(this, 0.4, {alpha:1,repeat:4,yoyo:true,onComplete:rmSelf});
+			TweenMax.to(this, 0.1, {alpha:0.5,repeat:6,yoyo:true,onComplete:rmSelf});
 		}
 		
 		public function rmSelf():void{

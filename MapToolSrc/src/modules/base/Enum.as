@@ -20,9 +20,9 @@ package modules.base
 		public static const MapThing2:String = "GridType_MapThing" + MapThingTrigger_unWalk;
 		public static const MapThing3:String = "GridType_MapThing" + MapThingTrigger_keyManStand;
 		public static const MapThing4:String = "GridType_MapThing" + MapThingTrigger_grass;
+		public static const MapThing5:String = "GridType_MapThing" + MapThingTrigger_walk;
 		
 		public static const WalkType:int = 1;//可行走
-		
 		
 		public static const MapThingType_task:int = 1;//场景物件 - 任务
 		public static const MapThingType_fence:int = 2;//场景物件 - 围栏
@@ -40,5 +40,6 @@ package modules.base
 		public static const MapThingTrigger_unWalk:int = 2;//场景物件触发类型 - 不可行走范围点列表
 		public static const MapThingTrigger_keyManStand:int = 3;//场景物件触发类型 - 关键人物站立范围点列表(引导模式下，传送机器人用)
 		public static const MapThingTrigger_grass:int = 4;//场景物件触发类型 - 草丛范围点列表
+		public static const MapThingTrigger_walk:int = 5 ;//场景物件触发类型 - 可行走范围点列表
 	}
 }

@@ -8,6 +8,8 @@ package modules.mapEditor
 	import fairygui.GComboBox;
 	import fairygui.GComponent;
 	import fairygui.GGroup;
+	import fairygui.GList;
+	import fairygui.GLoader;
 	import fairygui.GTextField;
 	import fairygui.GTextInput;
 	import fairygui.GTree;
@@ -28,9 +30,9 @@ package modules.mapEditor
 	import modules.common.mgr.MsgMgr;
 	import modules.mapEditor.conctoller.MapFileTreeNode;
 	import modules.mapEditor.conctoller.MapMgr;
+	import modules.mapEditor.conctoller.MapThingDisplay;
 	import modules.mapEditor.conctoller.MapThingInfo;
 	import modules.mapEditor.joystick.JoystickLayer;
-
 	/**
 	 * 地图编辑器主界面
 	 * @author cyk
@@ -51,6 +53,8 @@ package modules.mapEditor
 		private var txt_thingExtData:GTextInput;
 		private var txt_gridRange:GTextInput;
 		private var list_tree:GTree;
+		private var lbl_displayCount:GTextField;
+		private var list_display:GList;
 		private var _mapThingComp:GButton;
 		private var txt_taskId:GTextInput;
 		private var txt_groupId:GTextInput;
@@ -81,8 +85,10 @@ package modules.mapEditor
 		private var grp_mapThingInfo:GGroup;
 		private var grp_bevel:GGroup;
 		
+		private var mapMgr: MapMgr;
+		private var _lastSelectIndex:Number;//上一次选中的场景物件索引
 		protected override function onEnter():void{
-			var mapMgr:MapMgr = MapMgr.inst;
+			mapMgr = MapMgr.inst;
 			txt_cellSize = view.getChild("txt_cellSize").asTextInput;
 			
 			txt_mapRect = view.getChild("txt_mapRect").asTextField;
@@ -157,7 +163,14 @@ package modules.mapEditor
 			list_tree.treeNodeRender = renderTreeNode;
 			list_tree.addEventListener(ItemEvent.CLICK, onClickMapTreeItem);
 			
+			lbl_displayCount = view.getChild("lbl_displayCount").asTextField;
+			list_display = view.getChild("list_display").asList;
+			list_display.addEventListener(ItemEvent.CLICK, clickDisplayItem);
+			list_display.itemRenderer = renderMapItem;
+			
 			updateMapInfo();
+			mapMgr.changeMap(true);
+			
 			Global.stage.addEventListener(Event.RESIZE, onStageResize);
 			onEmitter(GameEvent.UpdateMapInfo, updateMapInfo);
 			onEmitter(GameEvent.ResizeMapSucc, updateMapInfo);
@@ -166,7 +179,11 @@ package modules.mapEditor
 			onEmitter(GameEvent.ImportMapThingJson, updateMapThingPram);
 			onEmitter(GameEvent.ClickMapTing, onClickMapTing);
 			onEmitter(GameEvent.UpdateMapScale, updateMapScale);
-			mapMgr.changeMap(true);
+			onEmitter(GameEvent.ImportMapTingComplete, refreshDisplayList);
+			onEmitter(GameEvent.AddMapThing, refreshDisplayList);
+			onEmitter(GameEvent.RemoveMapThing, onRemoveMapThing);
+			onEmitter(GameEvent.ImportMapJson, onImportMapJson);
+			
 			view.addEventListener(MouseEvent.CLICK, onClickView,true);
 			view.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
 			
@@ -189,7 +206,6 @@ package modules.mapEditor
 		
 		/**刷新地图场景物件目录**/
 		private function updateListTree():void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			list_tree.rootNode.removeChildren();
 			createNodeRecursive(mapMgr.mapDirectoryStrut, list_tree.rootNode);
 			//递归创建节点
@@ -252,13 +268,18 @@ package modules.mapEditor
 				obj.text = String(node.data[0]);
 				obj.icon = node.data[1];
 			}else{
-				obj.icon = MapMgr.inst.fileIcon;
+				obj.icon = mapMgr.fileIcon;
 				obj.text = String(node.data);
 			}
 		}
 		
+		private function onImportMapJson(data: Object): void {
+			list_display.selectedIndex = -1;
+			_lastSelectIndex = -1;
+			grp_mapThingInfo.visible = grp_bevel.visible = false;
+		}
+		
 		private function updateMapInfo():void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			txt_mapRect.text = mapMgr.mapWidth + ", " + mapMgr.mapHeight;
 			txt_cellSize.text = mapMgr.cellSize.toString();
 		}
@@ -288,7 +309,6 @@ package modules.mapEditor
 		}
 		
 		private function newDragMapThing(icon:String):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			disposeDragMapThing();
 			emit(GameEvent.ChangeGridType, Enum.MapThing);
 			changeGridType(Enum.MapThing, btn_mapThing);
@@ -331,8 +351,7 @@ package modules.mapEditor
 				_mapThingComp.y = Global.stage.mouseY;
 			}
 		}
-		private function onClickMapTing(data:Object):void{
-			var mapMgr:MapMgr = MapMgr.inst;
+		private function onClickMapTing(btn:GButton):void{
 			var curMapThingInfo:MapThingInfo = mapMgr.curMapThingInfo;
 			var isBelve:Boolean = curMapThingInfo.type == Enum.MapThingType_bevel;//是否为斜角顶点
 			if(isBelve){
@@ -356,44 +375,136 @@ package modules.mapEditor
 		
 			grp_mapThingInfo.visible = !isBelve;
 			grp_bevel.visible = isBelve;
+			
+			if(!isBelve){
+				var index:int = btn.parent.getChildIndex(btn);
+				list_display.selectedIndex = index;
+				list_display.scrollToView(index);
+				_lastSelectIndex = index;
+			}else{
+				list_display.selectedIndex = -1;
+				_lastSelectIndex = -1;
+			}
 		}
 		
 		private function updateMapScale():void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			if(_mapThingComp) _mapThingComp.setScale(mapMgr.mapScale, mapMgr.mapScale);
 		}
 		
+		
+		private function onRemoveMapThing(rmIndex: Number):void{
+			if(_lastSelectIndex == rmIndex){
+				_lastSelectIndex = -1;
+				list_display.selectedIndex = -1;
+				grp_mapThingInfo.visible = false;
+			}else{
+				var curMapThingInfo:MapThingInfo = mapMgr.curMapThingInfo;
+				if(curMapThingInfo){
+					var mapThingComp:GButton = mapMgr.getMapThingCompByXY(curMapThingInfo.x, curMapThingInfo.y);
+					var newIndex:Number = mapThingComp.parent.getChildIndex(mapThingComp);
+					_lastSelectIndex = newIndex;
+					list_display.selectedIndex = newIndex;
+				}
+			}
+			refreshDisplayList();
+		} 
+		
+		private function refreshDisplayList():void{
+			var len:int = mapMgr.mapThingArr.length;
+			lbl_displayCount.text = len+"";
+			list_display.numItems = len;
+		} 
+		
+		private function renderMapItem(index:int, button:GButton):void{
+			var data: MapThingDisplay = mapMgr.mapThingArr[index];
+			var title:GTextField = button.getChild("title").asTextField;
+			var icon: GLoader = button.getChild("icon").asLoader;
+			var url: String = mapMgr.mapThingRootUrl + "\\" + data.data.thingName;
+			var compUnLock: GComponent = button.getChild("compUnLock").asCom;
+			var compLock: GComponent = button.getChild("compLock").asCom;
+			var compVisible: GComponent = button.getChild("compVisible").asCom;
+			compVisible.addClickListener(onClickDisplayComp);
+			compUnLock.addClickListener(onClickDisplayComp);
+			compLock.addClickListener(onClickDisplayComp);
+			title.text = data.name + " ("+ (index+1) + ")";
+			icon.icon = url;
+			compLock.visible = data.isLock;
+			compUnLock.visible = !data.isLock;
+			icon.alpha = title.alpha = data.visible ? 1 : 0.5;
+			data.mapThing.visible = data.visible;
+		}
+		
+		private function clickDisplayItem(evt:ItemEvent):void
+		{
+			var button:GButton = GButton(evt.itemObject);
+			var parent:GList = button.parent.asList;
+			var clickIdx:int = parent.getChildIndex(button);
+			var data: MapThingDisplay = mapMgr.mapThingArr[clickIdx];
+			if(_lastSelectIndex == clickIdx) return;           
+			_lastSelectIndex = clickIdx;
+			changeGridType(Enum.MapThing, btn_mapThing);
+			emit(GameEvent.ClickDisplayItem, {btn: data.mapThing, data: data.data});
+		}
+		
+		private function onClickDisplayComp(evt:GTouchEvent): void{
+			var currentTarget: GComponent = evt.currentTarget as GComponent;
+			var IR: GComponent = currentTarget.parent;
+			var title:GTextField = IR.getChild("title").asTextField;
+			var icon: GLoader = IR.getChild("icon").asLoader;
+			var compUnLock: GComponent = IR.getChild("compUnLock").asCom;
+			var compLock: GComponent = IR.getChild("compLock").asCom;
+			var index:int = IR.parent.getChildIndex(IR);
+			var data: MapThingDisplay = mapMgr.mapThingArr[index]; 
+			switch(currentTarget.name){
+				case "compVisible":
+					data.visible = !data.visible;
+					icon.alpha = title.alpha = currentTarget.alpha = data.visible ? 1 : 0.5;
+					data.mapThing.visible = data.visible;
+					var mapThingKey: String = int(data.data.x) +"_"+ int(data.data.y);
+					emit(GameEvent.MapThingVisibleChg, {type: mapMgr.curMapThingTriggerType, isShow: data.visible, mapThingKey: mapThingKey});
+					break;
+				
+				case "compLock":
+					data.isLock = false;
+					data.mapThing.touchable = true;
+					compUnLock.visible = true;
+					compLock.visible = false;
+					break;
+				
+				case "compUnLock":
+					data.isLock = true;
+					data.mapThing.touchable = false;
+					compUnLock.visible = false;
+					compLock.visible = true;
+					break;
+			}
+			
+		}
+		
 		private function onFocusOutTaskId(event:Event):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.taskId = int(txt_taskId.text);	
 		}
 		
 		private function onFocusOutGroupId(event:Event):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.grpId = int(txt_groupId.text);	
 		}
 		
 		private function onFocusOutGroupIds(event:Event):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.grpIdStr = txt_groupIds.text;	
 			
 		}
 		private function onFocusOutSubGroupIds(event:Event):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.subGrpIdStr = txt_subGroupIds.text;	
 		}
 		private function onFocusOutRelationParm(event:Event):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.relationParm = txt_relationParm.text;	
 		}
 		
 		private function onFocusOutThingExtData(event:Event):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.extData = txt_thingExtData.text;	
 		}
 		
 		private function onFocusOutX(event:Event):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
 			if(curMapThingInfo){
 				setMapThingPos(Number(txt_x.text), curMapThingInfo.y);
@@ -401,7 +512,6 @@ package modules.mapEditor
 		}
 		
 		private function onFocusOutY(event:Event):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
 			if(curMapThingInfo){
 				setMapThingPos(curMapThingInfo.x, Number(txt_y.text));
@@ -409,7 +519,6 @@ package modules.mapEditor
 		}
 		
 		private function onFocusOutAnchorX(event:Event):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
 			if(curMapThingInfo){
 				setMapThingAnchor(Number(txt_anchorX.text), curMapThingInfo.anchorY);
@@ -417,7 +526,6 @@ package modules.mapEditor
 		}
 		
 		private function onFocusOutAnchorY(event:Event):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
 			if(curMapThingInfo){
 				setMapThingAnchor(curMapThingInfo.anchorX, Number(txt_anchorY.text));
@@ -425,7 +533,6 @@ package modules.mapEditor
 		}
 		
 		private function addX(evt:GTouchEvent):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
 			if(curMapThingInfo){
 				setMapThingPos(curMapThingInfo.x + 1, curMapThingInfo.y);
@@ -442,7 +549,6 @@ package modules.mapEditor
 		}
 		
 		private function intervalAddX():void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
 			if(curMapThingInfo){
 				setMapThingPos(curMapThingInfo.x + 1, curMapThingInfo.y);
@@ -450,7 +556,6 @@ package modules.mapEditor
 		}
 		
 		private function reduceX(evt:GTouchEvent):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
 			if(curMapThingInfo){
 				setMapThingPos(curMapThingInfo.x - 1, curMapThingInfo.y);
@@ -468,7 +573,6 @@ package modules.mapEditor
 		}
 		
 		private function intervalReduceX():void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
 			if(curMapThingInfo){
 				setMapThingPos(curMapThingInfo.x - 1, curMapThingInfo.y);
@@ -476,7 +580,6 @@ package modules.mapEditor
 		}
 		
 		private function addY(evt:GTouchEvent):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
 			if(curMapThingInfo){
 				setMapThingPos(curMapThingInfo.x, curMapThingInfo.y+1);
@@ -494,7 +597,6 @@ package modules.mapEditor
 		}
 		
 		private function intervalAddY():void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
 			if(curMapThingInfo){
 				setMapThingPos(curMapThingInfo.x, curMapThingInfo.y+1);
@@ -502,7 +604,6 @@ package modules.mapEditor
 		}
 		
 		private function reduceY(evt:GTouchEvent):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
 			if(curMapThingInfo){
 				setMapThingPos(curMapThingInfo.x, curMapThingInfo.y-1);
@@ -519,7 +620,6 @@ package modules.mapEditor
 		}
 		
 		private function intervalReduceY():void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
 			if(curMapThingInfo){
 				setMapThingPos(curMapThingInfo.x, curMapThingInfo.y-1);
@@ -527,7 +627,6 @@ package modules.mapEditor
 		}
 		
 		private function setMapThingPos(newX: Number, newY:Number):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
 			if(curMapThingInfo) {
 				var oldX: Number = curMapThingInfo.x, oldY:Number = curMapThingInfo.y;
@@ -544,7 +643,6 @@ package modules.mapEditor
 		}
 		
 		private function setMapThingAnchor(newAnchorX: Number, newAnchorY:Number):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var curMapThingInfo: MapThingInfo = mapMgr.curMapThingInfo;
 			if(curMapThingInfo) {
 				var mapThingComp:GButton = mapMgr.getMapThingCompByXY(curMapThingInfo.x,curMapThingInfo.y);
@@ -555,24 +653,23 @@ package modules.mapEditor
 		}
 		
 		private function onClickThingkType(data:Object):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var type:int = combo_thingkType.values[combo_thingkType.selectedIndex];
 			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.type = type;	
 		}
 		
 		private function onClickTriggerType(data:Object):void{
 			var type:int = combo_triggerType.values[combo_triggerType.selectedIndex];
-			MapMgr.inst.curMapThingTriggerType = type;
+			var oldType: int = mapMgr.curMapThingTriggerType;
+			mapMgr.curMapThingTriggerType = type;
+			emit(GameEvent.ChangeMapThingTriggerType,{oldType: oldType, type: type});
 		}
 		
 		private function onClickBevelType(data:Object):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var bevelType:int = combo_bevelType.values[combo_bevelType.selectedIndex];
 			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.bevelType = bevelType;	
 		}
 		
 		private function onClickRelationType(data:Object):void{
-			var mapMgr:MapMgr = MapMgr.inst;
 			var type:int = combo_relationType.values[combo_relationType.selectedIndex];
 			if(mapMgr.curMapThingInfo) mapMgr.curMapThingInfo.relationType = type;		
 		}
@@ -615,14 +712,18 @@ package modules.mapEditor
 			_curSelectTypeBtn = btn;
 			_curSelectTypeBtn.selected = true;
 			(btn.getChild("n3").asGraph).alpha = 0.5;
-			(btn.getChild("n3").asGraph).color = MapMgr.inst.getColorByType(type);
+			(btn.getChild("n3").asGraph).color = mapMgr.getColorByType(type);
 			grp_mapThingInfo.visible = grp_bevel.visible = false;
+			if(type != Enum.MapThing){
+				list_display.selectedIndex = -1;
+				_lastSelectIndex = -1;
+			}
 		}
 		public function _tap_btn_resizeGrid(evt:GTouchEvent):void{
 			emit(GameEvent.ResizeGrid, int(txt_cellSize.text));
 		}
 		public function _tap_btn_gridRange(evt:GTouchEvent):void{
-			MapMgr.inst.gridRange = int(txt_gridRange.text);
+			mapMgr.gridRange = int(txt_gridRange.text);
 			MsgMgr.ShowMsg("设置格子扩散范围大小成功！");
 		}
 		public function _tap_btn_toCenter(evt:GTouchEvent):void{
@@ -632,16 +733,16 @@ package modules.mapEditor
 			emit(GameEvent.ToOriginalScale);
 		}
 		public function _tap_btn_exportJson(evt:GTouchEvent):void{
-			MapMgr.inst.exportJsonData();
+			mapMgr.exportJsonData();
 		}
 		public function _tap_btn_importJson(evt:GTouchEvent):void{
-			MapMgr.inst.importJsonData();
+			mapMgr.importJsonData();
 		}
 		public function _tap_btn_clearAll(evt:GTouchEvent):void{
 			emit(GameEvent.ClearAllData);
 		}
 		public function _tap_btn_changeMap(evt:GTouchEvent):void{
-			MapMgr.inst.changeMap();
+			mapMgr.changeMap();
 		}
 		
 		public function _tap_btn_runDemo(evt:GTouchEvent):void{

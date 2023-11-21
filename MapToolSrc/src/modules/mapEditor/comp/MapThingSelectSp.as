@@ -3,6 +3,8 @@ package modules.mapEditor.comp
 	import com.greensock.TweenMax;
 	
 	import flash.display.Sprite;
+	
+
 	/**
 	 * 场景物件选中框 
 	 * @author cyk
@@ -12,7 +14,6 @@ package modules.mapEditor.comp
 	{
 		public var curX:Number;
 		public var curY:Number;
-		private var _isInPlaying:Boolean;
 		public var isShow:Boolean;
 		public function MapThingSelectSp()
 		{
@@ -37,22 +38,17 @@ package modules.mapEditor.comp
 			curX = _x;
 			curY = _y;
 			isShow = true;
-//			if(!_isInPlaying){
-//				_isInPlaying = true;
-//				TweenMax.killTweensOf(this);
-//				this.alpha = 0.2;
-//				doAlphaTween();
-//			}
 		}
 		
-		private function doAlphaTween():void{
-			TweenMax.to(this, 0.5, {alpha:1,repeat:-1,yoyo:true});
+		public function doAlphaTween():void{
+			TweenMax.killTweensOf(this);
+			this.alpha = 0.2;
+			TweenMax.to(this, 0.1, {alpha:1,repeat:6,yoyo:true});
 		}
 		
 		public function rmSelf():void{
 			if(this.parent) this.parent.removeChild(this);
-//			TweenMax.killTweensOf(this);
-//			_isInPlaying = false;
+			TweenMax.killTweensOf(this);
 			isShow = false;
 		}
 	}
