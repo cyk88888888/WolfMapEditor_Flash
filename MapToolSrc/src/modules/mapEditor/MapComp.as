@@ -427,11 +427,11 @@ package modules.mapEditor
 						tempMapThingInfo.x = mapThingData.x;
 						tempMapThingInfo.y = mapThingData.y;
 						mapMgr.curMapThingInfo = tempMapThingInfo;//这里创建的临时mapthingInfo是为了导入地图数据时往gridDataDic里塞格子数据用
-						if (mapThingData.area) addGridDataByType(Enum.MapThing1, mapThingData.area);
-						if (mapThingData.unWalkArea) addGridDataByType(Enum.MapThing2, mapThingData.unWalkArea);
-						if (mapThingData.keyManStandArea) addGridDataByType(Enum.MapThing3, mapThingData.keyManStandArea);
-						if (mapThingData.grassArea) addGridDataByType(Enum.MapThing4, mapThingData.grassArea);
-						if (mapThingData.walkArea) addGridDataByType(Enum.MapThing5, mapThingData.walkArea);
+						for(var k:int = 0, len:int = mapMgr.triggerTypes.length; k < len; k++){
+							var triggerObj: Object = mapMgr.triggerTypes[k];
+							var fieldName: String = triggerObj["fieldName"];
+							if(mapThingData[fieldName]) addGridDataByType(Enum.MapThing + triggerObj["type"], mapThingData[fieldName]);
+						}
 						var relationParm: String = parseData(mapThingData.relationParm);
 						var extData:String = parseData(mapThingData.extData);
 						onDragMapThingDown({

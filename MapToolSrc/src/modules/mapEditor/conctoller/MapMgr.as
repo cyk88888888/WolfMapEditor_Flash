@@ -54,9 +54,8 @@ package modules.mapEditor.conctoller
 		public var mapThingDic:Dictionary;//场景物件信息数据
 		public var mapThingArr:Vector.<MapThingDisplay>;//场景物件列表
 		public var curMapThingInfo:MapThingInfo;//当前正在编辑的场景物件
-		public var curMapThingTriggerType:int = Enum.MapThingType_light;//当前场景物件的触发类型
-		public var triggerDesc:Array = ["触发发亮","不可行走","犯人周围站立点","草丛范围点","可行走"];
-		public var triggerTypes:Array = [Enum.MapThingType_light, Enum.MapThingTrigger_unWalk, Enum.MapThingTrigger_keyManStand, Enum.MapThingTrigger_grass, Enum.MapThingTrigger_walk];
+		public var curMapThingTriggerType:*;//当前场景物件的触发类型
+		public var triggerTypes:Array;//数据结构 => [{"type": 0, "desc":"触发发亮","fieldName": "area"}]
 		public var mapDirectoryStrut:Vector.<MapFileTreeNode>;//当前地图操作目录的结构
 		public var mapFloorArr:Array;
 		public var joystick:JoystickLayer;//摇杆
@@ -72,7 +71,7 @@ package modules.mapEditor.conctoller
 		/**根据格子类型获取颜色**/
 		public function getColorByType(type:String):Number
 		{
-			var color:Number = 0x0000FF;
+			var color:Number = 0x0000FF;//深蓝
 			switch (type)
 			{
 				case Enum.Walk:
@@ -89,13 +88,6 @@ package modules.mapEditor.conctoller
 					break;
 				case Enum.Water:
 					color = 0x00FFFF;//蓝
-					break;
-				case Enum.MapThing1:
-				case Enum.MapThing2:
-				case Enum.MapThing3:
-				case Enum.MapThing4:
-				case Enum.MapThing5:
-					color = 0x0000FF;//深蓝
 					break;
 			}
 			return color;
@@ -137,15 +129,16 @@ package modules.mapEditor.conctoller
 				mapDirectoryStrut = getMapThingDirectoryStrut(file);
 				mapFloorArr = getMapFloorStrut(file);
 				Global.emmiter.emit(GameEvent.UpdateMapTreeStruct);
-				FileUT.inst.readAllText(path + "\\" + mapJsonName, function(content:String):void{
-					var mapInfo:Object = JSON.parse(content);
-					cellSize = mapInfo.cellSize;
-					Global.emmiter.emit(GameEvent.ImportMapJson, mapInfo);
-				});
 				
 				FileUT.inst.readAllText(path + "\\" + thingJsonName, function(content:String):void{
 					var thingPramObj:Object = JSON.parse(content);
 					Global.emmiter.emit(GameEvent.ImportMapThingJson, thingPramObj);
+					
+					FileUT.inst.readAllText(path + "\\" + mapJsonName, function(content:String):void{
+						var mapInfo:Object = JSON.parse(content);
+						cellSize = mapInfo.cellSize;
+						Global.emmiter.emit(GameEvent.ImportMapJson, mapInfo);
+					});
 				});
 			});
 		}
@@ -234,7 +227,9 @@ package modules.mapEditor.conctoller
 			var redrawDic: Dictionary = new Dictionary();
 			var areaSize: int = areaGraphicsSize;
 			for (var i: int = 0; i < triggerTypes.length; i++) {
-				var typeKey: String = Enum.MapThing + triggerTypes[i] + "_" + mapThingKey;
+				var triggerObj: Object = triggerTypes[i];
+				var type:int = triggerObj["type"];
+				var typeKey: String = Enum.MapThing + type + "_" + mapThingKey;
 				var gridTypeDataMap: Dictionary = gridDataDic[typeKey];
 				if (gridTypeDataMap) {
 					for each(var areaGridMap: Dictionary in gridTypeDataMap) {
@@ -373,27 +368,22 @@ package modules.mapEditor.conctoller
 						mapThingData.anchorX = mapThingInfo.anchorX;
 						mapThingData.anchorY = mapThingInfo.anchorY;
 						mapThingData.thingName = mapThingInfo.thingName;
-						mapThingData.area = [];
-						mapThingData.unWalkArea = [];
-						mapThingData.keyManStandArea = [];
-						mapThingData.grassArea = [];
-						mapThingData.walkArea = [];
 						if(mapThingInfo.type) mapThingData.type = mapThingInfo.type;
 						if(mapThingInfo.relationType) mapThingData.relationType = mapThingInfo.relationType;
 						if(mapThingInfo.taskId) mapThingData.taskId = mapThingInfo.taskId;
 						if(mapThingInfo.grpId) mapThingData.grpId = mapThingInfo.grpId;
 						for(i=0; i < triggerTypes.length; i++){
-							var gridTypeDataMap:Dictionary = gridDataDic[Enum.MapThing + triggerTypes[i] + "_" + int(mapThingInfo.x) + "_" + int(mapThingInfo.y)];
+							var triggerObj: Object = triggerTypes[i];
+							var type:int = triggerObj["type"];
+							var fieldName: String = triggerObj["fieldName"];
+							var gridTypeDataMap:Dictionary = gridDataDic[Enum.MapThing + type + "_" + int(mapThingInfo.x) + "_" + int(mapThingInfo.y)];
 							if(gridTypeDataMap){
 								for each(var areaData:Dictionary in gridTypeDataMap){
 									for each(var gridData:String in areaData){
 										var splitArr:Array = gridData.split("_");
 										var idx:int = getGridIdxByXY(int(splitArr[0]), int(splitArr[1]));
-										if(triggerTypes[i] == Enum.MapThingType_light) mapThingData.area.push(idx);
-										if(triggerTypes[i] == Enum.MapThingTrigger_unWalk) mapThingData.unWalkArea.push(idx);
-										if(triggerTypes[i] == Enum.MapThingTrigger_keyManStand) mapThingData.keyManStandArea.push(idx);
-										if(triggerTypes[i] == Enum.MapThingTrigger_grass) mapThingData.grassArea.push(idx);
-										if(triggerTypes[i] == Enum.MapThingTrigger_walk) mapThingData.walkArea.push(idx);
+										if(!mapThingData[fieldName]) mapThingData[fieldName] = [];
+										mapThingData[fieldName].push(idx);
 									}
 								}
 							}

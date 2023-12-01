@@ -35,17 +35,17 @@
 </folder>
 </info>
 </editorArea>
-<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapEditorLayer.as" partName="MapEditorLayer.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/MapEditorLayer.as" title="MapEditorLayer.as" tooltip="MapToolSrc/src/modules/mapEditor/MapEditorLayer.as" workbook="DefaultEditorWorkbook">
+<editor activePart="true" focus="true" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapEditorLayer.as" partName="MapEditorLayer.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/MapEditorLayer.as" title="MapEditorLayer.as" tooltip="MapToolSrc/src/modules/mapEditor/MapEditorLayer.as" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/mapEditor/MapEditorLayer.as"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="7973" selectionTopPixel="3493"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="9675" selectionTopPixel="4053"/>
 </editor>
 <editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapMgr.as" partName="MapMgr.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as" title="MapMgr.as" tooltip="MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/mapEditor/conctoller/MapMgr.as"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="4290" selectionTopPixel="2363"/>
 </editor>
-<editor activePart="true" focus="true" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapComp.as" partName="MapComp.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/MapComp.as" title="MapComp.as" tooltip="MapToolSrc/src/modules/mapEditor/MapComp.as" workbook="DefaultEditorWorkbook">
+<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapComp.as" partName="MapComp.as" path="D:/Flash/WolfMapEditor_Flash/MapToolSrc/src/modules/mapEditor/MapComp.as" title="MapComp.as" tooltip="MapToolSrc/src/modules/mapEditor/MapComp.as" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MapToolSrc/src/modules/mapEditor/MapComp.as"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="27661" selectionTopPixel="13389"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="32953" selectionTopPixel="15854"/>
 </editor>
 </editors>
 <views>
@@ -134,7 +134,7 @@
 <viewState/>
 </view>
 </views>
-<perspectives activePart="com.adobe.flexbuilder.packageexplorer" activePerspective="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development">
+<perspectives activePart="org.eclipse.ui.console.ConsoleView" activePerspective="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="com.adobe.flexbuilder.mxml.editor.ui.perspectives.DevelopmentPerspectiveFactory" id="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development" label="Flash"/>
 <alwaysOnActionSet id="com.adobe.flexbuilder.flashbridge.flashproject.actionSet"/>
@@ -337,7 +337,7 @@
 </presentation>
 </folder>
 </info>
-<info part="org.eclipse.ui.editorss" ratio="0.47743812" ratioLeft="328" ratioRight="359" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView"/>
+<info part="org.eclipse.ui.editorss" ratio="0.32605532" ratioLeft="224" ratioRight="463" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView"/>
 <info folder="true" part="org.eclipse.debug.internal.ui.ToolsFolderView" ratio="0.5" ratioLeft="956" ratioRight="956" relationship="2" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">&#x0A;<folder activePageID="org.eclipse.debug.ui.ExpressionView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.debug.ui.VariableView" label="变量"/>
 <page content="org.eclipse.debug.ui.BreakpointView" label="断点"/>
 <page content="org.eclipse.debug.ui.ExpressionView" label="表达式"/>
@@ -354,8 +354,6 @@
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/modules/mapEditor/MapEditorLayer.as"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/fairygui/GRoot.as"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/fairygui/event/StateChangeEvent.as"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/modules/mapEditor/MapEditorLayer.as"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/modules/mapEditor/conctoller/MapJsonInfo.as"/>
@@ -369,156 +367,159 @@
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/framework/ui/UIComp.as"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/framework/base/Emiter.as"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/framework/ui/UIScene.as"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/modules/mapEditor/MapEditorLayer.as"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/modules/mapEditor/comp/MapRemindSp.as"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/MapToolSrc/src/modules/mapEditor/MapEditorLayer.as"/>
 </editors>
-<item historyLabel="GRoot.as" index="1">
-<position info="not_deleted" x="8151" y="9"/>
-</item>
-<item historyLabel="GRoot.as" index="1">
-<position info="not_deleted" x="2134" y="0"/>
-</item>
-<item historyLabel="GRoot.as" index="1">
-<position info="not_deleted" x="15016" y="14"/>
-</item>
-<item historyLabel="GRoot.as" index="1">
-<position info="not_deleted" x="15849" y="0"/>
-</item>
-<item historyLabel="GRoot.as" index="1">
-<position info="not_deleted" x="15768" y="0"/>
-</item>
-<item historyLabel="GRoot.as" index="1">
-<position info="not_deleted" x="18607" y="21"/>
-</item>
-<item historyLabel="GRoot.as" index="1">
-<position info="not_deleted" x="15783" y="0"/>
-</item>
-<item historyLabel="MapEditorLayer.as" index="0">
-<position info="not_deleted" x="5090" y="0"/>
-</item>
-<item historyLabel="StateChangeEvent.as" index="2">
+<item historyLabel="StateChangeEvent.as" index="0">
 <position info="not_deleted" x="132" y="7"/>
 </item>
-<item historyLabel="MapEditorLayer.as" index="3">
+<item historyLabel="MapEditorLayer.as" index="1">
 <position info="not_deleted" x="5090" y="0"/>
 </item>
-<item historyLabel="MapJsonInfo.as" index="4">
+<item historyLabel="MapJsonInfo.as" index="2">
 <position info="not_deleted" x="508" y="12"/>
 </item>
-<item historyLabel="MapEditorLayer.as" index="3">
+<item historyLabel="MapEditorLayer.as" index="1">
 <position info="not_deleted" x="7973" y="0"/>
 </item>
-<item historyLabel="Enum.as" index="5">
+<item historyLabel="Enum.as" index="3">
 <position info="not_deleted" x="1397" y="17"/>
 </item>
-<item historyLabel="MapEditorLayer.as" index="3">
+<item historyLabel="MapEditorLayer.as" index="1">
 <position info="not_deleted" x="7973" y="0"/>
 </item>
-<item historyLabel="MapThingInfo.as" index="6">
+<item historyLabel="MapThingInfo.as" index="4">
 <position info="not_deleted" x="39" y="0"/>
 </item>
-<item historyLabel="MapEditorLayer.as" index="3">
+<item historyLabel="MapEditorLayer.as" index="1">
 <position info="not_deleted" x="7973" y="0"/>
 </item>
-<item historyLabel="MapMgr.as" index="7">
+<item historyLabel="MapMgr.as" index="5">
 <position info="not_deleted" x="5050" y="0"/>
 </item>
-<item historyLabel="Emiter.as" index="8">
+<item historyLabel="Emiter.as" index="6">
 <position info="not_deleted" x="1343" y="0"/>
 </item>
-<item historyLabel="MapMgr.as" index="7">
+<item historyLabel="MapMgr.as" index="5">
 <position info="not_deleted" x="4290" y="0"/>
 </item>
-<item historyLabel="Emiter.as" index="8">
+<item historyLabel="Emiter.as" index="6">
 <position info="not_deleted" x="1343" y="0"/>
 </item>
-<item historyLabel="UIComp.as" index="9">
+<item historyLabel="UIComp.as" index="7">
 <position info="not_deleted" x="3563" y="0"/>
 </item>
-<item historyLabel="Emiter.as" index="8">
+<item historyLabel="Emiter.as" index="6">
 <position info="not_deleted" x="457" y="0"/>
 </item>
-<item historyLabel="UIComp.as" index="9">
+<item historyLabel="UIComp.as" index="7">
 <position info="not_deleted" x="3717" y="0"/>
 </item>
-<item historyLabel="Emiter.as" index="8">
+<item historyLabel="Emiter.as" index="6">
 <position info="not_deleted" x="457" y="0"/>
 </item>
-<item historyLabel="UIComp.as" index="9">
+<item historyLabel="UIComp.as" index="7">
 <position info="not_deleted" x="3717" y="0"/>
 </item>
-<item historyLabel="Emiter.as" index="8">
+<item historyLabel="Emiter.as" index="6">
 <position info="not_deleted" x="1153" y="0"/>
 </item>
-<item historyLabel="UIComp.as" index="9">
+<item historyLabel="UIComp.as" index="7">
 <position/>
 </item>
-<item historyLabel="Emiter.as" index="8">
+<item historyLabel="Emiter.as" index="6">
 <position info="not_deleted" x="889" y="3"/>
 </item>
-<item historyLabel="UIComp.as" index="9">
+<item historyLabel="UIComp.as" index="7">
 <position/>
 </item>
-<item historyLabel="UIComp.as" index="9">
+<item historyLabel="UIComp.as" index="7">
 <position/>
 </item>
-<item historyLabel="UIComp.as" index="9">
+<item historyLabel="UIComp.as" index="7">
 <position info="not_deleted" x="3890" y="0"/>
 </item>
-<item historyLabel="Emiter.as" index="8">
+<item historyLabel="Emiter.as" index="6">
 <position info="not_deleted" x="605" y="0"/>
 </item>
-<item historyLabel="UIComp.as" index="9">
+<item historyLabel="UIComp.as" index="7">
 <position info="not_deleted" x="4032" y="0"/>
 </item>
-<item historyLabel="UIScene.as" index="10">
+<item historyLabel="UIScene.as" index="8">
 <position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="UIComp.as" index="9">
+<item historyLabel="UIComp.as" index="7">
 <position info="not_deleted" x="3805" y="126"/>
 </item>
-<item historyLabel="UIScene.as" index="10">
+<item historyLabel="UIScene.as" index="8">
 <position/>
 </item>
-<item historyLabel="MapComp.as" index="11">
+<item historyLabel="MapComp.as" index="9">
 <position info="not_deleted" x="25285" y="0"/>
 </item>
-<item historyLabel="UIComp.as" index="12">
+<item historyLabel="UIComp.as" index="10">
 <position info="not_deleted" x="3805" y="126"/>
 </item>
-<item historyLabel="Emiter.as" index="13">
+<item historyLabel="Emiter.as" index="11">
 <position info="not_deleted" x="478" y="0"/>
 </item>
-<item historyLabel="UIComp.as" index="12">
+<item historyLabel="UIComp.as" index="10">
 <position info="not_deleted" x="3859" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="11">
+<item historyLabel="MapComp.as" index="9">
 <position info="not_deleted" x="4967" y="0"/>
 </item>
-<item historyLabel="UIScene.as" index="14">
+<item historyLabel="UIScene.as" index="12">
 <position info="not_deleted" x="2986" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="11">
+<item historyLabel="MapComp.as" index="9">
 <position info="not_deleted" x="4967" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="11">
+<item historyLabel="MapComp.as" index="9">
 <position info="not_deleted" x="28260" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="11">
+<item historyLabel="MapComp.as" index="9">
 <position info="not_deleted" x="28371" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="11">
+<item historyLabel="MapComp.as" index="9">
 <position info="not_deleted" x="28373" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="11">
+<item historyLabel="MapComp.as" index="9">
 <position info="not_deleted" x="28406" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="11">
+<item historyLabel="MapComp.as" index="9">
 <position info="not_deleted" x="28373" y="0"/>
 </item>
-<item historyLabel="MapComp.as" index="11">
+<item historyLabel="MapComp.as" index="9">
 <position info="not_deleted" x="28448" y="0"/>
 </item>
-<item active="true" historyLabel="MapComp.as" index="11">
+<item historyLabel="MapComp.as" index="9">
 <position info="not_deleted" x="28373" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="13">
+<position info="not_deleted" x="7973" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="13">
+<position info="not_deleted" x="6670" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="13">
+<position info="not_deleted" x="7827" y="0"/>
+</item>
+<item historyLabel="MapComp.as" index="9">
+<position info="not_deleted" x="32953" y="0"/>
+</item>
+<item historyLabel="MapRemindSp.as" index="14">
+<position info="not_deleted" x="262" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="15">
+<position info="not_deleted" x="7827" y="0"/>
+</item>
+<item historyLabel="MapEditorLayer.as" index="15">
+<position info="not_deleted" x="7187" y="0"/>
+</item>
+<item active="true" historyLabel="MapEditorLayer.as" index="15">
+<position info="not_deleted" x="9081" y="18"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -538,6 +539,9 @@
 </trimLayout>
 </window>
 <mruList>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapRemindSp.as" tooltip="MapToolSrc/src/modules/mapEditor/comp/MapRemindSp.as">
+<persistable path="/MapToolSrc/src/modules/mapEditor/comp/MapRemindSp.as"/>
+</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="UIScene.as" tooltip="MapToolSrc/src/framework/ui/UIScene.as">
 <persistable path="/MapToolSrc/src/framework/ui/UIScene.as"/>
 </file>
@@ -579,9 +583,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="MapTool.as" tooltip="MapToolSrc/src/MapTool.as">
 <persistable path="/MapToolSrc/src/MapTool.as"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="TweenMax.as" tooltip="MapToolSrc/src/com/greensock/TweenMax.as">
-<persistable path="/MapToolSrc/src/com/greensock/TweenMax.as"/>
 </file>
 </mruList>
 </workbench>

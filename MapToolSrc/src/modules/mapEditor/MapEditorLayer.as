@@ -154,9 +154,6 @@ package modules.mapEditor
 			combo_relationType.addEventListener(StateChangeEvent.CHANGED,onClickRelationType);
 			
 			combo_triggerType = view.getChild("combo_triggerType").asComboBox;
-			combo_triggerType.items =  mapMgr.triggerDesc;
-			combo_triggerType.values = mapMgr.triggerTypes;
-			combo_triggerType.selectedIndex = 0;
 			combo_triggerType.addEventListener(StateChangeEvent.CHANGED, onClickTriggerType);
 			
 			list_tree = view.getChild("list_tree").asTree;
@@ -232,6 +229,20 @@ package modules.mapEditor
 			combo_thingkType.items = taskDescArr;
 			combo_thingkType.values = thingTypeArr;
 			combo_thingkType.selectedIndex = 0;
+			
+			var triggerTypeList:Array = thingPramInfo.triggerTypeList;
+			var triggerTypeArr:Array = [];
+			var triggerDescArr:Array = [];
+			for(i = 0; i< triggerTypeList.length; i++){
+				var obj3:Object = triggerTypeList[i];
+				if(mapMgr.curMapThingTriggerType == undefined) mapMgr.curMapThingTriggerType = obj3.type;
+				triggerTypeArr.push(obj3.type);
+				triggerDescArr.push(obj3.desc);
+			}
+			combo_triggerType.items = triggerDescArr;
+			combo_triggerType.values = triggerTypeArr;
+			combo_triggerType.selectedIndex = 0;
+			mapMgr.triggerTypes = triggerTypeList;
 			
 			
 			var bevelTypeList:Array = thingPramInfo.bevelTypeList;

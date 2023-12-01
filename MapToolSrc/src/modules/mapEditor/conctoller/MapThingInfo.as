@@ -37,11 +37,6 @@ package modules.mapEditor.conctoller
 			type = 0;
 			bevelType = 0;
 			relationType = 0;
-			area = [];
-			unWalkArea = [];
-			keyManStandArea = [];
-			grassArea = [];
-			walkArea = [];
 		}
 	}
 }

@@ -7,13 +7,14 @@
   "libview.iconScale": 0,
   "doc.openedDocs": [
     "ui://1c4i9cbqg4oc0",
-    "ui://g2zhtj9bpl6m26"
+    "ui://g2zhtj9bdq1h25",
+    "ui://1c4i9cbqd7z41f"
   ],
-  "libview.syncEditor": 0,
+  "libview.syncEditor": 1,
   "auxline1": true,
   "canvasColor": 10066329,
   "auxline2": true,
-  "doc.activeDoc": "ui://g2zhtj9bpl6m26",
+  "doc.activeDoc": "ui://g2zhtj9bdq1h25",
   "libview.twoColumn": false,
   "libview.expandedNodes": [
     "g2zhtj9b",
