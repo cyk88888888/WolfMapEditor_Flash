@@ -315,21 +315,40 @@ package modules.mapEditor.conctoller
 				var walkGridDic:Dictionary = gridDataDic[Enum.Walk];
 				for (var i:int = 0; i < numRows; i++)
 				{
-					var linewalkList:Array = [];//每一行
-					mapInfo.walkList.push(linewalkList);
+					var startCol: Number = -1;
+					var countCol: Number = -1;
 					for (var j:int = 0; j < numCols; j++)
 					{
 						var areaKey:String = Math.floor(j / areaGraphicsSize) + "_" + Math.floor(i / areaGraphicsSize);
 						var walkAreaGridDataMap:Dictionary = walkGridDic ? walkGridDic[areaKey] : null;
-						if (!walkGridDic || !walkAreaGridDataMap)
-						{
-							linewalkList.push(0);
-						}
-						else
-						{
+						if (walkAreaGridDataMap){
 							var keys:String = j + "_" + i;
-							var gridItem:Object = walkGridDic && walkAreaGridDataMap ? walkAreaGridDataMap[keys] : null;
-							linewalkList.push(gridItem != null ? Enum.WalkType : 0);
+							var gridItem:Object = walkAreaGridDataMap ? walkAreaGridDataMap[keys] : null;
+							
+							if(gridItem != null){//可行走
+								if(startCol == -1){
+									startCol = j;
+								}
+								countCol = j;
+								if(j == numCols - 1){//最后一列可行走
+									if(mapInfo.walkMap[i] == undefined){
+										mapInfo.walkMap[i] = [];
+									}
+									//记录可行走列数起点到最后一个可行走列数点中间的连续可行走始终列数
+									mapInfo.walkMap[i].push([startCol, j]);
+								}
+							}else{
+								if(startCol != -1){//始终两点列数不为-1，说明始终两列中间有可行走的格子
+									if(mapInfo.walkMap[i] == undefined){
+										mapInfo.walkMap[i] = [];
+									}
+									//记录上一次的连续可行走始终列数
+									mapInfo.walkMap[i].push([startCol,countCol]);
+									
+									startCol = -1;
+									countCol = -1;
+								}
+							}
 						}
 					}
 				}

@@ -79,3 +79,6 @@
 2023-12-01 19:39:07,930 [main] INFO  org.mortbay.log - Logging to Logger[org.mortbay.log] via org.mortbay.log.Slf4jLog
 2023-12-01 19:39:07,972 [main] INFO  org.mortbay.log - jetty-6.1.x
 2023-12-01 19:39:08,003 [main] INFO  org.mortbay.log - Started SelectChannelConnector@0.0.0.0:63189
+2023-12-07 21:51:04,794 [main] INFO  org.mortbay.log - Logging to Logger[org.mortbay.log] via org.mortbay.log.Slf4jLog
+2023-12-07 21:51:04,846 [main] INFO  org.mortbay.log - jetty-6.1.x
+2023-12-07 21:51:04,866 [main] INFO  org.mortbay.log - Started SelectChannelConnector@0.0.0.0:59262

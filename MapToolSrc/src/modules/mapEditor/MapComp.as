@@ -393,28 +393,47 @@ package modules.mapEditor
 		/**导入地图json数据**/
 		private function onImportMapJson(data: Object): void {
 			var juahua: JuHuaDlg = ModuleMgr.inst.showLayer(JuHuaDlg) as JuHuaDlg;
-			var mapInfo: Object = data;
+			var mapInfo: Object = data;//MapJsonInfo
 			_cellSize = mapInfo.cellSize;
 			importFloorBg(function (): void {
 				init();
 				/** 设置可行走节点**/
-				for (var i: int = 0; i < mapInfo.walkList.length; i++) {
-					var lineList: Array = mapInfo.walkList[i];
-					for (var j: int = 0; j < lineList.length; j++) {
-						if (lineList[j] != 0) {
-							var gridPosX: int = j;//所在格子位置x
-							var gridPosY: int = i;//所在格子位置y
-							var gridType: String;
-							if (lineList[j] == Enum.WalkType)//可行走
-							{
-								gridType = Enum.Walk;
-							} 
-							addGrid(gridType, gridPosX, gridPosY);
+				var walkMap:Object = mapInfo.walkMap;
+				if(walkMap){
+					for(var key:String in walkMap){
+						var row:int = Number(key);
+						var lineArr:Array = walkMap[key];
+						for(var line:int=0;line<lineArr.length;line++){
+							var itemArr:Array = lineArr[line];
+							var startCol: int = itemArr[0];
+							var endCol: int = itemArr[1];
+							for(var col:int=startCol;col<=endCol;col++){
+								addGrid(Enum.Walk, col, row);
+							}
 						}
-						
 					}
 				}
-				
+			
+				var walkList:Array = mapInfo.walkList;
+				if(walkList){//为了兼容旧版地图数据，待删todo...
+					for (var i: int = 0; i < walkList.length; i++) {
+						var lineList: Array = walkList[i];
+						for (var j: int = 0; j < lineList.length; j++) {
+							if (lineList[j] != 0) {
+								var gridPosX: int = j;//所在格子位置x
+								var gridPosY: int = i;//所在格子位置y
+								var gridType: String;
+								if (lineList[j] == Enum.WalkType)//可行走
+								{
+									gridType = Enum.Walk;
+								} 
+								addGrid(gridType, gridPosX, gridPosY);
+							}
+							
+						}
+					}
+				}
+			
 				/** 设置水域和落水点**/
 				addGridDataByType(Enum.Water, mapInfo.waterList);
 				addGridDataByType(Enum.WaterVerts, mapInfo.waterVertList);
@@ -666,11 +685,7 @@ package modules.mapEditor
 		}
 		
 		private function checkAllGridGraphicVsb(data: Object): void{
-			var type: int = data.type;
-			var isShow: Boolean = data.isShow;
-			var areaSize: int = mapMgr.areaGraphicsSize;
 			var mapThingDic:Dictionary = mapMgr.mapThingDic;
-			var gridDataDic: Dictionary = mapMgr.gridDataDic;
 			for each(var item:Array in mapThingDic){
 				var mapThingInfo: MapThingInfo = item[0];
 				var mapThingKey: String = int(mapThingInfo.x) +"_"+ int(mapThingInfo.y);
